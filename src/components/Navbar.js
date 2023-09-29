@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useContext } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -13,19 +14,16 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import { Divider } from "@mui/material";
 import List from "@mui/material/List";
 import { ListItem } from "@mui/material";
 import { ListItemButton } from "@mui/material";
 import { ListItemIcon } from "@mui/material";
-import PropTypes from "prop-types";
-import CssBaseline from "@mui/material/CssBaseline";
-import Drawer from "@mui/material/Drawer";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ListItemText from "@mui/material/ListItemText";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
+import { UserContext } from "@/pages/_app";
+import Link from "next/link";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -73,7 +71,7 @@ const drawer = (
     <Divider />
     <List>
       {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-        <ListItem key={text} disablePadding>
+        <ListItem key={index} disablePadding>
           <ListItemButton>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -88,7 +86,7 @@ const drawer = (
 );
 
 function Navbar(props) {
-  const drawerWidth = props.drawerWidth ?? 200;
+  const user = useContext(UserContext);
   const { window } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -142,37 +140,50 @@ function Navbar(props) {
     </Menu>
   );
 
-  const MenuList = [
-    {
-      id: 0,
-      label: "ตระกร้า",
-      link: '/cart',
-      element: (
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <ShoppingCart />
-          </Badge>
-        </IconButton>
-      ),
-    },
-    {
-      id: 1,
-      label: "โปรไฟล์",
-      link: "/profile",
-      element: (
-        <IconButton
-          size="large"
-          edge="end"
-          aria-label="account of current user"
-          aria-controls={menuId}
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-      ),
-    },
-  ];
+  const MenuList = user?.value?.name
+    ? [
+        {
+          id: 0,
+          label: "ตระกร้า",
+          link: "/cart",
+          element: (
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
+              <Badge badgeContent={4} color="error">
+                <ShoppingCart />
+              </Badge>
+            </IconButton>
+          ),
+        },
+        {
+          id: 1,
+          label: "โปรไฟล์",
+          link: "/profile",
+          element: (
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          ),
+        },
+      ]
+    : [
+        {
+          id: 0,
+          lable: "Login",
+          element: "Login",
+          link: "/login",
+        },
+      ];
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -191,36 +202,23 @@ function Navbar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      {MenuList.map((menu) => (
-        <>
-          <MenuItem>
-            {menu.element}
-            <p>{menu.label}</p>
-          </MenuItem>
-        </>
+      {MenuList.map((menu, idx) => (
+        <span key={idx}>
+          <Link className="text-black no-underline" href={menu.link}>
+            <MenuItem>
+              {menu.element}
+              <p>{menu.label}</p>
+            </MenuItem>
+          </Link>
+        </span>
       ))}
     </Menu>
   );
 
   return (
     <>
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { md: `calc(100% - ${drawerWidth}px)` },
-          ml: { md: `${drawerWidth}px` },
-        }}
-      >
+      <AppBar position="fixed">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2, display: { md: "none" } }}
-          >
-            <MenuIcon onClick={handleDrawerToggle} />
-          </IconButton>
           <Typography
             variant="h6"
             noWrap
@@ -240,7 +238,11 @@ function Navbar(props) {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {MenuList.map((menu) => menu.element)}
+            {MenuList.map((menu, idx) => (
+              <Link className="text-white" key={idx} href={menu.link}>
+                <span>{menu.element}</span>
+              </Link>
+            ))}
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -251,56 +253,18 @@ function Navbar(props) {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <MenuIcon />
             </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "block", md: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", md: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
     </>
   );
 }
 
-Navbar.PropTypes = {
-  window: PropTypes.func,
-};
+// Navbar.PropTypes = {
+//   window: PropTypes.func,
+// };
 export default Navbar;
