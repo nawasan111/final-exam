@@ -1,10 +1,12 @@
 import express from "express";
 import WelcomeController from "../controllers/WelcomeController";
+import UserController from "../controllers/UserController";
 const route = express.Router();
 
 route.get("/", WelcomeController.index);
 
-route.get("/users", (req, res) => {
+route.post("/user", UserController.create);
+route.get("/user", (req, res) => {
   res.json({
     name: "Nawasan",
     age: 21,

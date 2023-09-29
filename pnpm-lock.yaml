@@ -23,6 +23,9 @@ dependencies:
   '@prisma/client':
     specifier: 5.3.1
     version: 5.3.1(prisma@5.3.1)
+  crypto-js:
+    specifier: ^4.1.1
+    version: 4.1.1
   express:
     specifier: ^4.18.2
     version: 4.18.2
@@ -1225,6 +1228,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /crypto-js@4.1.1:
+    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
+    dev: false
 
   /css-unit-converter@1.1.2:
     resolution: {integrity: sha512-IiJwMC8rdZE0+xiEZHeru6YoONC4rfPMqGm2W85jMIbkFvv5nFTwJVFHam2eFrN6txmoUYFAFXiv8ICVeTO0MA==}
