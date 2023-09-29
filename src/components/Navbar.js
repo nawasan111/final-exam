@@ -179,10 +179,11 @@ function Navbar(props) {
     : [
         {
           id: 0,
-          lable: "Login",
-          element: "Login",
-          link: "/login",
+          label: "Register",
+          element: <span className="inline-block mx-3 hover:underline">Register</span>,
+          link: "/register",
         },
+        { id: 1, lable: "Login", element: <span className="inline-block mx-3 hover:underline">Login</span>, link: "/login" },
       ];
 
   const mobileMenuId = "primary-search-account-menu-mobile";
@@ -225,7 +226,7 @@ function Navbar(props) {
             component="div"
             sx={{ display: { xs: "none", md: "block" } }}
           >
-            MUI
+            <Link href={"/"}>MUI</Link>
           </Typography>
           <Search>
             <SearchIconWrapper>
