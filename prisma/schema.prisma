@@ -10,9 +10,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
-  id       Int    @id @default(autoincrement())
-  name     String
-  username String @unique
-  password String
+model user {
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String
+  phone         String
+  photo         String
+  google_token  String
+  username      String         @unique
+  password      String
+  rank          Boolean
+  register_date DateTime       @default(now())
+  wishlist      wishlist[]
+  cart          cart[]
+  order         order[]
+  order_detail  order_detail[]
+}
+
+model product {
+  id           Int            @id @default(autoincrement())
+  name         String
+  detail       String
+  price        Int
+  discount     Int
+  cate         category       @relation(fields: [cateId], references: [id])
+  cateId       Int
+  watch_count  Int
+  buy_count    Int
+  image        String
+  stock        Int
+  wishlist     wishlist[]
+  cart         cart[]
+  order_detail order_detail[]
+}
+
+model category {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  product product[]
+}
+
+model wishlist {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  product    product  @relation(fields: [product_id], references: [id])
+  user_id    Int
+  user       user     @relation(fields: [user_id], references: [id])
+  date       DateTime @default(now())
+}
+
+model cart {
+  id         Int     @id @default(autoincrement())
+  user_id    Int
+  user       user    @relation(fields: [user_id], references: [id])
+  product_id Int
+  product    product @relation(fields: [product_id], references: [id])
+}
+
+model order {
+  id             Int            @id @default(autoincrement())
+  user_id        Int
+  user           user           @relation(fields: [user_id], references: [id])
+  total_price    Int
+  product_count  Int
+  date           DateTime       @default(now())
+  shipping_price Int
+  pay_status     Int
+  send_status    Int
+  order_detail   order_detail[]
+}
+
+model order_detail {
+  id               Int     @id @default(autoincrement())
+  order_id         Int
+  order            order   @relation(fields: [order_id], references: [id])
+  user_id          Int
+  user             user    @relation(fields: [user_id], references: [id])
+  product_id       Int
+  product          product @relation(fields: [product_id], references: [id])
+  product_price    Int
+  product_discount Int
 }
