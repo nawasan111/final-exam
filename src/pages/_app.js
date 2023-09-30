@@ -8,19 +8,22 @@ import UserLayout from "@/components/layout/UserLayout";
 import userCookie from "@/components/lib/userCookie";
 import AdminLayout from "@/components/layout/AdminLayout";
 import { usePathname } from "next/navigation";
+import Error from "./_error";
 // axios.defaults.baseURL = ""
 
 export const UserContext = createContext(null);
 
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState({});
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   useEffect(() => {
     const usrcookie = new userCookie();
     let token = usrcookie.token.split(".")[1];
     if (token) {
-      let user_info = JSON.parse(Buffer.from(token, "base64").toString("utf-8"));
+      let user_info = JSON.parse(
+        Buffer.from(token, "base64").toString("utf-8")
+      );
       user_info.token = usrcookie.token;
       setUser(user_info);
     }
@@ -28,10 +31,18 @@ export default function App({ Component, pageProps }) {
 
   return (
     <UserContext.Provider value={{ value: user, set: setUser }}>
-      {(user.rank && pathname.split("/")[1] === 'admin') ? (
-        <AdminLayout>
-          <Component {...pageProps} />
-        </AdminLayout>
+      {pathname.split("/")[1] === "admin" ? (
+        <>
+          {user.rank ? (
+            <AdminLayout>
+              <Component {...pageProps} />
+            </AdminLayout>
+          ) : (
+            <UserLayout>
+              <Error />
+            </UserLayout>
+          )}
+        </>
       ) : (
         <UserLayout>
           <Component {...pageProps} />
