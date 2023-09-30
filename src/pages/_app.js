@@ -10,12 +10,7 @@ import UserLayout from "@/components/layout/UserLayout";
 export const UserContext = createContext(null);
 
 export default function App({ Component, pageProps }) {
-  const [user, setUser] = useState({ name: "Nawasan" });
-  useEffect(() => {
-    setTimeout(() => {
-      setUser({ name: "" });
-    }, 3000);
-  });
+  const [user, setUser] = useState({});
   return (
     <UserContext.Provider value={{ value: user, set: setUser }}>
       <UserLayout>
