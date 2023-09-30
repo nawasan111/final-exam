@@ -243,7 +243,7 @@ function AdminNavbar(props) {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {MenuList.map((menu, idx) => (
-              <Link className="text-white" key={idx} href={menu.link}>
+              <Link title={menu.label} className="text-white" key={idx} href={menu.link}>
                 <span>{menu.element}</span>
               </Link>
             ))}
