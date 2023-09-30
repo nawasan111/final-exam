@@ -11,6 +11,7 @@ export default function Member() {
       let response = await axios.get("/api/admin/user", {
         headers: { token: user.value.token },
       });
+      console.log(response.data);
       setUserAll(response.data);
     } catch (err) {}
   }
@@ -19,9 +20,11 @@ export default function Member() {
   }, []);
   return (
     <div>
-        {userAll.map((usr, idx) => (
-            <div>{usr.name}@{usr.username}  {usr.email}</div>
-        ))}
+      {userAll.map((usr, idx) => (
+        <div key={idx}>
+          {usr.name}@{usr.username} {usr.email}
+        </div>
+      ))}
       <button onClick={fetchApi}>submit</button>
     </div>
   );
