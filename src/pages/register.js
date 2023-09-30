@@ -6,6 +6,7 @@ import { UserContext } from "./_app";
 import { Container } from "@mui/material";
 import { Google } from "@mui/icons-material";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -25,14 +26,43 @@ export default function Login() {
       </div>
     );
 
-    /**
-     * 
-     * @param {FormDataEvent} e 
-     */
-    function onSubmitForm(e) {
-      e.preventDefault()
-      alert("form submit")
+  /**
+   *
+   * @param {FormDataEvent} e
+   */
+  async function onSubmitForm(e) {
+    e.preventDefault();
+    let response = await axios.post("/api/user", {
+      name,
+      email,
+      phone,
+      image,
+      username,
+      password,
+    });
+    if (response.data.status === 201) {
+      setSuccessMessage("สมัครสมาชิกสำเร็จ!");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
+      setName("")
+      setEmail("")
+      setPhone("")
+      setImage("")
+      setUsername("")
+      setPassword("")
+    } else if (response.data.status === 202) {
+      setErrorMessage("ชื่อผู้ใช้งานนี้ถูกใช้แล้ว กรุณาลองใหม่อีกครั้ง");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+    } else {
+      setErrorMessage("ขออภัย มีบางอย่างไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
     }
+  }
 
   return (
     <div>
@@ -40,8 +70,8 @@ export default function Login() {
         <Snackbar
           ContentProps={{ className: "bg-red-500" }}
           anchorOrigin={{ horizontal: "center", vertical: "top" }}
-          open={errorMessage}
-          message={errorMessage.length}
+          open={errorMessage.length}
+          message={errorMessage}
         />
         <Snackbar
           ContentProps={{ className: "bg-green-500" }}
@@ -120,7 +150,7 @@ export default function Login() {
               <Divider />
               <Box component={"h4"}>หรือสมัครด้วยบัญชี google</Box>
               <button className="bg-white rounded-full border-none hover:shadow-md shadow-gray-400 duration-300 hover:-translate-y-1">
-                <Google fontSize="large" />
+                <Google color="primary" fontSize="large" />
               </button>
             </div>
           </Grid>

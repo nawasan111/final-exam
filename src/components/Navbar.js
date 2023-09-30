@@ -226,7 +226,7 @@ function Navbar(props) {
             component="div"
             sx={{ display: { xs: "none", md: "block" } }}
           >
-            <Link href={"/"}>MUI</Link>
+            <Link href={"/"}>OpenShop</Link>
           </Typography>
           <Search>
             <SearchIconWrapper>
