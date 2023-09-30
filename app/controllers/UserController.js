@@ -9,6 +9,21 @@ const UserController = {
    * @param {Request} req
    * @param {Response} res
    */
+  async index(req, res) {
+    let userAll = await db.user.findMany();
+    db.$disconnect();
+    for(let i = 0; i < userAll.length; i++) {
+      delete userAll[i].google_token;
+      delete userAll[i].rank;
+      delete userAll[i].password;
+    }
+    res.json(userAll);
+  },
+  /**
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
   async create(req, res) {
     try {
       let { name, email, phone, photo, username, password, google_token } =

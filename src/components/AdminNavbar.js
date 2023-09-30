@@ -18,6 +18,12 @@ import { UserContext } from "@/pages/_app";
 import Link from "next/link";
 import { Favorite } from "@mui/icons-material";
 import { Logout, SupervisedUserCircle } from "@mui/icons-material";
+import { InsertChart } from "@mui/icons-material";
+import { ProductionQuantityLimits } from "@mui/icons-material";
+import { Inventory } from "@mui/icons-material";
+import { Category } from "@mui/icons-material";
+import { PeopleAlt } from "@mui/icons-material";
+import { MeetingRoom } from "@mui/icons-material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -59,7 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-function Navbar(props) {
+function AdminNavbar(props) {
   const user = useContext(UserContext);
   const { window } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -114,100 +120,75 @@ function Navbar(props) {
     </Menu>
   );
 
-  const MenuList = user?.value?.name
-    ? [
-        {
-          label: "สินค้าที่ชอบ",
-          link: "/wishlist",
-          element: (
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <Favorite />
-              </Badge>
-            </IconButton>
-          ),
-        },
-        {
-          label: "ตระกร้า",
-          link: "/cart",
-          element: (
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <ShoppingCart />
-              </Badge>
-            </IconButton>
-          ),
-        },
-        {
-          label: user.value.name,
-          link: "/profile",
-          element: (
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          ),
-        },
-        {
-          label: "ออกจากระบบ",
-          link: "/logout",
-          element: (
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge color="error">
-                <Logout />
-              </Badge>
-            </IconButton>
-          ),
-        },
-      ]
-    : [
-        {
-          label: "Register",
-          element: (
-            <span className="inline-block mx-3 hover:underline">Register</span>
-          ),
-          link: "/register",
-        },
-        {
-          lable: "Login",
-          element: (
-            <span className="inline-block mx-3 hover:underline">Login</span>
-          ),
-          link: "/login",
-        },
-      ];
-
-  if (user.value.rank) {
-    MenuList.unshift({
-      label: "admin",
-      link: "/admin/",
+  const MenuList = [
+    {
+      label: "รายงานสถิติ",
+      link: "/admin/report",
       element: (
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge color="error">
-            <SupervisedUserCircle />
+            <InsertChart />
           </Badge>
         </IconButton>
       ),
-    });
-  }
+    },
+    {
+      label: "คำสั่งซื้อ",
+      link: "/admin/order",
+      element: (
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          <Badge badgeContent={10} color="error">
+            <ProductionQuantityLimits />
+          </Badge>
+        </IconButton>
+      ),
+    },
+    {
+      label: "สินค้า",
+      link: "/admin/stock",
+      element: (
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          <Badge color="error">
+            <Inventory />
+          </Badge>
+        </IconButton>
+      ),
+    },
+    {
+      label: "หมวดหมู่",
+      link: "/admin/category",
+      element: (
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          <Badge color="error">
+            <Category />
+          </Badge>
+        </IconButton>
+      ),
+    },
+    {
+      label: "สมาชิก",
+      link: "/admin/member",
+      element: (
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          <Badge color="error">
+            <PeopleAlt />
+          </Badge>
+        </IconButton>
+      ),
+    },
+    {
+      label: "ย้อนกลับ",
+      link: "/",
+      element: (
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          <Badge color="error">
+          <MeetingRoom />
+          </Badge>
+        </IconButton>
+      ),
+    },
+  ];
+
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
@@ -240,7 +221,7 @@ function Navbar(props) {
 
   return (
     <>
-      <AppBar position="fixed">
+      <AppBar position="fixed" style={{ backgroundColor: "black" }}>
         <Toolbar>
           <Typography
             variant="h6"
@@ -248,7 +229,7 @@ function Navbar(props) {
             component="div"
             sx={{ display: { xs: "none", md: "block" } }}
           >
-            <Link href={"/"}>OpenShop</Link>
+            <Link href={"/"}>Admin</Link>
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -290,4 +271,4 @@ function Navbar(props) {
 // Navbar.PropTypes = {
 //   window: PropTypes.func,
 // };
-export default Navbar;
+export default AdminNavbar;
