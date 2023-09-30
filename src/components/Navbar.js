@@ -13,17 +13,11 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import { Divider } from "@mui/material";
-import List from "@mui/material/List";
-import { ListItem } from "@mui/material";
-import { ListItemButton } from "@mui/material";
-import { ListItemIcon } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import ListItemText from "@mui/material/ListItemText";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { UserContext } from "@/pages/_app";
 import Link from "next/link";
+import { Favorite } from "@mui/icons-material";
+import { Logout } from "@mui/icons-material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -64,26 +58,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-
-const drawer = (
-  <div>
-    <Toolbar />
-    <Divider />
-    <List>
-      {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-        <ListItem key={index} disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
-    {/* <Divider /> */}
-  </div>
-);
 
 function Navbar(props) {
   const user = useContext(UserContext);
@@ -143,7 +117,21 @@ function Navbar(props) {
   const MenuList = user?.value?.name
     ? [
         {
-          id: 0,
+          label: "สินค้าที่ชอบ",
+          link: "/wishlist",
+          element: (
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
+              <Badge badgeContent={4} color="error">
+                <Favorite />
+              </Badge>
+            </IconButton>
+          ),
+        },
+        {
           label: "ตระกร้า",
           link: "/cart",
           element: (
@@ -159,8 +147,7 @@ function Navbar(props) {
           ),
         },
         {
-          id: 1,
-          label: "โปรไฟล์",
+          label: user.value.name,
           link: "/profile",
           element: (
             <IconButton
@@ -175,15 +162,39 @@ function Navbar(props) {
             </IconButton>
           ),
         },
+        {
+          label: "ออกจากระบบ",
+          link: "/logout",
+          element: (
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
+              <Badge color="error">
+                <Logout />
+              </Badge>
+            </IconButton>
+          ),
+        },
       ]
     : [
         {
           id: 0,
           label: "Register",
-          element: <span className="inline-block mx-3 hover:underline">Register</span>,
+          element: (
+            <span className="inline-block mx-3 hover:underline">Register</span>
+          ),
           link: "/register",
         },
-        { id: 1, lable: "Login", element: <span className="inline-block mx-3 hover:underline">Login</span>, link: "/login" },
+        {
+          id: 1,
+          lable: "Login",
+          element: (
+            <span className="inline-block mx-3 hover:underline">Login</span>
+          ),
+          link: "/login",
+        },
       ];
 
   const mobileMenuId = "primary-search-account-menu-mobile";

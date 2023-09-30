@@ -7,15 +7,12 @@ import { Container } from "@mui/material";
 import { Google } from "@mui/icons-material";
 import { useState } from "react";
 import axios from "axios";
+import userCookie from "@/components/lib/userCookie";
 
 export default function Login() {
+  const user = useContext(UserContext);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const user = useContext(UserContext);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [image, setImage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -32,32 +29,14 @@ export default function Login() {
    */
   async function onSubmitForm(e) {
     e.preventDefault();
-    let response = await axios.post("/api/user", {
-      name,
-      email,
-      phone,
-      image,
-      username,
-      password,
-    });
+    let response = await axios.post("/api/user/auth", { username, password });
+    console.log(response.data);
     if (response.data.status === 201) {
-      setSuccessMessage("สมัครสมาชิกสำเร็จ!");
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 3000);
-      setName("")
-      setEmail("")
-      setPhone("")
-      setImage("")
-      setUsername("")
-      setPassword("")
-    } else if (response.data.status === 202) {
-      setErrorMessage("ชื่อผู้ใช้งานนี้ถูกใช้แล้ว กรุณาลองใหม่อีกครั้ง");
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 3000);
-    } else {
-      setErrorMessage("ขออภัย มีบางอย่างไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง");
+      const usrsto = new userCookie();
+      usrsto.store(response.data.token);
+      window.location.href = '/'
+   } else if (response.data.status === 203) {
+      setErrorMessage("ชื่อผู้ใช้หรือระหัสผ่านไม่ถูกต้อง");
       setTimeout(() => {
         setErrorMessage("");
       }, 3000);
@@ -85,42 +64,8 @@ export default function Login() {
             <div className="border border-red-500 bg-white py-3 text-center rounded-lg">
               <form onSubmit={onSubmitForm} className="">
                 <Box component={"h2"} className="text-gray-700">
-                  สมัครสมาชิก
+                  เข้าสู่ระบบ
                 </Box>
-                <TextField
-                  label="ชื่อ - นามสกุล"
-                  variant="standard"
-                  className="mx-3 my-1"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-                <TextField
-                  label="อีเมล"
-                  variant="standard"
-                  className="mx-3 my-1"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <TextField
-                  label="เบอร์โทร"
-                  helperText="0989999999"
-                  type="tel"
-                  variant="standard"
-                  className="mx-3 my-1"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
-                <TextField
-                  label="รูปโปรไฟล์"
-                  helperText={"https://someweb.com/image.jpg"}
-                  variant="standard"
-                  className="mx-3 my-1"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                />
                 <TextField
                   label="username"
                   variant="standard"
@@ -144,12 +89,12 @@ export default function Login() {
                     variant="contained"
                     type="submit"
                   >
-                    สมัคร
+                    เข้าสู่ระบบ
                   </Button>
                 </div>
               </form>
               <Divider />
-              <Box component={"h4"}>หรือสมัครด้วยบัญชี google</Box>
+              <Box component={"h4"}>หรือเข้าสู่ระบบด้วยบัญชี google</Box>
               <button className="bg-white rounded-full border-none hover:shadow-md shadow-gray-400 duration-300 hover:-translate-y-1 cursor-pointer hover:scale-105">
                 <Google color="primary" fontSize="large" />
               </button>

@@ -5,6 +5,7 @@ const route = express.Router();
 
 route.get("/", WelcomeController.index);
 
+route.post("/user/auth", UserController.login);
 route.post("/user", UserController.create);
 route.get("/user", (req, res) => {
   res.json({

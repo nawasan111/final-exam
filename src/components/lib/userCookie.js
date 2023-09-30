@@ -7,6 +7,12 @@ class userCookie {
   isLogin() {
     return !!this.token;
   }
+  store(token) {
+    Cookies.set("token", token);
+  }
+  delete() {
+    Cookies.remove("token");
+  }
 }
 
 export default userCookie;
