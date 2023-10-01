@@ -6,8 +6,11 @@ const adminRouter = express.Router();
 
 adminRouter.get("/user", AdminUserController.index);
 adminRouter.post("/product", AdminProductController.create);
+adminRouter.put("/product", AdminProductController.update);
+adminRouter.delete("/product", AdminProductController.delete);
+
 adminRouter.post("/category", CategoryController.create);
 adminRouter.put("/category", CategoryController.update);
-adminRouter.delete('/category', CategoryController.delete)
+adminRouter.delete("/category", CategoryController.delete);
 
 export default adminRouter;

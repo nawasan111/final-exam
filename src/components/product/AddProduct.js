@@ -6,6 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import {
+  Alert,
   FormControl,
   InputLabel,
   MenuItem,
@@ -78,12 +79,8 @@ export default function AddProduct({ open, handleClose }) {
     <>
       <Snackbar
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
-        ContentProps={{
-          className: message.error ? "bg-red-500" : "bg-green-500",
-        }}
-        open={!!message.message.length}
-        message={message.message}
-      />
+       open={!!message.message.length}
+      ><Alert severity={message.error ? "error" : "success"}>{message.message}</Alert></Snackbar>
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={fetchAddProduct}>
           <DialogTitle>เพิ่มสินค้า</DialogTitle>

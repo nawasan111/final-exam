@@ -8,20 +8,19 @@ import { Alert, Snackbar } from "@mui/material";
 import axios from "axios";
 import { UserContext } from "@/pages/_app";
 
-export default function DeleteCategory({ open, handleClose, id }) {
+export default function DeleteProduct({ open, handleClose, id }) {
   const user = useContext(UserContext);
   const [message, setMessage] = useState({ message: "", error: false });
 
-  async function onDeleteCategory() {
+  async function onDeleteProduct() {
     try {
-      let response = await axios.delete(`/api/admin/category?id=${id}`, {
+      let response = await axios.delete(`/api/admin/product?id=${id}`, {
         headers: { token: user.value.token },
       });
-      console.log(response.data);
       if (response.data.status === 401) {
         setMessage({ error: false, message: "สบสำเร็จ!" });
         setTimeout(() => {
-          handleClose()
+          handleClose();
           setMessage({ error: false, message: "" });
         }, 1000);
       }
@@ -48,16 +47,16 @@ export default function DeleteCategory({ open, handleClose, id }) {
         </Alert>
       </Snackbar>
       <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>ยืนยันการลบ</DialogTitle>
-          <DialogContent className="text-center">
-            เมื่อกดลบแล้วจะไม่สามารถกู้คืนได้
-         </DialogContent>
-          <DialogActions>
-            <Button color="error" onClick={handleClose}>
-              ยกเลิก
-            </Button>
-            <Button onClick={onDeleteCategory}>ยืนยัน</Button>
-          </DialogActions>
+        <DialogTitle>ยืนยันการลบ</DialogTitle>
+        <DialogContent className="text-center">
+          เมื่อกดลบแล้วจะไม่สามารถกู้คืนได้
+        </DialogContent>
+        <DialogActions>
+          <Button color="error" onClick={handleClose}>
+            ยกเลิก
+          </Button>
+          <Button onClick={onDeleteProduct}>ยืนยัน</Button>
+        </DialogActions>
       </Dialog>
     </>
   );
