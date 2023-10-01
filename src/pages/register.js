@@ -7,6 +7,7 @@ import { Container } from "@mui/material";
 import { Google } from "@mui/icons-material";
 import { useState } from "react";
 import axios from "axios";
+import Head from "next/head";
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -66,6 +67,9 @@ export default function Login() {
 
   return (
     <div>
+      <Head>
+        <title>สมัครสมาชิก | OpenShop</title>
+      </Head>
       <Container>
         <Snackbar
           ContentProps={{ className: "bg-red-500" }}

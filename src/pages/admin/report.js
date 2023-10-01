@@ -4,10 +4,14 @@ import { Grid, Paper } from "@mui/material";
 import Chart from "@/components/dashboard/Chart";
 import Deposits from "@/components/dashboard/Deposits";
 import Orders from "@/components/dashboard/Orders";
+import Head from "next/head";
 
 export default function Report() {
   return (
-    <main>
+    <>
+    <Head>
+      <title>รายงาน | admin</title>
+    </Head>
       <DashboardLayout>
         <Grid container spacing={3}>
           {/* Chart */}
@@ -44,6 +48,6 @@ export default function Report() {
           </Grid>
         </Grid>
       </DashboardLayout>
-    </main>
+    </>
   );
 }

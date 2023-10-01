@@ -6,21 +6,18 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   CardMedia,
-  Paper,
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableRow,
   Typography,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Head from "next/head";
 import { Delete } from "@mui/icons-material";
 import { Edit } from "@mui/icons-material";
-
 export default function Stock() {
   const [modal, setModal] = useState(false);
   const [products, setProducts] = useState([]);
@@ -39,6 +36,10 @@ export default function Stock() {
   }, []);
 
   return (
+    <>
+    <Head>
+      <title>รายการสินค้า | admin</title>
+    </Head>
     <Box>
       <Box sx={{ mb: 2, textAlign: "right" }}>
         <Button onClick={() => setModal(!modal)}>
@@ -94,5 +95,6 @@ export default function Stock() {
       ))}
       <AddProduct open={modal} handleClose={() => setModal(false)} />
     </Box>
+    </>
   );
 }

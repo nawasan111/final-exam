@@ -1,6 +1,5 @@
 import { Add } from "@mui/icons-material";
 import {
-  Snackbar,
   Box,
   Button,
   Grid,
@@ -10,19 +9,17 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Alert,
 } from "@mui/material";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import AddCategory from "@/components/category/AddCategory";
 import axios from "axios";
 import { Delete } from "@mui/icons-material";
 import { Edit } from "@mui/icons-material";
 import UpdateCategory from "@/components/category/UpdateCategory";
-import { UserContext } from "../_app";
 import DeleteCategory from "@/components/category/DeleteCategory";
+import Head from "next/head";
 
 export default function AdminCategory() {
-  const user = useContext(UserContext);
   const [modal, setModal] = useState(false);
   const [message, setMessage] = useState({ message: "", error: false });
   const [deleteState, setDeleteState] = useState({
@@ -40,8 +37,12 @@ export default function AdminCategory() {
       setCategory(res.data);
     });
   };
- useEffect(fetchCategory, [modal, updateState, message, deleteState]);
+  useEffect(fetchCategory, [modal, updateState, message, deleteState]);
   return (
+    <>
+    <Head>
+      <title>จัดการหมวดหมู่ | admin</title>
+    </Head>
     <Box>
       <Grid container>
         <Grid item lg={3} md={0}></Grid>
@@ -87,7 +88,9 @@ export default function AdminCategory() {
                       <TableCell sx={{ maxWidth: 10 }}>
                         <Button
                           color="error"
-                          onClick={() => setDeleteState({open: true, id: cate.id})}
+                          onClick={() =>
+                            setDeleteState({ open: true, id: cate.id })
+                          }
                         >
                           <Delete />
                         </Button>
@@ -120,5 +123,6 @@ export default function AdminCategory() {
         />
       )}
     </Box>
+    </>
   );
 }

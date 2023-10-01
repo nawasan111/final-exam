@@ -62,7 +62,7 @@ export default function AddProduct({ open, handleClose }) {
       setImage("");
       setCategory(0);
       setMessage({ message: "เพิ่มสินค้าสำเร็จ", error: false });
-      handleClose()
+      handleClose();
       setTimeout(() => {
         setMessage({ message: "", error: false });
       }, 3000);
@@ -74,7 +74,7 @@ export default function AddProduct({ open, handleClose }) {
     }
   }
 
- return (
+  return (
     <>
       <Snackbar
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
@@ -107,6 +107,7 @@ export default function AddProduct({ open, handleClose }) {
             />
             <div className="text-left">
               <TextField
+                fullWidth
                 className="m-1"
                 label="รายละเอียด"
                 variant="standard"
