@@ -15,16 +15,21 @@ import AddCategory from "@/components/AddCategory";
 import axios from "axios";
 import { Delete } from "@mui/icons-material";
 import { Edit } from "@mui/icons-material";
+import UpdateCategory from "@/components/UpdateCategory";
 
 export default function AdminCategory() {
   const [modal, setModal] = useState(false);
+  const [updateState, setUpdateState] = useState({
+    open: false,
+    data: { id: -1, name: "" },
+  });
   const [category, setCategory] = useState([]);
 
   useEffect(() => {
     axios.get("/api/category").then((res) => {
       setCategory(res.data);
     });
-  }, []);
+  }, [modal, updateState]);
   return (
     <Box>
       <Grid container>
@@ -52,11 +57,19 @@ export default function AdminCategory() {
                 </TableHead>
                 <TableBody>
                   {category.map((cate, idx) => (
-                    <TableRow>
+                    <TableRow key={idx}>
                       <TableCell>{cate.id}</TableCell>
                       <TableCell>{cate.name}</TableCell>
                       <TableCell sx={{ maxWidth: 10 }}>
-                        <Button color="warning">
+                        <Button
+                          color="warning"
+                          onClick={() =>
+                            setUpdateState({
+                              open: true,
+                              data: { id: cate.id, name: cate.name },
+                            })
+                          }
+                        >
                           <Edit />
                         </Button>
                       </TableCell>
@@ -74,7 +87,18 @@ export default function AdminCategory() {
         </Grid>
         <Grid item lg={3} md={0}></Grid>
       </Grid>
-      <AddCategory open={modal} handleClose={() => setModal(false)} />
+      {modal && (
+        <AddCategory open={modal} handleClose={() => setModal(false)} />
+      )}
+      {updateState.open && (
+        <UpdateCategory
+          open={updateState.open}
+          data={updateState.data}
+          handleClose={() =>
+            setUpdateState({ open: false, data: { id: -1, name: "" } })
+          }
+        />
+      )}
     </Box>
   );
 }

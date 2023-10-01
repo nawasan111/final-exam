@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -9,10 +9,10 @@ import { Snackbar } from "@mui/material";
 import axios from "axios";
 import { UserContext } from "@/pages/_app";
 
-export default function AddCategory({ open, handleClose }) {
+export default function UpdateCategory({ open, handleClose, data }) {
   const user = useContext(UserContext);
   const [message, setMessage] = useState({ message: "", error: false });
-  const [name, setName] = useState("");
+  const [name, setName] = useState(data.name);
 
   /**
    *
@@ -20,20 +20,21 @@ export default function AddCategory({ open, handleClose }) {
    */
   async function fetchAddProduct(e) {
     e.preventDefault();
-    let response = await axios.post(
+    let response = await axios.put(
       "/api/admin/category",
-      { name },
+      { id: data.id, name },
       { headers: { token: user.value.token } }
     );
-    if (response.data.status === 202) {
-      setMessage({ message: "หมวดหมู่นี้ถูกใช้แล้ว", error: true });
-      setTimeout(() => {
-        setMessage({ message: "", error: false });
-      }, 3000);
-    } else if (response.data.status === 201) {
+    console.log(response.data);
+    if (response.data.status === 301) {
       setName("");
-      handleClose();
-      setMessage({ message: "เพิ่มหมวดหมู่สำเร็จ", error: false });
+      setMessage({ message: "บันทึกหมวดหมู่สำเร็จ", error: false });
+      setTimeout(() => {
+        handleClose();
+        setMessage({ message: "", error: false });
+      }, 2000);
+    } else {
+      setMessage({ message: "มีบางอย่างผิดพลาด", error: true });
       setTimeout(() => {
         setMessage({ message: "", error: false });
       }, 3000);
@@ -52,7 +53,7 @@ export default function AddCategory({ open, handleClose }) {
       />
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={fetchAddProduct}>
-          <DialogTitle>เพิ่มหมวดหมู่</DialogTitle>
+          <DialogTitle>แก้ไข</DialogTitle>
           <DialogContent className="text-center">
             <TextField
               className="m-1"
@@ -67,7 +68,7 @@ export default function AddCategory({ open, handleClose }) {
             <Button color="error" onClick={handleClose}>
               ยกเลิก
             </Button>
-            <Button type="submit">เพิ่ม</Button>
+            <Button type="submit">บันทึก</Button>
           </DialogActions>
         </form>
       </Dialog>
