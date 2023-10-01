@@ -15,7 +15,7 @@ model user {
   name          String
   email         String
   phone         String
-  photo         String
+  photo         String         @db.LongText
   google_token  String
   username      String         @unique
   password      String
@@ -30,14 +30,14 @@ model user {
 model product {
   id           Int            @id @default(autoincrement())
   name         String
-  detail       String
+  detail       String         @db.LongText
   price        Int
   discount     Int
   cate         category       @relation(fields: [cateId], references: [id])
   cateId       Int
   watch_count  Int
   buy_count    Int
-  image        String
+  image        String         @db.LongText
   stock        Int
   wishlist     wishlist[]
   cart         cart[]

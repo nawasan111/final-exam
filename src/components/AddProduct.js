@@ -62,6 +62,7 @@ export default function AddProduct({ open, handleClose }) {
       setImage("");
       setCategory(0);
       setMessage({ message: "เพิ่มสินค้าสำเร็จ", error: false });
+      handleClose()
       setTimeout(() => {
         setMessage({ message: "", error: false });
       }, 3000);
