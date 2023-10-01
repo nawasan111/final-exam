@@ -43,7 +43,7 @@ const CategoryController = {
     try {
       const { id, name } = req.body;
       console.log(id, name);
-      await db.category.update({ where: { id}, data: { name } });
+      await db.category.update({ where: { id }, data: { name } });
       await db.$disconnect();
       res.json({ status: 301, message: "update success" });
     } catch (err) {
@@ -52,17 +52,24 @@ const CategoryController = {
     }
   },
   /**
-   * 
-   * @param {Request} req 
-   * @param {Response} res 
+   *
+   * @param {Request} req
+   * @param {Response} res
    */
-  async delete(req,res) {
+  async delete(req, res) {
     try {
-      res.json({params: req.params})
-    } catch(err) {
-      res.json({status: 400, message: "server has some error"})
+      const { id } = req.query;
+      if (!id) throw 400;
+      await db.category.delete({ where: { id: Number(id) } });
+      await db.$disconnect();
+      res.json({
+        status: 401, 
+        message: "delete success"
+      })
+    } catch (err) {
+      res.json({ status: 400, message: "server has some error" });
     }
-  }
+  },
 };
 
 export default CategoryController;

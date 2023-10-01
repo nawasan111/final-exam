@@ -1,18 +1,18 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Snackbar } from "@mui/material";
+import { Alert, Snackbar } from "@mui/material";
 import axios from "axios";
 import { UserContext } from "@/pages/_app";
 
-export default function UpdateCategory({ open, handleClose, data }) {
+export default function AddCategory({ open, handleClose }) {
   const user = useContext(UserContext);
   const [message, setMessage] = useState({ message: "", error: false });
-  const [name, setName] = useState(data.name);
+  const [name, setName] = useState("");
 
   /**
    *
@@ -20,21 +20,20 @@ export default function UpdateCategory({ open, handleClose, data }) {
    */
   async function fetchAddProduct(e) {
     e.preventDefault();
-    let response = await axios.put(
+    let response = await axios.post(
       "/api/admin/category",
-      { id: data.id, name },
+      { name },
       { headers: { token: user.value.token } }
     );
-    console.log(response.data);
-    if (response.data.status === 301) {
-      setName("");
-      setMessage({ message: "บันทึกหมวดหมู่สำเร็จ", error: false });
+    if (response.data.status === 202) {
+      setMessage({ message: "หมวดหมู่นี้ถูกใช้แล้ว", error: true });
       setTimeout(() => {
-        handleClose();
         setMessage({ message: "", error: false });
-      }, 2000);
-    } else {
-      setMessage({ message: "มีบางอย่างผิดพลาด", error: true });
+      }, 3000);
+    } else if (response.data.status === 201) {
+      setName("");
+      handleClose();
+      setMessage({ message: "เพิ่มหมวดหมู่สำเร็จ", error: false });
       setTimeout(() => {
         setMessage({ message: "", error: false });
       }, 3000);
@@ -45,15 +44,15 @@ export default function UpdateCategory({ open, handleClose, data }) {
     <>
       <Snackbar
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
-        ContentProps={{
-          className: message.error ? "bg-red-500" : "bg-green-500",
-        }}
-        open={!!message.message.length}
-        message={message.message}
-      />
+       open={!!message.message.length}
+      >
+        <Alert severity={message.error ? "error" : "success"}>
+          {message.message}
+        </Alert>
+      </Snackbar>
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={fetchAddProduct}>
-          <DialogTitle>แก้ไข</DialogTitle>
+          <DialogTitle>เพิ่มหมวดหมู่</DialogTitle>
           <DialogContent className="text-center">
             <TextField
               className="m-1"
@@ -68,7 +67,7 @@ export default function UpdateCategory({ open, handleClose, data }) {
             <Button color="error" onClick={handleClose}>
               ยกเลิก
             </Button>
-            <Button type="submit">บันทึก</Button>
+            <Button type="submit">เพิ่ม</Button>
           </DialogActions>
         </form>
       </Dialog>

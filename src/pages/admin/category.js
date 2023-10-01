@@ -1,5 +1,6 @@
 import { Add } from "@mui/icons-material";
 import {
+  Snackbar,
   Box,
   Button,
   Grid,
@@ -9,27 +10,37 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Alert,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import AddCategory from "@/components/AddCategory";
+import React, { useState, useContext, useEffect } from "react";
+import AddCategory from "@/components/category/AddCategory";
 import axios from "axios";
 import { Delete } from "@mui/icons-material";
 import { Edit } from "@mui/icons-material";
-import UpdateCategory from "@/components/UpdateCategory";
+import UpdateCategory from "@/components/category/UpdateCategory";
+import { UserContext } from "../_app";
+import DeleteCategory from "@/components/category/DeleteCategory";
 
 export default function AdminCategory() {
+  const user = useContext(UserContext);
   const [modal, setModal] = useState(false);
+  const [message, setMessage] = useState({ message: "", error: false });
+  const [deleteState, setDeleteState] = useState({
+    open: false,
+    id: -1,
+  });
   const [updateState, setUpdateState] = useState({
     open: false,
     data: { id: -1, name: "" },
   });
   const [category, setCategory] = useState([]);
 
-  useEffect(() => {
+  const fetchCategory = () => {
     axios.get("/api/category").then((res) => {
       setCategory(res.data);
     });
-  }, [modal, updateState]);
+  };
+ useEffect(fetchCategory, [modal, updateState, message, deleteState]);
   return (
     <Box>
       <Grid container>
@@ -74,7 +85,10 @@ export default function AdminCategory() {
                         </Button>
                       </TableCell>
                       <TableCell sx={{ maxWidth: 10 }}>
-                        <Button color="error">
+                        <Button
+                          color="error"
+                          onClick={() => setDeleteState({open: true, id: cate.id})}
+                        >
                           <Delete />
                         </Button>
                       </TableCell>
@@ -87,9 +101,15 @@ export default function AdminCategory() {
         </Grid>
         <Grid item lg={3} md={0}></Grid>
       </Grid>
-      {modal && (
-        <AddCategory open={modal} handleClose={() => setModal(false)} />
+
+      {deleteState.open && (
+        <DeleteCategory
+          open={deleteState.open}
+          handleClose={() => setDeleteState({ open: false, id: -1 })}
+          id={deleteState.id}
+        />
       )}
+      <AddCategory open={modal} handleClose={() => setModal(false)} />
       {updateState.open && (
         <UpdateCategory
           open={updateState.open}

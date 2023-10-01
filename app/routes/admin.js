@@ -8,5 +8,6 @@ adminRouter.get("/user", AdminUserController.index);
 adminRouter.post("/product", AdminProductController.create);
 adminRouter.post("/category", CategoryController.create);
 adminRouter.put("/category", CategoryController.update);
+adminRouter.delete('/category', CategoryController.delete)
 
 export default adminRouter;
