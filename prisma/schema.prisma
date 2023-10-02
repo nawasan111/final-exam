@@ -15,7 +15,7 @@ model user {
   name          String
   email         String
   phone         String
-  address       String         @db.LongText
+  address       String         @db.LongText @default("")
   photo         String         @db.LongText
   google_token  String
   username      String         @unique
@@ -74,7 +74,7 @@ model order {
   user           user           @relation(fields: [user_id], references: [id])
   total_price    Int
   product_count  Int
-  address        String         @db.LongText
+  address        String         @db.LongText @default("")
   date           DateTime       @default(now())
   shipping_price Int
   pay_status     Int

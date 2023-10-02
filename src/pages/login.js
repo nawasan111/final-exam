@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Grid, TextField } from "@mui/material";
+import { Box, Button, Divider, Grid, Paper, TextField } from "@mui/material";
 import { Snackbar } from "@mui/material";
 import React from "react";
 import { useContext } from "react";
@@ -20,7 +20,9 @@ export default function Login() {
   if (user.value?.name)
     return (
       <div>
-        <h3>{user.value.name}</h3>
+        <Paper className="m-auto" sx={{ p: 1, maxWidth: 200  }}>
+          <h3 className="text-center">คุณเข้าสู่ระบบแล้ว</h3>
+        </Paper>
       </div>
     );
 
@@ -35,8 +37,8 @@ export default function Login() {
     if (response.data.status === 201) {
       const usrsto = new userCookie();
       usrsto.store(response.data.token);
-      window.location.href = '/'
-   } else if (response.data.status === 203) {
+      window.location.href = "/";
+    } else if (response.data.status === 203) {
       setErrorMessage("ชื่อผู้ใช้หรือระหัสผ่านไม่ถูกต้อง");
       setTimeout(() => {
         setErrorMessage("");

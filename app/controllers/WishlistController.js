@@ -58,8 +58,8 @@ const WishlistController = {
           user_id: Number(req.user.id),
         },
       });
-      if(!wishlist_find)throw 400;
-      await db.wishlist.delete({where: {id: wishlist_find.id}})
+      if (!wishlist_find) throw 400;
+      await db.wishlist.delete({ where: { id: wishlist_find.id } });
       await db.$disconnect();
       res.json({ status: 401, message: "remove fav success" });
     } catch (err) {

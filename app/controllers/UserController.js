@@ -12,7 +12,7 @@ const UserController = {
   async index(req, res) {
     let userAll = await db.user.findMany();
     db.$disconnect();
-    for(let i = 0; i < userAll.length; i++) {
+    for (let i = 0; i < userAll.length; i++) {
       delete userAll[i].google_token;
       delete userAll[i].rank;
       delete userAll[i].password;
@@ -52,6 +52,7 @@ const UserController = {
           name,
           email,
           phone,
+          address: "",
           photo,
           username,
           password,

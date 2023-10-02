@@ -8,8 +8,10 @@ import { Google } from "@mui/icons-material";
 import { useState } from "react";
 import axios from "axios";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function Login() {
+  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const user = useContext(UserContext);
@@ -20,13 +22,9 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  if (user.value?.name)
-    return (
-      <div>
-        <h3>{user.value.name}</h3>
-      </div>
-    );
-
+  if (user.value?.name) {
+    router.push({ pathname: "/" });
+  }
   /**
    *
    * @param {FormDataEvent} e
@@ -46,12 +44,12 @@ export default function Login() {
       setTimeout(() => {
         setSuccessMessage("");
       }, 3000);
-      setName("")
-      setEmail("")
-      setPhone("")
-      setImage("")
-      setUsername("")
-      setPassword("")
+      setName("");
+      setEmail("");
+      setPhone("");
+      setImage("");
+      setUsername("");
+      setPassword("");
     } else if (response.data.status === 202) {
       setErrorMessage("ชื่อผู้ใช้งานนี้ถูกใช้แล้ว กรุณาลองใหม่อีกครั้ง");
       setTimeout(() => {
