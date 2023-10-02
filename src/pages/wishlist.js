@@ -113,7 +113,16 @@ export default function Wishlist() {
                           {pdt.detail}
                         </div>
                       </TableCell>
-                      <TableCell>{pdt.price}</TableCell>
+                      <TableCell>
+                        {pdt.discount > 0 ? (
+                          <Box color={"orangered"}>
+                            <del>${pdt.price}</del> $
+                            {pdt.price - pdt.price * (pdt.discount / 100)}
+                          </Box>
+                        ) : (
+                          <span>${pdt.price}</span>
+                        )}
+                      </TableCell>
                       <TableCell>
                         <Button color="warning">
                           <ShoppingCart />
