@@ -65,19 +65,8 @@ function Navbar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -180,18 +169,23 @@ function Navbar(props) {
       ]
     : [
         {
-          label: "Register",
+          label: "",
           element: (
-            <span className="inline-block mx-3 hover:underline">Register</span>
-          ),
-          link: "/register",
-        },
-        {
-          lable: "Login",
-          element: (
-            <span className="inline-block mx-3 hover:underline">Login</span>
+            <span className="inline-block mx-3 hover:underline">
+              เข้าสู่ระบบ
+            </span>
           ),
           link: "/login",
+        },
+
+        {
+          label: "",
+          element: (
+            <span className="inline-block mx-3 hover:underline">
+              สมัครสมาชิก
+            </span>
+          ),
+          link: "/register",
         },
       ];
 
@@ -262,7 +256,7 @@ function Navbar(props) {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {MenuList.map((menu, idx) => (
-              <Link className="text-white" key={idx} href={menu.link}>
+              <Link title={menu.label} className="text-white" key={idx} href={menu.link}>
                 <span>{menu.element}</span>
               </Link>
             ))}
