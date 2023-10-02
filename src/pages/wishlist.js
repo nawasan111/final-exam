@@ -15,6 +15,7 @@ import axios from "axios";
 import { Delete } from "@mui/icons-material";
 import { ShoppingCart } from "@mui/icons-material";
 import PopupAlert from "@/components/PopupAlert";
+import Head from "next/head";
 
 export default function Wishlist() {
   const user = useContext(UserContext);
@@ -70,6 +71,10 @@ export default function Wishlist() {
   }, [wishlist, products]);
 
   return (
+    <>
+    <Head>
+        <title>รายการชื่นชอบ | OpenShop</title>
+    </Head>
     <Box>
       <PopupAlert
         open={!!message.message.length}
@@ -120,7 +125,7 @@ export default function Wishlist() {
                             {pdt.price - pdt.price * (pdt.discount / 100)}
                           </Box>
                         ) : (
-                          <span>${pdt.price}</span>
+                          <Box color="orangered">${pdt.price}</Box>
                         )}
                       </TableCell>
                       <TableCell>
@@ -146,5 +151,6 @@ export default function Wishlist() {
         )}
       </Paper>
     </Box>
+    </>
   );
 }
