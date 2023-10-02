@@ -6,6 +6,7 @@ const adminRouter = express.Router();
 
 adminRouter.get("/user", AdminUserController.index);
 adminRouter.delete("/user", AdminUserController.delete);
+adminRouter.put("/user/rank", AdminUserController.chageRank);
 
 adminRouter.post("/product", AdminProductController.create);
 adminRouter.put("/product", AdminProductController.update);

@@ -19,12 +19,19 @@ export default function Member() {
   const [userAll, setUserAll] = useState([]);
   const [deleteState, setDeleteState] = useState({ open: false, id: -1 });
 
+  async function changeRank(id, rank) {
+    let response = await axios.put(
+      "/api/admin/user/rank",
+      { id, rank },
+      { headers: { token: user.value.token } }
+    );
+    fetchApi();
+  }
   async function fetchApi() {
     try {
       let response = await axios.get("/api/admin/user", {
         headers: { token: user.value.token },
       });
-      console.log(response.data);
       setUserAll(response.data);
     } catch (err) {}
   }
@@ -74,7 +81,7 @@ export default function Member() {
                 <TableCell sx={{ textAlign: "center" }}>
                   <Switch
                     checked={!!user.rank}
-                    onChange={() => alert("change rank")}
+                    onChange={() => changeRank(user.id, !user.rank)}
                   />
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
