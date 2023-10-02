@@ -3,8 +3,10 @@ import { UserContext } from "../_app";
 import Head from "next/head";
 import axios from "axios";
 import {
+  Alert,
   Button,
   Paper,
+  Snackbar,
   Switch,
   Table,
   TableBody,
@@ -17,15 +19,29 @@ import DeleteMember from "@/components/member/DeleteMember";
 export default function Member() {
   const user = useContext(UserContext);
   const [userAll, setUserAll] = useState([]);
+  const [message, setMessage] = useState({ error: false, message: "" });
   const [deleteState, setDeleteState] = useState({ open: false, id: -1 });
 
   async function changeRank(id, rank) {
-    let response = await axios.put(
-      "/api/admin/user/rank",
-      { id, rank },
-      { headers: { token: user.value.token } }
-    );
-    fetchApi();
+    try {
+      let response = await axios.put(
+        "/api/admin/user/rank",
+        { id, rank },
+        { headers: { token: user.value.token } }
+      );
+      if (response.data.status === 301) {
+        fetchApi();
+        setMessage({ message: "เปลี่ยนสิทธิ์สำเร็จ", error: false });
+        setTimeout(() => {
+          setMessage({ message: "", error: false });
+        }, 2000);
+      }
+    } catch (err) {
+      setMessage({ message: "พบข้อผิดพลาด กรุณาลองใหม่อีกครั้ง", error: true });
+      setTimeout(() => {
+        setMessage({ message: "", error: false });
+      }, 3000);
+    }
   }
   async function fetchApi() {
     try {
@@ -36,6 +52,7 @@ export default function Member() {
     } catch (err) {}
   }
   useEffect(() => {
+    // console.log();
     fetchApi();
   }, [deleteState]);
   return (
@@ -43,6 +60,14 @@ export default function Member() {
       <Head>
         <title>รายชื่อสมาชิก | admin</title>
       </Head>
+      <Snackbar
+        anchorOrigin={{ horizontal: "center", vertical: "top" }}
+        open={!!message.message.length}
+      >
+        <Alert color={message.error ? "error" : "success"}>
+          {message.message}
+        </Alert>
+      </Snackbar>
       <Paper sx={{ p: 2 }}>
         <Table>
           <TableHead>
