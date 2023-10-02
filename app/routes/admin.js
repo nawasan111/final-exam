@@ -5,6 +5,8 @@ import CategoryController from "../controllers/CategoryController";
 const adminRouter = express.Router();
 
 adminRouter.get("/user", AdminUserController.index);
+adminRouter.delete("/user", AdminUserController.delete);
+
 adminRouter.post("/product", AdminProductController.create);
 adminRouter.put("/product", AdminProductController.update);
 adminRouter.delete("/product", AdminProductController.delete);
