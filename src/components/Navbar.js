@@ -18,6 +18,7 @@ import { UserContext } from "@/pages/_app";
 import Link from "next/link";
 import { Favorite } from "@mui/icons-material";
 import { Logout, SupervisedUserCircle } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -60,6 +61,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Navbar(props) {
+  const router = useRouter();
+  const [search, setSearch] = React.useState(router.query?.q ?? "");
+
   const user = useContext(UserContext);
   const { window } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -67,6 +71,12 @@ function Navbar(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  React.useEffect(() => {
+    if (search.length)
+      router.push({ pathname: router.pathname, query: { q: search } });
+    else router.push({ pathname: router.pathname });
+  }, [search]);
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -251,12 +261,18 @@ function Navbar(props) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {MenuList.map((menu, idx) => (
-              <Link title={menu.label} className="text-white" key={idx} href={menu.link}>
+              <Link
+                title={menu.label}
+                className="text-white"
+                key={idx}
+                href={menu.link}
+              >
                 <span>{menu.element}</span>
               </Link>
             ))}
