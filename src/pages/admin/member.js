@@ -4,8 +4,14 @@ import Head from "next/head";
 import axios from "axios";
 import {
   Alert,
+  Box,
   Button,
+  FormControl,
+  FormLabel,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Snackbar,
   Switch,
   Table,
@@ -15,12 +21,27 @@ import {
   TableRow,
 } from "@mui/material";
 import DeleteMember from "@/components/member/DeleteMember";
+import { useRouter } from "next/router";
 
 export default function Member() {
   const user = useContext(UserContext);
+  const router = useRouter();
   const [userAll, setUserAll] = useState([]);
   const [message, setMessage] = useState({ error: false, message: "" });
   const [deleteState, setDeleteState] = useState({ open: false, id: -1 });
+  const [filterAdmin, setFilterAdmin] = useState(-1);
+
+  console.log(userAll);
+  const userAllFilter = !!router.query?.q
+    ? userAll.filter(
+        (usr) =>
+          (filterAdmin === -1 || usr.rank === !filterAdmin) &&
+          (String(usr.name).includes(router.query.q) ||
+            String(usr.username).includes(router.query.q) ||
+            String(usr.phone).includes(router.query.q) ||
+            String(usr.id).includes(router.query.q))
+      )
+    : userAll.filter((usr) => filterAdmin === -1 || usr.rank === !filterAdmin);
 
   async function changeRank(id, rank) {
     try {
@@ -68,6 +89,19 @@ export default function Member() {
           {message.message}
         </Alert>
       </Snackbar>
+      <Box sx={{ m: 1, textAlign: "right" }}>
+        <FormControl>
+          <Select
+            variant="standard"
+            value={filterAdmin}
+            onChange={(e) => setFilterAdmin(Number(e.target.value))}
+          >
+            <MenuItem value={-1}>ทั้งหมด</MenuItem>
+            <MenuItem value={0}>admin</MenuItem>
+            <MenuItem value={1}>ผู้ใช้</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
       <Paper sx={{ p: 2 }}>
         <Table>
           <TableHead>
@@ -89,7 +123,7 @@ export default function Member() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userAll.map((user, idx) => (
+            {userAllFilter.map((user, idx) => (
               <TableRow key={idx}>
                 <TableCell>{user.id}</TableCell>
                 <TableCell>

@@ -73,8 +73,10 @@ function AdminNavbar(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   React.useEffect(() => {
-    router.push({pathname: router.pathname, query: {q: search}})
-  }, [search])
+    if (search.length)
+      router.push({ pathname: router.pathname, query: { q: search } });
+    else router.push({ pathname: router.pathname });
+  }, [search]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
