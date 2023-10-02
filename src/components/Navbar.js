@@ -14,7 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
-import { UserContext } from "@/pages/_app";
+import { UserContext, WishlistContext } from "@/pages/_app";
 import Link from "next/link";
 import { Favorite } from "@mui/icons-material";
 import { Logout, SupervisedUserCircle } from "@mui/icons-material";
@@ -63,12 +63,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function Navbar(props) {
   const router = useRouter();
   const [search, setSearch] = React.useState(router.query?.q ?? "");
+  const wishlist = useContext(WishlistContext);
 
   const user = useContext(UserContext);
   const { window } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [mobileOpen, setMobileOpen] = React.useState(false);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -124,7 +124,7 @@ function Navbar(props) {
               aria-label="show 4 new mails"
               color="inherit"
             >
-              <Badge badgeContent={4} color="error">
+              <Badge badgeContent={wishlist.value.length} color="error">
                 <Favorite />
               </Badge>
             </IconButton>
