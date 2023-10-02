@@ -9,21 +9,18 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
+import { InsertChart } from "@mui/icons-material";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { UserContext } from "@/pages/_app";
 import Link from "next/link";
-import { Favorite } from "@mui/icons-material";
-import { Logout, SupervisedUserCircle } from "@mui/icons-material";
-import { InsertChart } from "@mui/icons-material";
 import { ProductionQuantityLimits } from "@mui/icons-material";
 import { Inventory } from "@mui/icons-material";
 import { Category } from "@mui/icons-material";
 import { PeopleAlt } from "@mui/icons-material";
 import { MeetingRoom } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -67,10 +64,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function AdminNavbar(props) {
   const user = useContext(UserContext);
+
+  const router = useRouter();
+  const [search, setSearch] = React.useState(router.query?.q ?? "");
   const { window } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    router.push({pathname: router.pathname, query: {q: search}})
+  }, [search])
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -182,7 +187,7 @@ function AdminNavbar(props) {
       element: (
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge color="error">
-          <MeetingRoom />
+            <MeetingRoom />
           </Badge>
         </IconButton>
       ),
@@ -238,12 +243,19 @@ function AdminNavbar(props) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {MenuList.map((menu, idx) => (
-              <Link title={menu.label} className="text-white" key={idx} href={menu.link}>
+              <Link
+                title={menu.label}
+                className="text-white"
+                key={idx}
+                href={menu.link}
+              >
                 <span>{menu.element}</span>
               </Link>
             ))}
