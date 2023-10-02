@@ -21,3 +21,19 @@ export const JwtAdminMiddleware = (req, res, next) => {
     });
   }
 };
+
+export const JwtUserMiddleware = (req, res, next) => {
+  try {
+    const { token } = req.headers;
+    if (!token) throw 403;
+    let verify = JwtCheck(token);
+    console.log(verify.data);
+    req.user = verify.data;
+    next();
+  } catch (err) {
+    return res.status(403).json({
+      status: 403,
+      message: "access denined",
+    });
+  }
+};

@@ -90,4 +90,5 @@ model order_detail {
   product          product @relation(fields: [product_id], references: [id])
   product_price    Int
   product_discount Int
+  count            Int
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   Card,
   Box,
@@ -14,9 +14,20 @@ import { ProductionQuantityLimits } from "@mui/icons-material";
 import { AddShoppingCart } from "@mui/icons-material";
 import { ShoppingCart } from "@mui/icons-material";
 import { RemoveShoppingCart } from "@mui/icons-material";
+import { UserContext } from "@/pages/_app";
+import axios from "axios";
+import { headers } from "../../next.config";
 
-export default function ProductCard({ product, isFav }) {
-  return (
+export default function ProductCard({ product, isFav, favHandler }) {
+  const user = useContext(UserContext);
+  const fav = isFav
+
+  /**
+   *
+   * @param {number} id
+   * @param {boolean} isRemove
+   */
+ return (
     <Card
       sx={{
         m: 1,
@@ -50,8 +61,12 @@ export default function ProductCard({ product, isFav }) {
         sx={{ justifyContent: "space-between", px: 1 }}
       >
         <span>
-          <Button title={isFav ? "ถูกใจแล้ว" : "ถูกใจ"} color="error">
-            {isFav ? <Favorite /> : <FavoriteBorder />}
+          <Button
+            onClick={favHandler}
+            title={fav ? "ถูกใจแล้ว" : "ถูกใจ"}
+            color="error"
+          >
+            {fav ? <Favorite /> : <FavoriteBorder />}
           </Button>
           <Button title="เพิ่มลงตระกร้า" color="warning">
             <ShoppingCart />
@@ -64,9 +79,8 @@ export default function ProductCard({ product, isFav }) {
             </small>
             $
             {(
-              Number(product.price) - 
-              Number(product.price) *
-              (Number(product.discount) / 100)
+              Number(product.price) -
+              Number(product.price) * (Number(product.discount) / 100)
             ).toLocaleString()}
           </Box>
         ) : (
