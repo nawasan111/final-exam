@@ -28,7 +28,8 @@ export default function ProductCard({ product, isFav, favHandler }) {
    * @param {boolean} isRemove
    */
  return (
-    <Card
+    <div
+    className="p-1 m-1 w-[300px] inline-block bg-white rounded hover:shadow duration-300"
       sx={{
         m: 1,
         px: 1,
@@ -89,6 +90,6 @@ export default function ProductCard({ product, isFav, favHandler }) {
           </Box>
         )}
       </CardActions>
-    </Card>
+    </div>
   );
 }
