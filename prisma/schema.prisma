@@ -15,6 +15,7 @@ model user {
   name          String
   email         String
   phone         String
+  address       String         @db.LongText
   photo         String         @db.LongText
   google_token  String
   username      String         @unique
