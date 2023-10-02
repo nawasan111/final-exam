@@ -74,6 +74,7 @@ model order {
   user           user           @relation(fields: [user_id], references: [id])
   total_price    Int
   product_count  Int
+  address        String         @db.LongText
   date           DateTime       @default(now())
   shipping_price Int
   pay_status     Int
