@@ -29,13 +29,16 @@ export default function Home() {
       return;
     }
     if (isRemove) {
+      let response = await axios.delete(`/api/u/wishlist?id=${id}`, {
+        headers: { token: user.value.token },
+      });
+      console.log(response.data);
     } else {
       let response = await axios.post(
         "/api/u/wishlist",
         { id },
         { headers: { token: user.value.token } }
       );
-      console.log(response.data);
     }
     FetchWishlist();
   }

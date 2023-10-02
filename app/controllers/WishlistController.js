@@ -11,6 +11,7 @@ const WishlistController = {
       const wishlists = await db.wishlist.findMany({
         where: { user_id: Number(req.user.id) },
       });
+      await db.$disconnect();
       res.json({ status: 101, wishlists });
     } catch (err) {
       res.json({ status: 100, message: "found some error" });
@@ -39,8 +40,30 @@ const WishlistController = {
       });
       res.json({ status: 201, message: "add wishlist success" });
     } catch (err) {
-      console.log(err);
       res.json({ status: 200, message: "found some error on server" });
+    }
+  },
+  /**
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async delete(req, res) {
+    try {
+      const { id } = req.query;
+      if (!id) throw 400;
+      const wishlist_find = await db.wishlist.findFirst({
+        where: {
+          product_id: Number(id),
+          user_id: Number(req.user.id),
+        },
+      });
+      if(!wishlist_find)throw 400;
+      await db.wishlist.delete({where: {id: wishlist_find.id}})
+      await db.$disconnect();
+      res.json({ status: 401, message: "remove fav success" });
+    } catch (err) {
+      res.json({ status: 400, message: "remove fav failed with error" });
     }
   },
 };
