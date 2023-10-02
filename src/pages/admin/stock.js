@@ -20,13 +20,19 @@ import { Delete } from "@mui/icons-material";
 import { Edit } from "@mui/icons-material";
 import UpdateProduct from "@/components/product/UpdateProduct";
 import DeleteProduct from "@/components/product/DeleteProduct";
+import { useRouter } from "next/router";
 
 export default function Stock() {
+  const router = useRouter();
   const [modal, setModal] = useState(false);
   const [products, setProducts] = useState([]);
   const [updateState, setUpdateState] = useState({ open: false, data: {} });
   const [deleteState, setDeleteState] = useState({ open: false, id: -1 });
   const [category, setCategory] = useState([]);
+
+  const productsFilter = !!router.query?.q
+    ? products.filter((prod) => String(prod.name).includes(router.query.q))
+    : products;
 
   useEffect(() => {
     axios.get("/api/product").then((res) => {
@@ -51,7 +57,7 @@ export default function Stock() {
             เพิ่มสินค้า
           </Button>
         </Box>
-        {products.map((product, idx) => (
+        {productsFilter.map((product, idx) => (
           <Card
             key={idx}
             sx={{
@@ -101,7 +107,10 @@ export default function Stock() {
               >
                 <Edit /> แก้ไข
               </Button>
-              <Button color="error" onClick={() => setDeleteState({open: true, id: product.id})}>
+              <Button
+                color="error"
+                onClick={() => setDeleteState({ open: true, id: product.id })}
+              >
                 <Delete /> ลบ
               </Button>
             </CardActions>
