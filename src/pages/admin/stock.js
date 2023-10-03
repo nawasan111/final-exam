@@ -57,65 +57,67 @@ export default function Stock() {
             เพิ่มสินค้า
           </Button>
         </Box>
-        {productsFilter.map((product, idx) => (
-          <Card
-            key={idx}
-            sx={{
-              m: 1,
-              px: 1,
-              width: 300,
-              height: 500,
-              display: "inline-block",
-            }}
-          >
-            <Box sx={{ px: 1 }}>
-              <h5 className="h-[40px] overflow-y-hidden">{product.name}</h5>
-            </Box>
-            <CardMedia
-              className="rounded"
-              component={"img"}
-              height={150}
-              image={product.image.length ? product.image : "/empty.jpg"}
-            />
-            <CardContent sx={{ px: 1 }}>
-              <Typography
-                sx={{ height: 70, overflowY: "scroll" }}
-                variant="body2"
-                color={"text.secondary"}
-              >
-                {product.detail}
-              </Typography>
-              <Table sx={{ m: 0, p: 0 }}>
-                <TableBody>
-                  <TableRow sx={{ m: 0, p: 0 }}>
-                    <TableCell sx={{ m: 0, p: 0, textAlign: "center  " }}>
-                      {Number(product.price).toLocaleString() + " บาท"}
-                    </TableCell>
-                    <TableCell> {`ส่วนลด ${product.discount}%`}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>เข้าชม {product.watch_count} ครั้ง</TableCell>
-                    <TableCell>คงเหลือ {product.stock} ชิ้น</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-            <CardActions disableSpacing sx={{ justifyContent: "end" }}>
-              <Button
-                color="warning"
-                onClick={() => setUpdateState({ open: true, data: product })}
-              >
-                <Edit /> แก้ไข
-              </Button>
-              <Button
-                color="error"
-                onClick={() => setDeleteState({ open: true, id: product.id })}
-              >
-                <Delete /> ลบ
-              </Button>
-            </CardActions>
-          </Card>
-        ))}
+        <div className="mx-auto text-left grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 max-w-[1520px]">
+          {productsFilter.map((product, idx) => (
+            <Card
+              key={idx}
+              sx={{
+                m: 1,
+                px: 1,
+                width: 300,
+                height: 500,
+                display: "inline-block",
+              }}
+            >
+              <Box sx={{ px: 1 }}>
+                <h5 className="h-[40px] overflow-y-hidden">{product.name}</h5>
+              </Box>
+              <CardMedia
+                className="rounded"
+                component={"img"}
+                height={150}
+                image={product.image.length ? product.image : "/empty.jpg"}
+              />
+              <CardContent sx={{ px: 1 }}>
+                <Typography
+                  sx={{ height: 70, overflowY: "scroll" }}
+                  variant="body2"
+                  color={"text.secondary"}
+                >
+                  {product.detail}
+                </Typography>
+                <Table sx={{ m: 0, p: 0 }}>
+                  <TableBody>
+                    <TableRow sx={{ m: 0, p: 0 }}>
+                      <TableCell sx={{ m: 0, p: 0, textAlign: "center  " }}>
+                        {Number(product.price).toLocaleString() + " บาท"}
+                      </TableCell>
+                      <TableCell> {`ส่วนลด ${product.discount}%`}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>เข้าชม {product.watch_count} ครั้ง</TableCell>
+                      <TableCell>คงเหลือ {product.stock} ชิ้น</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </CardContent>
+              <CardActions disableSpacing sx={{ justifyContent: "end" }}>
+                <Button
+                  color="warning"
+                  onClick={() => setUpdateState({ open: true, data: product })}
+                >
+                  <Edit /> แก้ไข
+                </Button>
+                <Button
+                  color="error"
+                  onClick={() => setDeleteState({ open: true, id: product.id })}
+                >
+                  <Delete /> ลบ
+                </Button>
+              </CardActions>
+            </Card>
+          ))}
+        </div>
         <AddProduct open={modal} handleClose={() => setModal(false)} />
       </Box>
       {updateState.open && (
