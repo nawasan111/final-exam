@@ -61,7 +61,7 @@ export default function App({ Component, pageProps }) {
         value={{ value: cart, set: setCart, fetch: fetchCart }}
       >
         <WishlistContext.Provider value={{ value: wishlist, set: setWishlist }}>
-          {pathname.split("/")[1] === "admin" ? (
+          {String(pathname).split("/")[1] === "admin" ? (
             <>
               {user.rank ? (
                 <AdminLayout>

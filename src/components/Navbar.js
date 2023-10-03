@@ -76,11 +76,16 @@ function Navbar(props) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  function onUpdateSearch(value) {
+    router.push({
+      pathname: location.pathname,
+      query: { ...router.query, q: value },
+    });
+  }
+
   React.useEffect(() => {
-    if (search.length)
-      router.push({ pathname: router.pathname, query: { q: search } });
-    else router.push({ pathname: router.pathname });
-  }, [search]);
+    setSearch(router.query?.q ?? "");
+  }, [router]);
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -174,7 +179,7 @@ function Navbar(props) {
               color="inherit"
             >
               <Badge color="error">
-              <ShoppingBag />
+                <ShoppingBag />
               </Badge>
             </IconButton>
           ),
@@ -295,7 +300,9 @@ function Navbar(props) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                return onUpdateSearch(e.target.value);
+              }}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />

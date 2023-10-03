@@ -9,21 +9,17 @@ import {
   TableRow,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { CartContext, UserContext, WishlistContext } from "./_app";
+import { CartContext, UserContext } from "./_app";
 import { useRouter } from "next/router";
 import axios from "axios";
 import PopupAlert from "@/components/PopupAlert";
 import Head from "next/head";
-import { ShoppingBag } from "@mui/icons-material";
-import ConfirmOrder from "@/components/order/ConfirmOrder";
 
 export default function Order() {
   const user = useContext(UserContext);
   const cart = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState({ error: false, message: "" });
-  const [orderState, setOrderState] = useState(false);
-  const router = useRouter();
   const [orderList, setOrderList] = useState([]);
   const [CartProduct, setCartProduct] = useState([]);
 
