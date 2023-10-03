@@ -26,7 +26,23 @@ export default function Cart() {
   const router = useRouter();
   const [CartProduct, setCartProduct] = useState([]);
 
-  const removeFromCart = async (id) => {};
+  const removeFromCart = async (id) => {
+    let response = await axios.delete(`/api/u/cart?id=${id}`, {
+      headers: { token: user.value.token },
+    });
+    if (response.data.status === 401) {
+      cart.fetch();
+      setMessage({ message: "นำออกจากตระกร้าสำเร็จ", error: false });
+      setTimeout(() => {
+        setMessage({ message: "", error: false });
+      }, 2000);
+    } else {
+      setMessage({ message: "พบข้อผิดพลาดกรุณาลองใหม่อีกครั้ง", error: true });
+      setTimeout(() => {
+        setMessage({ message: "", error: true });
+      }, 2000);
+    }
+  };
   const fetchProduct = async () => {
     try {
       let product = await axios.get("/api/product");

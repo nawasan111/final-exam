@@ -49,6 +49,29 @@ const CartController = {
       res.json({ status: 200, message: "found some error on server" });
     }
   },
+  /**
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async delete(req, res) {
+    try {
+      const { id } = req.query;
+      if (!id) throw 400;
+      let check_cart = await db.cart.findFirst({
+        where: {
+          AND: { user_id: Number(req.user.id), product_id: Number(id) },
+        },
+      });
+      if (!check_cart) throw 400;
+      await db.cart.delete({ where: { id: check_cart.id } });
+      await db.$disconnect();
+      res.json({ status: 401, message: "remove success" });
+    } catch (err) {
+      console.log(err);
+      res.json({ status: 400, message: "remove failed with error on server" });
+    }
+  },
 };
 
 export default CartController;

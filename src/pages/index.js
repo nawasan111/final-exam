@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useContext, useEffect, useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import { useRouter } from "next/router";
-import { UserContext, WishlistContext } from "./_app";
+import { CartContext, UserContext, WishlistContext } from "./_app";
 import PopupAlert from "@/components/PopupAlert";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,6 +15,7 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState({ message: "", error: false });
   const wishlist = useContext(WishlistContext);
+  const cart = useContext(CartContext);
 
   const productsFilter = !!router.query?.q
     ? products.filter((prod) => String(prod.name).includes(router.query.q))
@@ -29,14 +30,18 @@ export default function Home() {
       return;
     }
     if (isRemove) {
+      let response = await axios.delete(`/api/u/cart?id=${id}`, {
+        headers: { token: user.value.token },
+      });
     } else {
       let response = await axios.post(
         "/api/u/cart",
         { id },
         { headers: { token: user.value.token } }
       );
-      console.log(response.data);
+
     }
+    cart.fetch();
   }
 
   async function onWishlist(id, isRemove = false) {
@@ -51,7 +56,6 @@ export default function Home() {
       let response = await axios.delete(`/api/u/wishlist?id=${id}`, {
         headers: { token: user.value.token },
       });
-      console.log(response.data);
     } else {
       let response = await axios.post(
         "/api/u/wishlist",
@@ -98,8 +102,18 @@ export default function Home() {
                   (wish) => wish.product_id === Number(prod.id)
                 ).length
               }
+              isCart={
+                !!cart.value.filter((ct) => ct.product_id === Number(prod.id))
+                  .length
+              }
               product={prod}
-              cartHandler={() => onCart(prod.id)}
+              cartHandler={() =>
+                onCart(
+                  prod.id,
+                  !!cart.value.filter((ct) => ct.product_id === Number(prod.id))
+                    .length
+                )
+              }
               favHandler={() =>
                 onWishlist(
                   prod.id,

@@ -9,5 +9,6 @@ UserRouter.delete("/wishlist", WishlistController.delete);
 
 UserRouter.get("/cart", CartController.index);
 UserRouter.post("/cart", CartController.create);
+UserRouter.delete("/cart", CartController.delete);
 
 export default UserRouter;

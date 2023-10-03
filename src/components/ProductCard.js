@@ -21,10 +21,12 @@ import { headers } from "../../next.config";
 export default function ProductCard({
   product,
   isFav,
+  isCart,
   favHandler,
   cartHandler,
 }) {
   const fav = isFav;
+  const cart = isCart;
 
   /**
    *
@@ -73,8 +75,12 @@ export default function ProductCard({
           >
             {fav ? <Favorite /> : <FavoriteBorder />}
           </Button>
-          <Button title="เพิ่มลงตระกร้า" color="warning" onClick={cartHandler}>
-            <ShoppingCart />
+          <Button
+            title={cart ? "นำออกจากตระกร้า" : "เพิ่มลงในตระกร้า"}
+            color="warning"
+            onClick={cartHandler}
+          >
+            {cart ? <RemoveShoppingCart /> : <ShoppingCart />}
           </Button>
         </span>
         {Number(product.discount) > 0 ? (
