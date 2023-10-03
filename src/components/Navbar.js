@@ -14,7 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
-import { UserContext, WishlistContext } from "@/pages/_app";
+import { CartContext, UserContext, WishlistContext } from "@/pages/_app";
 import Link from "next/link";
 import { Favorite } from "@mui/icons-material";
 import { Logout, SupervisedUserCircle } from "@mui/icons-material";
@@ -64,6 +64,7 @@ function Navbar(props) {
   const router = useRouter();
   const [search, setSearch] = React.useState(router.query?.q ?? "");
   const wishlist = useContext(WishlistContext);
+  const cart = useContext(CartContext)
 
   const user = useContext(UserContext);
   const { window } = props;
@@ -139,7 +140,7 @@ function Navbar(props) {
               aria-label="show 4 new mails"
               color="inherit"
             >
-              <Badge badgeContent={4} color="error">
+              <Badge badgeContent={cart.value.length} color="error">
                 <ShoppingCart />
               </Badge>
             </IconButton>

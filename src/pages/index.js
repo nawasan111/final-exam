@@ -20,6 +20,25 @@ export default function Home() {
     ? products.filter((prod) => String(prod.name).includes(router.query.q))
     : products.filter((prod) => Number(prod.stock) > 0);
 
+  async function onCart(id, isRemove = false) {
+    if (!user.value?.token) {
+      setMessage({ message: "คุณยังไม่ได้เข้าสู่ระบบ", error: true });
+      setTimeout(() => {
+        setMessage({ message: "", error: true });
+      }, 2000);
+      return;
+    }
+    if (isRemove) {
+    } else {
+      let response = await axios.post(
+        "/api/u/cart",
+        { id },
+        { headers: { token: user.value.token } }
+      );
+      console.log(response.data);
+    }
+  }
+
   async function onWishlist(id, isRemove = false) {
     if (!user.value?.token) {
       setMessage({ message: "คุณยังไม่ได้เข้าสู่ระบบ", error: true });
@@ -80,6 +99,7 @@ export default function Home() {
                 ).length
               }
               product={prod}
+              cartHandler={() => onCart(prod.id)}
               favHandler={() =>
                 onWishlist(
                   prod.id,

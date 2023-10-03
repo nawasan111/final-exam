@@ -18,18 +18,22 @@ import { UserContext } from "@/pages/_app";
 import axios from "axios";
 import { headers } from "../../next.config";
 
-export default function ProductCard({ product, isFav, favHandler }) {
-  const user = useContext(UserContext);
-  const fav = isFav
+export default function ProductCard({
+  product,
+  isFav,
+  favHandler,
+  cartHandler,
+}) {
+  const fav = isFav;
 
   /**
    *
    * @param {number} id
    * @param {boolean} isRemove
    */
- return (
+  return (
     <div
-    className="p-1 m-1 w-[300px] inline-block bg-white rounded hover:shadow duration-300"
+      className="p-1 m-1 w-[300px] inline-block bg-white rounded hover:shadow duration-300"
       sx={{
         m: 1,
         px: 1,
@@ -69,7 +73,7 @@ export default function ProductCard({ product, isFav, favHandler }) {
           >
             {fav ? <Favorite /> : <FavoriteBorder />}
           </Button>
-          <Button title="เพิ่มลงตระกร้า" color="warning">
+          <Button title="เพิ่มลงตระกร้า" color="warning" onClick={cartHandler}>
             <ShoppingCart />
           </Button>
         </span>

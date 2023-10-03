@@ -14,12 +14,23 @@ import axios from "axios";
 
 export const UserContext = createContext(null);
 export const WishlistContext = createContext(null);
+export const CartContext = createContext(null);
 
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState({});
   const [wishlist, setWishlist] = useState([]);
+  const [cart, setCart] = useState([]);
   const pathname = usePathname();
 
+  const fetchCart = async () => {
+    if (!user.token) return;
+    let response = await axios.get("/api/u/cart", {
+      headers: { token: user.token },
+    });
+    if (response.data.status === 101) {
+      setCart(response.data.cart);
+    }
+  };
   const fetchWishlist = async () => {
     if (!user?.token) return;
     let response = await axios.get("/api/u/wishlist", {
@@ -40,30 +51,35 @@ export default function App({ Component, pageProps }) {
   }, []);
 
   useEffect(() => {
+    fetchCart();
     fetchWishlist();
   }, [user]);
 
   return (
     <UserContext.Provider value={{ value: user, set: setUser }}>
-      <WishlistContext.Provider value={{ value: wishlist, set: setWishlist }}>
-        {pathname.split("/")[1] === "admin" ? (
-          <>
-            {user.rank ? (
-              <AdminLayout>
-                <Component {...pageProps} />
-              </AdminLayout>
-            ) : (
-              <UserLayout>
-                <Error />
-              </UserLayout>
-            )}
-          </>
-        ) : (
-          <UserLayout>
-            <Component {...pageProps} />
-          </UserLayout>
-        )}
-      </WishlistContext.Provider>
+      <CartContext.Provider
+        value={{ value: cart, set: setCart, fetch: fetchCart }}
+      >
+        <WishlistContext.Provider value={{ value: wishlist, set: setWishlist }}>
+          {pathname.split("/")[1] === "admin" ? (
+            <>
+              {user.rank ? (
+                <AdminLayout>
+                  <Component {...pageProps} />
+                </AdminLayout>
+              ) : (
+                <UserLayout>
+                  <Error />
+                </UserLayout>
+              )}
+            </>
+          ) : (
+            <UserLayout>
+              <Component {...pageProps} />
+            </UserLayout>
+          )}
+        </WishlistContext.Provider>
+      </CartContext.Provider>
     </UserContext.Provider>
   );
 }
