@@ -74,7 +74,7 @@ export default function Cart() {
           message={message.message}
         />
         <Paper sx={{ p: 1, overflowX: "scroll" }}>
-          {wishlist.value.length > 0 ? (
+          {cart.value.length > 0 ? (
             <Table>
               <TableHead>
                 <TableRow>
