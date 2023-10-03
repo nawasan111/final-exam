@@ -11,7 +11,6 @@ export const JwtAdminMiddleware = (req, res, next) => {
     const { token } = req.headers;
     if (!token) throw 403;
     let verify = JwtCheck(token);
-    console.log(verify.data);
     if (!verify.data.rank) throw 403;
     next();
   } catch (err) {
@@ -27,7 +26,6 @@ export const JwtUserMiddleware = (req, res, next) => {
     const { token } = req.headers;
     if (!token) throw 403;
     let verify = JwtCheck(token);
-    console.log(verify.data);
     req.user = verify.data;
     next();
   } catch (err) {
