@@ -24,7 +24,7 @@ export default function Home() {
     if (!user.value?.token) {
       setMessage({ message: "คุณยังไม่ได้เข้าสู่ระบบ", error: true });
       setTimeout(() => {
-        setMessage({ message: "", error: false });
+        setMessage({ message: "", error: true });
       }, 2000);
       return;
     }
