@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import PopupAlert from "@/components/PopupAlert";
 import Head from "next/head";
+import Link from "next/link";
 
 export default function Order() {
   const user = useContext(UserContext);
@@ -75,6 +76,7 @@ export default function Order() {
                     {[
                       "id",
                       "ราคาทั้งหมด",
+                      "รายละเอียด",
                       "จำนวนสินค้า",
                       "ค่าส่ง",
                       "ชำระเงิน",
@@ -94,6 +96,11 @@ export default function Order() {
                             <Box color="orangered">
                               ${Number(order.total_price).toLocaleString()}
                             </Box>
+                          </TableCell>
+                          <TableCell>
+                            <Link href={"/order/" + order.id}>
+                              <Button>รายละเอียด</Button>
+                            </Link>
                           </TableCell>
                           <TableCell>{order.product_count}</TableCell>
                           <TableCell>{order.shipping_price}</TableCell>
