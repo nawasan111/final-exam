@@ -16,6 +16,7 @@ const UserController = {
       delete userAll[i].google_token;
       delete userAll[i].rank;
       delete userAll[i].password;
+      delete userAll[i].address;
     }
     res.json(userAll);
   },
@@ -99,6 +100,7 @@ const UserController = {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        address: user.address ?? "",
         photo: user.photo,
         username: user.username,
         rank: user.rank,

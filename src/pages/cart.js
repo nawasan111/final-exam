@@ -17,6 +17,7 @@ import { ShoppingCart } from "@mui/icons-material";
 import PopupAlert from "@/components/PopupAlert";
 import Head from "next/head";
 import { ShoppingBag } from "@mui/icons-material";
+import ConfirmOrder from "@/components/order/ConfirmOrder";
 
 export default function Cart() {
   const user = useContext(UserContext);
@@ -24,6 +25,7 @@ export default function Cart() {
   const cart = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState({ error: false, message: "" });
+  const [orderState, setOrderState] = useState(false);
   const router = useRouter();
   const [CartProduct, setCartProduct] = useState([]);
 
@@ -135,7 +137,7 @@ export default function Cart() {
                 </TableBody>
               </Table>
               <Box sx={{ textAlign: "right", p: 1 }}>
-                <Button size="large">
+                <Button size="large" onClick={() => setOrderState(true)}>
                   <ShoppingBag /> สั่งซื้อ
                 </Button>
               </Box>
@@ -148,6 +150,10 @@ export default function Cart() {
             </div>
           )}
         </Paper>
+        <ConfirmOrder
+          open={orderState}
+          handleClose={() => setOrderState(false)}
+        />
       </Box>
     </>
   );
