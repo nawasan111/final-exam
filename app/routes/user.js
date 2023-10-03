@@ -12,6 +12,7 @@ UserRouter.get("/cart", CartController.index);
 UserRouter.post("/cart", CartController.create);
 UserRouter.delete("/cart", CartController.delete);
 
+UserRouter.get("/order", OrderController.index);
 UserRouter.post("/order", OrderController.create);
 
 export default UserRouter;

@@ -7,6 +7,21 @@ const OrderController = {
    * @param {Request} req
    * @param {Response} res
    */
+  async index(req, res) {
+    try {
+      const order = await db.order.findMany({
+        where: { user_id: Number(req.user.id) },
+      });
+      res.json(order)
+    } catch (err) {
+      res.json({ status: 100, message: "server found some error" });
+    }
+  },
+  /**
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
   async create(req, res) {
     try {
       const { address, sending } = req.body;

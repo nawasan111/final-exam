@@ -173,7 +173,7 @@ function Navbar(props) {
               aria-label="show 4 new mails"
               color="inherit"
             >
-              <Badge badgeContent={2} color="error">
+              <Badge color="error">
               <ShoppingBag />
               </Badge>
             </IconButton>
