@@ -19,6 +19,7 @@ import Link from "next/link";
 import { Favorite } from "@mui/icons-material";
 import { Logout, SupervisedUserCircle } from "@mui/icons-material";
 import { useRouter } from "next/router";
+import { Cottage } from "@mui/icons-material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -64,7 +65,7 @@ function Navbar(props) {
   const router = useRouter();
   const [search, setSearch] = React.useState(router.query?.q ?? "");
   const wishlist = useContext(WishlistContext);
-  const cart = useContext(CartContext)
+  const cart = useContext(CartContext);
 
   const user = useContext(UserContext);
   const { window } = props;
@@ -116,6 +117,21 @@ function Navbar(props) {
 
   const MenuList = user?.value?.name
     ? [
+        {
+          label: "หน้าหลัก",
+          link: "/",
+          element: (
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
+              <Badge color="error">
+              <Cottage />
+              </Badge>
+            </IconButton>
+          ),
+        },
         {
           label: "สินค้าที่ชอบ",
           link: "/wishlist",

@@ -189,7 +189,7 @@ export default function Wishlist() {
               </TableBody>
             </Table>
           ) : (
-            <div className="text-center">รายการว่างเปล่า</div>
+            <div className="text-center">{user.value?.token ? "รายการว่างเปล่า": "คุณยังไม่ได้เข้าสู่ระบบ"}</div>
           )}
         </Paper>
       </Box>

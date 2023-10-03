@@ -8,7 +8,7 @@ class userCookie {
     return !!this.token;
   }
   store(token) {
-    Cookies.set("token", token);
+    Cookies.set("token", token, { expires: 1 });
   }
   delete() {
     Cookies.remove("token");
