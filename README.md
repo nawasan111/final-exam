@@ -1,4 +1,4 @@
-# <p align="center">Final exam</p>
+# <p align="center">Final exam (ยังไม่เสร็จ)</p>
 
 <p align="center">
 <img alt="GitHub Top Language" src="https://img.shields.io/github/languages/top/nawasan111/final-exam" />
@@ -21,6 +21,9 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Framework~
   - ใส่ข้อมูลการเชื่อมต่อที่ `.env` 
   - migration
     - `npx prisma migrate dev` เพื่อทำการ migrate ฐานข้อมูล
+  - กำหนดสิทธิ์ admin 
+    - หลังจากสมัครสมาชิก เข้าไปยังฐานข้อมูลและเปลี่ยน `rank` ของ user เป็น 1
+    - เมื่อเปลี่ยนเสร็จ ต้องทำการเข้าสู่ระบบใหม่อีกครั้ง
   - `pnpm d` สำหรับการรัน dev mode
 
 ## ข้อควรระวัง
