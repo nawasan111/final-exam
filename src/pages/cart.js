@@ -16,6 +16,7 @@ import { Delete } from "@mui/icons-material";
 import { ShoppingCart } from "@mui/icons-material";
 import PopupAlert from "@/components/PopupAlert";
 import Head from "next/head";
+import { ShoppingBag } from "@mui/icons-material";
 
 export default function Cart() {
   const user = useContext(UserContext);
@@ -75,65 +76,76 @@ export default function Cart() {
         />
         <Paper sx={{ p: 1, overflowX: "scroll" }}>
           {cart.value.length > 0 ? (
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {[
-                    "ลำดับ",
-                    "รูปภาพ",
-                    "ชื่อสินค้า",
-                    "รายละเอียด",
-                    "ราคา",
-                    "นำออกจากรายการ",
-                  ].map((label, idx) => (
-                    <TableCell key={idx}>{label}</TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {CartProduct.map(
-                  (pdt, idx) =>
-                    pdt && (
-                      <TableRow key={idx}>
-                        <TableCell>{idx + 1}</TableCell>
-                        <TableCell>
-                          <img
-                            width={100}
-                            src={pdt.image?.length ? pdt.image : "/empty.jpg"}
-                            alt="รูปสินค้า"
-                          />
-                        </TableCell>
-                        <TableCell>{pdt.name}</TableCell>
-                        <TableCell>
-                          <div className="max-h-10  overflow-scroll">
-                            {pdt.detail}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          {pdt.discount > 0 ? (
-                            <Box color={"orangered"}>
-                              <del>${pdt.price}</del> $
-                              {pdt.price - pdt.price * (pdt.discount / 100)}
-                            </Box>
-                          ) : (
-                            <Box color="orangered">${pdt.price}</Box>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            color="error"
-                            onClick={() => removeFromCart(pdt.id)}
-                          >
-                            <Delete />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    )
-                )}
-              </TableBody>
-            </Table>
+            <Box>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    {[
+                      "ลำดับ",
+                      "รูปภาพ",
+                      "ชื่อสินค้า",
+                      "รายละเอียด",
+                      "ราคา",
+                      "นำออกจากรายการ",
+                    ].map((label, idx) => (
+                      <TableCell key={idx}>{label}</TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {CartProduct.map(
+                    (pdt, idx) =>
+                      pdt && (
+                        <TableRow key={idx}>
+                          <TableCell>{idx + 1}</TableCell>
+                          <TableCell>
+                            <img
+                              width={100}
+                              src={pdt.image?.length ? pdt.image : "/empty.jpg"}
+                              alt="รูปสินค้า"
+                            />
+                          </TableCell>
+                          <TableCell>{pdt.name}</TableCell>
+                          <TableCell>
+                            <div className="max-h-10  overflow-scroll">
+                              {pdt.detail}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {pdt.discount > 0 ? (
+                              <Box color={"orangered"}>
+                                <del>${pdt.price}</del> $
+                                {pdt.price - pdt.price * (pdt.discount / 100)}
+                              </Box>
+                            ) : (
+                              <Box color="orangered">${pdt.price}</Box>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              color="error"
+                              onClick={() => removeFromCart(pdt.id)}
+                            >
+                              <Delete />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      )
+                  )}
+                </TableBody>
+              </Table>
+              <Box sx={{ textAlign: "right", p: 1 }}>
+                <Button size="large">
+                  <ShoppingBag /> สั่งซื้อ
+                </Button>
+              </Box>
+            </Box>
           ) : (
-            <div className="text-center">{user.value?.token ? "รายการว่างเปล่า": "คุณยังไม่ได้เข้าสู่ระบบ"}</div>
+            <div className="text-center">
+              {user.value?.token
+                ? "รายการว่างเปล่า"
+                : "คุณยังไม่ได้เข้าสู่ระบบ"}
+            </div>
           )}
         </Paper>
       </Box>

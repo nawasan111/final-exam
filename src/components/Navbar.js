@@ -20,6 +20,8 @@ import { Favorite } from "@mui/icons-material";
 import { Logout, SupervisedUserCircle } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { Cottage } from "@mui/icons-material";
+import { Store } from "@mui/icons-material";
+import { ShoppingBag } from "@mui/icons-material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -127,7 +129,7 @@ function Navbar(props) {
               color="inherit"
             >
               <Badge color="error">
-              <Cottage />
+                <Store />
               </Badge>
             </IconButton>
           ),
@@ -158,6 +160,21 @@ function Navbar(props) {
             >
               <Badge badgeContent={cart.value.length} color="error">
                 <ShoppingCart />
+              </Badge>
+            </IconButton>
+          ),
+        },
+        {
+          label: "คำสั่งซื้อ",
+          link: "/order",
+          element: (
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
+              <Badge badgeContent={2} color="error">
+              <ShoppingBag />
               </Badge>
             </IconButton>
           ),
