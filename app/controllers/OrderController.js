@@ -11,6 +11,7 @@ const OrderController = {
     try {
       const order = await db.order.findMany({
         where: { user_id: Number(req.user.id) },
+        orderBy: {id: "desc"}
       });
       res.json(order);
     } catch (err) {
