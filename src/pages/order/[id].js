@@ -31,7 +31,7 @@ export default function OrderDetail() {
   const fetchOrderDetail = async () => {
     if (!user.value?.token) return;
     try {
-      let response = await axios.get("/api/u/order/detail?id=1", {
+      let response = await axios.get("/api/u/order/detail?id=" + router.query.id, {
         headers: { token: user.value.token },
       });
       setOrderDetailList(response.data);
