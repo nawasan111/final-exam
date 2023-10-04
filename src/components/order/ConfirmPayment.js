@@ -122,10 +122,16 @@ export default function ConfirmPayment({ open, handleClose, id, price }) {
             </DialogContent>
           )}
           <DialogActions>
-            <Button color="error" onClick={handleClose}>
+            <Button
+              disabled={loading > -1}
+              color="error"
+              onClick={handleClose}
+            >
               ยกเลิก
             </Button>
-            <Button type="submit">ชำระเงิน</Button>
+            <Button disabled={loading > -1} type="submit">
+              ชำระเงิน
+            </Button>
           </DialogActions>
         </form>
       </Dialog>
