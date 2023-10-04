@@ -15,6 +15,7 @@ UserRouter.delete("/cart", CartController.delete);
 
 UserRouter.get("/order", OrderController.index);
 UserRouter.post("/order", OrderController.create);
+UserRouter.put("/order/check", OrderController.check);
 
 UserRouter.get("/order/detail", OrderDetailController.index);
 

@@ -21,7 +21,7 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Framework~
   - ใส่ข้อมูลการเชื่อมต่อที่ `.env` 
   - migration
     - `npx prisma migrate dev` เพื่อทำการ migrate ฐานข้อมูล
-    - * หาก error อาจจะต้องทำการ upgrade mysql โดย
+    -  *หาก error อาจจะต้องทำการ upgrade mysql โดย
       - รันไฟล์ชื่อ `mysql_upgrade` ที่โฟลเดอร์ `xampp/bin`
   - กำหนดสิทธิ์ admin 
     - หลังจากสมัครสมาชิก เข้าไปยังฐานข้อมูลและเปลี่ยน `rank` ของ user เป็น 1

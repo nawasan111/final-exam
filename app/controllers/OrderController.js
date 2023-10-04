@@ -12,7 +12,7 @@ const OrderController = {
       const order = await db.order.findMany({
         where: { user_id: Number(req.user.id) },
       });
-      res.json(order)
+      res.json(order);
     } catch (err) {
       res.json({ status: 100, message: "server found some error" });
     }
@@ -80,6 +80,23 @@ const OrderController = {
     } catch (err) {
       console.log(err);
       res.json({ status: 200, message: "server error with some error" });
+    }
+  },
+  /**
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async check(req, res) {
+    try {
+      const { id } = req.query;
+      if (!id) throw 300;
+      await db.order.update({ where: { id: Number(id) }, data: { pay_status: 1 } });
+      res.json({
+        status: 301, message: "check order success"
+      })
+    } catch (err) {
+      res.json({ status: 300, message: "check failed with error" });
     }
   },
 };

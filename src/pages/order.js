@@ -15,6 +15,7 @@ import axios from "axios";
 import PopupAlert from "@/components/PopupAlert";
 import Head from "next/head";
 import Link from "next/link";
+import ConfirmPayment from "@/components/order/ConfirmPayment";
 
 export default function Order() {
   const user = useContext(UserContext);
@@ -23,6 +24,7 @@ export default function Order() {
   const [message, setMessage] = useState({ error: false, message: "" });
   const [orderList, setOrderList] = useState([]);
   const [CartProduct, setCartProduct] = useState([]);
+  const [payment, setPayment] = useState({ open: false, id: -1, price: -1 });
 
   const fetchOrder = async () => {
     if (!user.value?.token) return;
@@ -46,7 +48,7 @@ export default function Order() {
 
   useEffect(() => {
     fetchOrder();
-  }, [user]);
+  }, [user, payment]);
 
   useEffect(() => {
     setCartProduct(
@@ -61,6 +63,14 @@ export default function Order() {
       <Head>
         <title>คำสั่งซื้อ | OpenShop</title>
       </Head>
+      {payment.open && (
+        <ConfirmPayment
+          open={payment.open}
+          handleClose={() => setPayment({ open: false, id: -1 })}
+          id={payment.id}
+          price={payment.price}
+        />
+      )}
       <Box>
         <PopupAlert
           open={!!message.message.length}
@@ -106,9 +116,21 @@ export default function Order() {
                           <TableCell>{order.shipping_price}</TableCell>
                           <TableCell>
                             <Box color={order.pay_status ? "green" : "red"}>
-                              {order.pay_status
-                                ? "ชำระเงินแล้ว"
-                                : "ยังไม่ชำระเงิน"}
+                              {order.pay_status ? (
+                                "ชำระเงินแล้ว"
+                              ) : (
+                                <Button
+                                  onClick={() =>
+                                    setPayment({
+                                      open: true,
+                                      id: order.id,
+                                      price: order.total_price,
+                                    })
+                                  }
+                                >
+                                  ดำเนินการชำระเงิน
+                                </Button>
+                              )}
                             </Box>
                           </TableCell>
                           <TableCell>
