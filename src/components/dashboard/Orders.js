@@ -42,9 +42,9 @@ export default function Orders() {
             <TableRow>
               {[
                 "id",
-                "ราคาทั้งหมด",
                 "วันที่",
                 "ผู้ซื้อ",
+                "ราคาทั้งหมด",
                 "ค่าส่ง",
                 "ชำระเงิน",
               ].map((label, idx) => (
@@ -59,11 +59,6 @@ export default function Orders() {
                   <TableRow key={idx}>
                     <TableCell>{order.id}</TableCell>
                     <TableCell>
-                      <Box color="orangered">
-                        ${Number(order.total_price).toLocaleString()}
-                      </Box>
-                    </TableCell>
-                    <TableCell>
                       <Link href={"/admin/order/" + order.id}>
                         {new Date(order.date).toLocaleString()}
                       </Link>
@@ -74,6 +69,12 @@ export default function Orders() {
                             .name ?? "undifined"
                         : "undifined"}
                     </TableCell>
+                    <TableCell>
+                      <Box color="orangered">
+                        ${Number(order.total_price).toLocaleString()}
+                      </Box>
+                    </TableCell>
+
                     <TableCell>${order.shipping_price}</TableCell>
                     <TableCell>
                       <Box color={order.pay_status ? "green" : "red"}>

@@ -78,9 +78,9 @@ export default function Order() {
                 <TableRow>
                   {[
                     "id",
-                    "ราคาทั้งหมด",
                     "วันที่",
                     "ผู้ซื้อ",
+                    "ราคาทั้งหมด",
                     "ค่าส่ง",
                     "ชำระเงิน",
                     "ที่อยู่",
@@ -97,11 +97,6 @@ export default function Order() {
                       <TableRow key={idx}>
                         <TableCell>{order.id}</TableCell>
                         <TableCell>
-                          <Box color="orangered">
-                            ${Number(order.total_price).toLocaleString()}
-                          </Box>
-                        </TableCell>
-                        <TableCell>
                           <Link
                             title="คลิกเพื่อดูรายละเอียด"
                             href={"/admin/order/" + order.id}
@@ -116,6 +111,12 @@ export default function Order() {
                               )[0].name ?? "undifined"
                             : "undifined"}
                         </TableCell>
+                        <TableCell>
+                          <Box color="orangered">
+                            ${Number(order.total_price).toLocaleString()}
+                          </Box>
+                        </TableCell>
+
                         <TableCell>
                           <Box color="black">${order.shipping_price}</Box>
                         </TableCell>
