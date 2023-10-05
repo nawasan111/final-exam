@@ -14,17 +14,41 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 export default function Order() {
   const user = useContext(UserContext);
   const adminOrder = useContext(AdminOrderContext);
-
   const [message, setMessage] = useState({ message: "", error: false });
 
-  useEffect(() => {
-    console.log(adminOrder.value);
-  }, [user]);
+  const onSendingChange = async (id, sending) => {
+    try {
+      let response = await axios.put(
+        "/api/admin/order/sending",
+        { id, sending },
+        { headers: { token: user.value?.token } }
+      );
+      if (response.data.status === 301) {
+        setMessage({ message: "อัพเดทสถานะการจัดส่งสำเร็จ", error: false });
+        setTimeout(() => {
+          setMessage({ message: "", error: false });
+        }, 2000);
+        adminOrder.fetch();
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage({
+        message: "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง",
+        error: true,
+      });
+      setTimeout(() => {
+        setMessage({ message: "", error: true });
+      }, 2000);
+    }
+  };
 
   return (
     <>
@@ -76,17 +100,33 @@ export default function Order() {
                         <TableCell>{order.shipping_price}</TableCell>
                         <TableCell>
                           <Box color={order.pay_status ? "green" : "red"}>
-                            {order.pay_status ? (
-                              "ชำระเงินแล้ว"
-                            ) : (
-                            "ยังไม่ชำระเงิน"
-                            )}
+                            {order.pay_status
+                              ? "ชำระเงินแล้ว"
+                              : "ยังไม่ชำระเงิน"}
                           </Box>
                         </TableCell>
                         <TableCell>
-                          <Box color={order.send_status ? "green" : "red"}>
-                            {order.send_status ? "ส่งแล้ว" : "ยังไม่จัดส่ง"}
-                          </Box>
+                          <FormControl variant="standard">
+                            <Select
+                              value={Number(order.send_status)}
+                              onChange={(e) => {
+                                onSendingChange(
+                                  Number(order.id),
+                                  Number(e.target.value)
+                                );
+                              }}
+                            >
+                              <MenuItem value={0}>
+                                <Box color="red">ยังไม่จัดส่ง</Box>
+                              </MenuItem>
+                              <MenuItem value={1}>
+                                <Box color="orangered">กำลังจัดส่ง</Box>
+                              </MenuItem>
+                              <MenuItem value={2}>
+                                <Box color="green">จัดส่งแล้ว</Box>
+                              </MenuItem>
+                            </Select>
+                          </FormControl>
                         </TableCell>
                       </TableRow>
                     )
