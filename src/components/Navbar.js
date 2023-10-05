@@ -281,7 +281,7 @@ function Navbar(props) {
     >
       {MenuList.map((menu, idx) => (
         <span key={idx}>
-          <Link className="text-black no-underline" href={menu.link}>
+          <Link onClick={handleMobileMenuClose} className="text-black no-underline" href={menu.link}>
             <MenuItem>
               {menu.element}
               <p>{menu.label}</p>
