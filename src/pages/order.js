@@ -18,6 +18,7 @@ import PopupAlert from "@/components/PopupAlert";
 import Head from "next/head";
 import Link from "next/link";
 import ConfirmPayment from "@/components/order/ConfirmPayment";
+import { useRouter } from "next/router";
 
 export default function Order() {
   const user = useContext(UserContext);
@@ -27,6 +28,7 @@ export default function Order() {
   const order = useContext(OrderContext);
   const [payment, setPayment] = useState({ open: false, id: -1, price: -1 });
   const [payFilter, setPayFilter] = useState(false);
+  const router = useRouter()
 
   const fetchProduct = async () => {
     try {
@@ -101,7 +103,8 @@ export default function Order() {
                   <TableBody>
                     {order.value.map(
                       (order, idx) =>
-                        order &&
+                      order &&
+                      (!router.query?.q || Number(router.query.q) === order.id ) &&
                         (!payFilter || order.pay_status === 0) && (
                           <TableRow key={idx}>
                             <TableCell>{order.id}</TableCell>
