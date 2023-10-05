@@ -117,7 +117,7 @@ export default function Order() {
                               }}
                             >
                               <MenuItem value={0}>
-                                <Box color="red">ยังไม่จัดส่ง</Box>
+                                <Box color="gray">ยังไม่จัดส่ง</Box>
                               </MenuItem>
                               <MenuItem value={1}>
                                 <Box color="orangered">กำลังจัดส่ง</Box>

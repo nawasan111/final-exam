@@ -22,7 +22,6 @@ export default function Order() {
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState({ error: false, message: "" });
   const order = useContext(OrderContext);
-  const [orderList, setOrderList] = useState([]);
   const [payment, setPayment] = useState({ open: false, id: -1, price: -1 });
 
   const fetchProduct = async () => {
