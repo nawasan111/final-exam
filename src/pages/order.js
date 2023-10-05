@@ -3,7 +3,6 @@ import {
   Button,
   Paper,
   Stack,
-  Switch,
   Table,
   TableBody,
   TableCell,
@@ -12,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { CartContext, OrderContext, UserContext } from "./_app";
+import { OrderContext, UserContext } from "./_app";
 import axios from "axios";
 import PopupAlert from "@/components/PopupAlert";
 import Head from "next/head";
@@ -22,13 +21,12 @@ import { useRouter } from "next/router";
 
 export default function Order() {
   const user = useContext(UserContext);
-  const cart = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState({ error: false, message: "" });
   const order = useContext(OrderContext);
   const [payment, setPayment] = useState({ open: false, id: -1, price: -1 });
   const [payFilter, setPayFilter] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const fetchProduct = async () => {
     try {
@@ -64,21 +62,18 @@ export default function Order() {
           message={message.message}
         />
         <Box sx={{ maxWidth: 1200, mx: "auto" }}>
-          <Box>
+          <Box sx={{pb:2}}>
             <Stack
               direction={"row"}
               alignItems={"center"}
               justifyContent={"end"}
             >
-              <Typography>ทั้งหมด</Typography>
-              <Switch
-                checked={payFilter}
-                onChange={(e) => {
-                  console.log(e.target.checked);
-                  setPayFilter(e.target.checked);
-                }}
-              />
-              <Typography>ยังไม่ชำระเงิน</Typography>
+              <Button
+                onClick={() => setPayFilter(!payFilter)}
+                variant={payFilter ? "contained" : "text"}
+              >
+                ดูรายกายที่ยังไม่ชำระเงิน
+              </Button>
             </Stack>
           </Box>
           <Paper sx={{ p: 1, overflowX: "scroll" }}>
@@ -103,8 +98,9 @@ export default function Order() {
                   <TableBody>
                     {order.value.map(
                       (order, idx) =>
-                      order &&
-                      (!router.query?.q || Number(router.query.q) === order.id ) &&
+                        order &&
+                        (!router.query?.q ||
+                          Number(router.query.q) === order.id) &&
                         (!payFilter || order.pay_status === 0) && (
                           <TableRow key={idx}>
                             <TableCell>{order.id}</TableCell>
@@ -119,7 +115,7 @@ export default function Order() {
                               </Link>
                             </TableCell>
                             <TableCell>{order.product_count}</TableCell>
-                            <TableCell>{order.shipping_price}</TableCell>
+                            <TableCell>${order.shipping_price}</TableCell>
                             <TableCell>
                               <Box color={order.pay_status ? "green" : "red"}>
                                 {order.pay_status ? (
