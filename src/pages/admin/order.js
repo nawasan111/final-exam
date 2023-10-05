@@ -1,0 +1,105 @@
+import React, { useContext, useEffect, useState } from "react";
+import Head from "next/head";
+import PopupAlert from "@/components/PopupAlert";
+import Link from "next/link";
+import axios from "axios";
+import { UserContext } from "../_app";
+import { AdminOrderContext } from "@/components/layout/AdminLayout";
+import {
+  Paper,
+  Button,
+  Box,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@mui/material";
+
+export default function Order() {
+  const user = useContext(UserContext);
+  const adminOrder = useContext(AdminOrderContext);
+
+  const [message, setMessage] = useState({ message: "", error: false });
+
+  useEffect(() => {
+    console.log(adminOrder.value);
+  }, [user]);
+
+  return (
+    <>
+      <Head>
+        <title>จัดการออเดอร์ | admin</title>
+      </Head>
+
+      <PopupAlert
+        open={!!message.message.length}
+        isError={message.error}
+        message={message.message}
+      />
+      <Paper sx={{ p: 1, overflowX: "scroll" }}>
+        {adminOrder.value?.length > 0 ? (
+          <Box>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {[
+                    "id",
+                    "ราคาทั้งหมด",
+                    "รายละเอียด",
+                    "จำนวนสินค้า",
+                    "ค่าส่ง",
+                    "ชำระเงิน",
+                    "การจัดส่ง",
+                  ].map((label, idx) => (
+                    <TableCell key={idx}>{label}</TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {adminOrder.value.map(
+                  (order, idx) =>
+                    order && (
+                      <TableRow key={idx}>
+                        <TableCell>{order.id}</TableCell>
+                        <TableCell>
+                          <Box color="orangered">
+                            ${Number(order.total_price).toLocaleString()}
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Link href={"/order/" + order.id}>
+                            <Button>รายละเอียด</Button>
+                          </Link>
+                        </TableCell>
+                        <TableCell>{order.product_count}</TableCell>
+                        <TableCell>{order.shipping_price}</TableCell>
+                        <TableCell>
+                          <Box color={order.pay_status ? "green" : "red"}>
+                            {order.pay_status ? (
+                              "ชำระเงินแล้ว"
+                            ) : (
+                            "ยังไม่ชำระเงิน"
+                            )}
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box color={order.send_status ? "green" : "red"}>
+                            {order.send_status ? "ส่งแล้ว" : "ยังไม่จัดส่ง"}
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    )
+                )}
+              </TableBody>
+            </Table>
+          </Box>
+        ) : (
+          <div className="text-center">
+            {user.value?.token ? "รายการว่างเปล่า" : "คุณยังไม่ได้เข้าสู่ระบบ"}
+          </div>
+        )}
+      </Paper>
+    </>
+  );
+}

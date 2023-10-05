@@ -2,6 +2,7 @@ import express from "express";
 import AdminUserController from "../controllers/AdminUserController";
 import AdminProductController from "../controllers/AdminProductController";
 import CategoryController from "../controllers/CategoryController";
+import AdminOrderController from "../controllers/AdminOrderController";
 const adminRouter = express.Router();
 
 adminRouter.get("/user", AdminUserController.index);
@@ -15,5 +16,7 @@ adminRouter.delete("/product", AdminProductController.delete);
 adminRouter.post("/category", CategoryController.create);
 adminRouter.put("/category", CategoryController.update);
 adminRouter.delete("/category", CategoryController.delete);
+
+adminRouter.get("/order", AdminOrderController.index);
 
 export default adminRouter;

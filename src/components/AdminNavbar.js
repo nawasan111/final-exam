@@ -21,6 +21,7 @@ import { Category } from "@mui/icons-material";
 import { PeopleAlt } from "@mui/icons-material";
 import { MeetingRoom } from "@mui/icons-material";
 import { useRouter } from "next/router";
+import { AdminOrderContext } from "./layout/AdminLayout";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -64,6 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function AdminNavbar(props) {
   const user = useContext(UserContext);
+  const adminOrder = useContext(AdminOrderContext)
 
   const router = useRouter();
   const [search, setSearch] = React.useState(router.query?.q ?? "");
@@ -144,7 +146,7 @@ function AdminNavbar(props) {
       link: "/admin/order",
       element: (
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={10} color="error">
+          <Badge badgeContent={[...adminOrder.value?.filter((order) => order.send_status === 0)].length} color="error">
             <ProductionQuantityLimits />
           </Badge>
         </IconButton>
