@@ -9,7 +9,7 @@
 <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/nawasan111/final-exam" />
 </p>
 
-final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Framework~~ **Libraries**
+final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ **Next.js**
 
 ... and MVC
 
