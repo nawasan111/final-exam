@@ -19,5 +19,6 @@ adminRouter.delete("/category", CategoryController.delete);
 
 adminRouter.get("/order", AdminOrderController.index);
 adminRouter.put("/order/sending", AdminOrderController.sending);
+adminRouter.get("/order/detail", AdminOrderController.detail);
 
 export default adminRouter;

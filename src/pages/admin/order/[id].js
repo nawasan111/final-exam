@@ -31,9 +31,13 @@ export default function AdminOrderDetail() {
   const fetchOrderDetail = async () => {
     if (!user.value?.token) return;
     try {
-      let response = await axios.get("/api/u/order/detail?id=" + router.query.id, {
-        headers: { token: user.value.token },
-      });
+      let response = await axios.get(
+        "/api/admin/order/detail?id=" + router.query.id,
+        {
+          headers: { token: user.value.token },
+        }
+      );
+      console.log(response.data);
       setOrderDetailList(response.data);
     } catch (err) {
       console.log(err);

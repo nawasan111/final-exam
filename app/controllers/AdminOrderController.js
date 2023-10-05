@@ -35,6 +35,22 @@ const AdminOrderController = {
       res.json({ status: 300, message: "Error with server" });
     }
   },
+  /**
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async detail(req, res) {
+    try {
+      const { id } = req.query;
+      let orderdetail = await db.order_detail.findMany({
+        where: { order_id: Number(id) },
+      });
+      res.json(orderdetail);
+    } catch (err) {
+      res.status(403).json({ status: 100, message: "found error on server" });
+    }
+  },
 };
 
 export default AdminOrderController;
