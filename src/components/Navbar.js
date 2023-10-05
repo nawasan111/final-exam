@@ -14,7 +14,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
-import { CartContext, UserContext, WishlistContext } from "@/pages/_app";
+import {
+  CartContext,
+  OrderContext,
+  UserContext,
+  WishlistContext,
+} from "@/pages/_app";
 import Link from "next/link";
 import { Favorite } from "@mui/icons-material";
 import { Logout, SupervisedUserCircle } from "@mui/icons-material";
@@ -70,6 +75,7 @@ function Navbar(props) {
   const cart = useContext(CartContext);
 
   const user = useContext(UserContext);
+  const order = useContext(OrderContext);
   const { window } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -178,7 +184,12 @@ function Navbar(props) {
               aria-label="show 4 new mails"
               color="inherit"
             >
-              <Badge color="error">
+              <Badge
+                badgeContent={
+                  [...order.value.filter((od) => od.pay_status === 0)].length
+                }
+                color="error"
+              >
                 <ShoppingBag />
               </Badge>
             </IconButton>

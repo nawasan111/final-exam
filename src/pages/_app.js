@@ -15,11 +15,13 @@ import axios from "axios";
 export const UserContext = createContext(null);
 export const WishlistContext = createContext(null);
 export const CartContext = createContext(null);
+export const OrderContext = createContext(null);
 
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState({});
   const [wishlist, setWishlist] = useState([]);
   const [cart, setCart] = useState([]);
+  const [order, setOrder] = useState([]);
   const pathname = usePathname();
 
   const fetchCart = async () => {
@@ -31,6 +33,15 @@ export default function App({ Component, pageProps }) {
       setCart(response.data.cart);
     }
   };
+
+  const fetchOrder = async () => {
+    if (!user?.token) return;
+    let response = await axios.get("/api/u/order", {
+      headers: { token: user.token },
+    });
+    setOrder(response.data);
+  };
+
   const fetchWishlist = async () => {
     if (!user?.token) return;
     let response = await axios.get("/api/u/wishlist", {
@@ -53,6 +64,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     fetchCart();
     fetchWishlist();
+    fetchOrder();
   }, [user]);
 
   return (
@@ -61,23 +73,27 @@ export default function App({ Component, pageProps }) {
         value={{ value: cart, set: setCart, fetch: fetchCart }}
       >
         <WishlistContext.Provider value={{ value: wishlist, set: setWishlist }}>
-          {String(pathname).split("/")[1] === "admin" ? (
-            <>
-              {user.rank ? (
-                <AdminLayout>
-                  <Component {...pageProps} />
-                </AdminLayout>
-              ) : (
-                <UserLayout>
-                  <Error />
-                </UserLayout>
-              )}
-            </>
-          ) : (
-            <UserLayout>
-              <Component {...pageProps} />
-            </UserLayout>
-          )}
+          <OrderContext.Provider
+            value={{ value: order, set: setOrder, fetch: fetchOrder }}
+          >
+            {String(pathname).split("/")[1] === "admin" ? (
+              <>
+                {user.rank ? (
+                  <AdminLayout>
+                    <Component {...pageProps} />
+                  </AdminLayout>
+                ) : (
+                  <UserLayout>
+                    <Error />
+                  </UserLayout>
+                )}
+              </>
+            ) : (
+              <UserLayout>
+                <Component {...pageProps} />
+              </UserLayout>
+            )}
+          </OrderContext.Provider>
         </WishlistContext.Provider>
       </CartContext.Provider>
     </UserContext.Provider>

@@ -9,8 +9,7 @@ import {
   TableRow,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { CartContext, UserContext } from "./_app";
-import { useRouter } from "next/router";
+import { CartContext, OrderContext, UserContext } from "./_app";
 import axios from "axios";
 import PopupAlert from "@/components/PopupAlert";
 import Head from "next/head";
@@ -22,18 +21,9 @@ export default function Order() {
   const cart = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState({ error: false, message: "" });
+  const order = useContext(OrderContext);
   const [orderList, setOrderList] = useState([]);
-  const [CartProduct, setCartProduct] = useState([]);
   const [payment, setPayment] = useState({ open: false, id: -1, price: -1 });
-
-  const fetchOrder = async () => {
-    if (!user.value?.token) return;
-    let response = await axios.get("/api/u/order", {
-      headers: { token: user.value.token },
-    });
-    setOrderList(response.data);
-    console.log(response.data);
-  };
 
   const fetchProduct = async () => {
     try {
@@ -46,18 +36,6 @@ export default function Order() {
     fetchProduct();
   }, []);
 
-  useEffect(() => {
-    fetchOrder();
-  }, [user, payment]);
-
-  useEffect(() => {
-    setCartProduct(
-      cart.value.map(
-        (ct) => products.filter((pd) => pd.id === ct.product_id)[0]
-      )
-    );
-  }, [cart, products]);
-
   return (
     <>
       <Head>
@@ -66,7 +44,10 @@ export default function Order() {
       {payment.open && (
         <ConfirmPayment
           open={payment.open}
-          handleClose={() => setPayment({ open: false, id: -1 })}
+          handleClose={() => {
+            setPayment({ open: false, id: -1 });
+            order.fetch();
+          }}
           id={payment.id}
           price={payment.price}
         />
@@ -78,7 +59,7 @@ export default function Order() {
           message={message.message}
         />
         <Paper sx={{ p: 1, overflowX: "scroll" }}>
-          {orderList.length > 0 ? (
+          {order.value?.length > 0 ? (
             <Box>
               <Table>
                 <TableHead>
@@ -97,7 +78,7 @@ export default function Order() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {orderList.map(
+                  {order.value.map(
                     (order, idx) =>
                       order && (
                         <TableRow key={idx}>
