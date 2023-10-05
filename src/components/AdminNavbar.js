@@ -65,7 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function AdminNavbar(props) {
   const user = useContext(UserContext);
-  const adminOrder = useContext(AdminOrderContext)
+  const adminOrder = useContext(AdminOrderContext);
 
   const router = useRouter();
   const [search, setSearch] = React.useState(router.query?.q ?? "");
@@ -74,11 +74,16 @@ function AdminNavbar(props) {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  function onUpdateSearch(value) {
+    router.push({
+      pathname: location.pathname,
+      query: { ...router.query, q: value },
+    });
+  }
+
   React.useEffect(() => {
-    if (search.length)
-      router.push({ pathname: router.pathname, query: { q: search } });
-    else router.push({ pathname: router.pathname });
-  }, [search]);
+    setSearch(router.query?.q ?? "");
+  }, [router]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -146,7 +151,13 @@ function AdminNavbar(props) {
       link: "/admin/order",
       element: (
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={[...adminOrder.value?.filter((order) => order.send_status === 0)].length} color="error">
+          <Badge
+            badgeContent={
+              [...adminOrder.value?.filter((order) => order.send_status === 0)]
+                .length
+            }
+            color="error"
+          >
             <ProductionQuantityLimits />
           </Badge>
         </IconButton>
@@ -248,7 +259,7 @@ function AdminNavbar(props) {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => onUpdateSearch(e.target.value)}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />

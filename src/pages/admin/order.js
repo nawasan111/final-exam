@@ -92,7 +92,7 @@ export default function Order() {
                           </Box>
                         </TableCell>
                         <TableCell>
-                          <Link href={"/order/" + order.id}>
+                          <Link href={"/admin/order/" + order.id}>
                             <Button>รายละเอียด</Button>
                           </Link>
                         </TableCell>
