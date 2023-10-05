@@ -15,8 +15,6 @@ import { AddShoppingCart } from "@mui/icons-material";
 import { ShoppingCart } from "@mui/icons-material";
 import { RemoveShoppingCart } from "@mui/icons-material";
 import { UserContext } from "@/pages/_app";
-import axios from "axios";
-import { headers } from "../../next.config";
 
 export default function ProductCard({
   product,
@@ -35,7 +33,7 @@ export default function ProductCard({
    */
   return (
     <div
-      className="p-1 m-1 w-[300px] inline-block bg-white rounded hover:shadow duration-300"
+      className="p-1 m-1 w-[300px] mx-auto inline-block bg-white rounded hover:shadow duration-300"
       sx={{
         m: 1,
         px: 1,

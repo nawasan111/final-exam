@@ -65,6 +65,7 @@ export default function Stock() {
                 m: 1,
                 px: 1,
                 width: 300,
+                mx: "auto",
                 height: 500,
                 display: "inline-block",
               }}
