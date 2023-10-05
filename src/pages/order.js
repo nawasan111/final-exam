@@ -2,11 +2,14 @@ import {
   Box,
   Button,
   Paper,
+  Stack,
+  Switch,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { CartContext, OrderContext, UserContext } from "./_app";
@@ -23,6 +26,7 @@ export default function Order() {
   const [message, setMessage] = useState({ error: false, message: "" });
   const order = useContext(OrderContext);
   const [payment, setPayment] = useState({ open: false, id: -1, price: -1 });
+  const [payFilter, setPayFilter] = useState(false);
 
   const fetchProduct = async () => {
     try {
@@ -57,91 +61,113 @@ export default function Order() {
           isError={message.error}
           message={message.message}
         />
-        <Paper sx={{ p: 1, overflowX: "scroll" }}>
-          {order.value?.length > 0 ? (
-            <Box>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    {[
-                      "id",
-                      "ราคาทั้งหมด",
-                      "รายละเอียด",
-                      "จำนวนสินค้า",
-                      "ค่าส่ง",
-                      "ชำระเงิน",
-                      "การจัดส่ง",
-                    ].map((label, idx) => (
-                      <TableCell key={idx}>{label}</TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {order.value.map(
-                    (order, idx) =>
-                      order && (
-                        <TableRow key={idx}>
-                          <TableCell>{order.id}</TableCell>
-                          <TableCell>
-                            <Box color="orangered">
-                              ${Number(order.total_price).toLocaleString()}
-                            </Box>
-                          </TableCell>
-                          <TableCell>
-                            <Link href={"/order/" + order.id}>
-                              <Button>รายละเอียด</Button>
-                            </Link>
-                          </TableCell>
-                          <TableCell>{order.product_count}</TableCell>
-                          <TableCell>{order.shipping_price}</TableCell>
-                          <TableCell>
-                            <Box color={order.pay_status ? "green" : "red"}>
-                              {order.pay_status ? (
-                                "ชำระเงินแล้ว"
-                              ) : (
-                                <Button
-                                  onClick={() =>
-                                    setPayment({
-                                      open: true,
-                                      id: order.id,
-                                      price: order.total_price,
-                                    })
-                                  }
-                                >
-                                  ดำเนินการชำระเงิน
-                                </Button>
-                              )}
-                            </Box>
-                          </TableCell>
-                          <TableCell>
-                            {order.send_status == 0 ? (
-                              <Box color="gray">
-                                {order.send_status ? "ส่งแล้ว" : "ยังไม่จัดส่ง"}
+        <Box sx={{ maxWidth: 1200, mx: "auto" }}>
+          <Box>
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              justifyContent={"end"}
+            >
+              <Typography>ทั้งหมด</Typography>
+              <Switch
+                checked={payFilter}
+                onChange={(e) => {
+                  console.log(e.target.checked);
+                  setPayFilter(e.target.checked);
+                }}
+              />
+              <Typography>ยังไม่ชำระเงิน</Typography>
+            </Stack>
+          </Box>
+          <Paper sx={{ p: 1, overflowX: "scroll" }}>
+            {order.value?.length > 0 ? (
+              <Box>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {[
+                        "id",
+                        "ราคาทั้งหมด",
+                        "รายละเอียด",
+                        "จำนวนสินค้า",
+                        "ค่าส่ง",
+                        "ชำระเงิน",
+                        "การจัดส่ง",
+                      ].map((label, idx) => (
+                        <TableCell key={idx}>{label}</TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {order.value.map(
+                      (order, idx) =>
+                        order &&
+                        (!payFilter || order.pay_status === 0) && (
+                          <TableRow key={idx}>
+                            <TableCell>{order.id}</TableCell>
+                            <TableCell>
+                              <Box color="orangered">
+                                ${Number(order.total_price).toLocaleString()}
                               </Box>
-                            ) : (
-                              <>
-                                {order.send_status == 1 ? (
-                                  <Box color="orangered">กำลังจัดส่ง</Box>
+                            </TableCell>
+                            <TableCell>
+                              <Link href={"/order/" + order.id}>
+                                <Button>รายละเอียด</Button>
+                              </Link>
+                            </TableCell>
+                            <TableCell>{order.product_count}</TableCell>
+                            <TableCell>{order.shipping_price}</TableCell>
+                            <TableCell>
+                              <Box color={order.pay_status ? "green" : "red"}>
+                                {order.pay_status ? (
+                                  "ชำระเงินแล้ว"
                                 ) : (
-                                  <Box color="green">จัดส่งแล้ว</Box>
+                                  <Button
+                                    onClick={() =>
+                                      setPayment({
+                                        open: true,
+                                        id: order.id,
+                                        price: order.total_price,
+                                      })
+                                    }
+                                  >
+                                    ดำเนินการชำระเงิน
+                                  </Button>
                                 )}
-                              </>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      )
-                  )}
-                </TableBody>
-              </Table>
-            </Box>
-          ) : (
-            <div className="text-center">
-              {user.value?.token
-                ? "รายการว่างเปล่า"
-                : "คุณยังไม่ได้เข้าสู่ระบบ"}
-            </div>
-          )}
-        </Paper>
+                              </Box>
+                            </TableCell>
+                            <TableCell>
+                              {order.send_status == 0 ? (
+                                <Box color="gray">
+                                  {order.send_status
+                                    ? "ส่งแล้ว"
+                                    : "ยังไม่จัดส่ง"}
+                                </Box>
+                              ) : (
+                                <>
+                                  {order.send_status == 1 ? (
+                                    <Box color="orangered">กำลังจัดส่ง</Box>
+                                  ) : (
+                                    <Box color="green">จัดส่งแล้ว</Box>
+                                  )}
+                                </>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        )
+                    )}
+                  </TableBody>
+                </Table>
+              </Box>
+            ) : (
+              <div className="text-center">
+                {user.value?.token
+                  ? "รายการว่างเปล่า"
+                  : "คุณยังไม่ได้เข้าสู่ระบบ"}
+              </div>
+            )}
+          </Paper>
+        </Box>
       </Box>
     </>
   );
