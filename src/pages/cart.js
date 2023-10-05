@@ -13,7 +13,6 @@ import { CartContext, UserContext, WishlistContext } from "./_app";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { Delete } from "@mui/icons-material";
-import { ShoppingCart } from "@mui/icons-material";
 import PopupAlert from "@/components/PopupAlert";
 import Head from "next/head";
 import { ShoppingBag } from "@mui/icons-material";

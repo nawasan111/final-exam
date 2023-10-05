@@ -14,11 +14,12 @@ import {
   Snackbar,
 } from "@mui/material";
 import axios from "axios";
-import { CartContext, UserContext } from "@/pages/_app";
+import { CartContext, OrderContext, UserContext } from "@/pages/_app";
 
 export default function ConfirmOrder({ open, handleClose }) {
   const user = useContext(UserContext);
   const cart = useContext(CartContext);
+  const order = useContext(OrderContext)
   const [message, setMessage] = useState({ message: "", error: false });
 
   const [address, setAddress] = useState(user.value?.address ?? "");
@@ -43,6 +44,7 @@ export default function ConfirmOrder({ open, handleClose }) {
       }, 2000);
 
       cart.fetch();
+      order.fetch();
       handleClose();
     } catch (err) {
       setMessage({ message: "พบข้อผิดพลาด กรุณาลองใหม่อีกครั้ง", error: true });
