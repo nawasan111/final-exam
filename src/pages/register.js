@@ -9,11 +9,11 @@ import { useState } from "react";
 import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import PopupAlert from "@/components/PopupAlert";
 
 export default function Login() {
   const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [message, setMessage] = useState({ message: "", error: false });
   const user = useContext(UserContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,14 +35,14 @@ export default function Login() {
       name,
       email,
       phone,
-      image,
+      photo: image,
       username,
       password,
     });
     if (response.data.status === 201) {
-      setSuccessMessage("สมัครสมาชิกสำเร็จ!");
+      setMessage({ message: "สมัครสมาชิกสำเร็จ!", error: false });
       setTimeout(() => {
-        setSuccessMessage("");
+        setMessage({ message: "", error: false });
       }, 3000);
       setName("");
       setEmail("");
@@ -51,14 +51,20 @@ export default function Login() {
       setUsername("");
       setPassword("");
     } else if (response.data.status === 202) {
-      setErrorMessage("ชื่อผู้ใช้งานนี้ถูกใช้แล้ว กรุณาลองใหม่อีกครั้ง");
+      setMessage({
+        message: "ชื่อผู้ใช้งานนี้ถูกใช้แล้ว กรุณาลองใหม่อีกครั้ง",
+        error: true,
+      });
       setTimeout(() => {
-        setErrorMessage("");
+        setMessage({ message: "", error: true });
       }, 3000);
     } else {
-      setErrorMessage("ขออภัย มีบางอย่างไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง");
+      setMessage({
+        message: "ขออภัย มีบางอย่างไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง",
+        error: true,
+      });
       setTimeout(() => {
-        setErrorMessage("");
+        setMessage({ message: "", error: true });
       }, 3000);
     }
   }
@@ -69,17 +75,10 @@ export default function Login() {
         <title>สมัครสมาชิก | OpenShop</title>
       </Head>
       <Container>
-        <Snackbar
-          ContentProps={{ className: "bg-red-500" }}
-          anchorOrigin={{ horizontal: "center", vertical: "top" }}
-          open={!!errorMessage.length}
-          message={errorMessage}
-        />
-        <Snackbar
-          ContentProps={{ className: "bg-green-500" }}
-          anchorOrigin={{ horizontal: "center", vertical: "top" }}
-          open={!!successMessage.length}
-          message={successMessage}
+        <PopupAlert
+          isError={message.error}
+          message={message.message}
+          open={!!message.message.length}
         />
         <Grid container>
           <Grid item lg={3} md={0}></Grid>

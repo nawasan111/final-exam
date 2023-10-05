@@ -231,7 +231,7 @@ function Navbar(props) {
         {
           label: "",
           element: (
-            <span className="inline-block mx-3 hover:underline">
+            <span className="inline-block mx-3 p-3 hover:underline">
               เข้าสู่ระบบ
             </span>
           ),
@@ -241,7 +241,7 @@ function Navbar(props) {
         {
           label: "",
           element: (
-            <span className="inline-block mx-3 hover:underline">
+            <span className="inline-block mx-3 p-3 hover:underline">
               สมัครสมาชิก
             </span>
           ),

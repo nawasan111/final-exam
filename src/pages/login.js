@@ -9,18 +9,18 @@ import { useState } from "react";
 import axios from "axios";
 import Head from "next/head";
 import userCookie from "@/components/lib/userCookie";
+import PopupAlert from "@/components/PopupAlert";
 
 export default function Login() {
   const user = useContext(UserContext);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [message, setMessage] = useState({ message: "", error: false });
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   if (user.value?.name)
     return (
       <div>
-        <Paper className="m-auto" sx={{ p: 1, maxWidth: 200  }}>
+        <Paper className="m-auto" sx={{ p: 1, maxWidth: 200 }}>
           <h3 className="text-center">คุณเข้าสู่ระบบแล้ว</h3>
         </Paper>
       </div>
@@ -39,9 +39,9 @@ export default function Login() {
       usrsto.store(response.data.token);
       window.location.href = "/";
     } else if (response.data.status === 203) {
-      setErrorMessage("ชื่อผู้ใช้หรือระหัสผ่านไม่ถูกต้อง");
+      setMessage({ message: "ชื่อผู้ใช้หรือระหัสผ่านไม่ถูกต้อง", error: true });
       setTimeout(() => {
-        setErrorMessage("");
+        setMessage({ message: "", error: true });
       }, 3000);
     }
   }
@@ -52,17 +52,10 @@ export default function Login() {
         <title>เข้าสู่ระบบ | OpenShop</title>
       </Head>
       <Container>
-        <Snackbar
-          ContentProps={{ className: "bg-red-500" }}
-          anchorOrigin={{ horizontal: "center", vertical: "top" }}
-          open={!!errorMessage.length}
-          message={errorMessage}
-        />
-        <Snackbar
-          ContentProps={{ className: "bg-green-500" }}
-          anchorOrigin={{ horizontal: "center", vertical: "top" }}
-          open={!!successMessage.length}
-          message={successMessage}
+        <PopupAlert
+          isError={message.error}
+          message={message.message}
+          open={!!message.message.length}
         />
         <Grid container>
           <Grid item lg={3} md={0}></Grid>

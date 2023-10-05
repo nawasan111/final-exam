@@ -128,7 +128,9 @@ export default function Member() {
                 <TableCell>{user.id}</TableCell>
                 <TableCell>
                   <img
+                  className="rounded-lg object-cover"
                     width={70}
+                    height={70}
                     src={user?.photo?.length ? user.photo : "/empty.jpg"}
                     alt="profile"
                   />
