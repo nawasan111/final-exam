@@ -33,7 +33,7 @@ export default function Deposits() {
     setMonth(month_now)
     setYear(year_now)
     setTotalSelling(total);
-  }, [user]);
+  }, [user, adminOrder]);
 
   return (
     <React.Fragment>
