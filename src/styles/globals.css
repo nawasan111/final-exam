@@ -17,3 +17,7 @@ header a {
   color: white;
   text-decoration: none;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
