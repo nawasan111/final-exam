@@ -294,7 +294,11 @@ function Navbar(props) {
 
   return (
     <>
-      <AppBar position="fixed">
+      <AppBar
+        className="shadow-sm bg-white/90"
+        color="inherit"
+        position="fixed"
+      >
         <Toolbar>
           <Typography
             variant="h6"
@@ -302,14 +306,20 @@ function Navbar(props) {
             component="div"
             sx={{ display: { xs: "none", md: "block" } }}
           >
-            <Link href={"/"}>OpenShop</Link>
+            <Link
+              className="bg-black p-4 rounded-lg inline-block py-2"
+              href={"/"}
+            >
+              OpenShop
+            </Link>
           </Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              className="hover:border border-gray-300 hover:border-solid rounded duration-200"
+              placeholder="ค้นหา…"
               inputProps={{ "aria-label": "search" }}
               onChange={(e) => {
                 return onUpdateSearch(e.target.value);
@@ -317,11 +327,18 @@ function Navbar(props) {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box
+            className="rounded-lg"
+            sx={{
+              display: { xs: "none", md: "flex", backgroundColor: "black" },
+            }}
+          >
             {MenuList.map((menu, idx) => (
               <Link
                 title={menu.label}
-                className="text-white"
+                className={`text-white duration-200 ${
+                  router.pathname === menu.link ? " -translate-y-1" : ""
+                }`}
                 key={idx}
                 href={menu.link}
               >
