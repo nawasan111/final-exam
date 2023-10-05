@@ -110,7 +110,11 @@ export default function Order() {
                           </Link>
                         </TableCell>
                         <TableCell>
-                          {userAll.filter((usr) => usr.id === order.user_id)[0].name}
+                          {userAll.length
+                            ? userAll?.filter(
+                                (usr) => usr.id === order.user_id
+                              )[0].name ?? "undifined"
+                            : "undifined"}
                         </TableCell>
                         <TableCell>
                           <Box color="black">${order.shipping_price}</Box>
