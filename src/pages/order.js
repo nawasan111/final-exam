@@ -115,9 +115,19 @@ export default function Order() {
                             </Box>
                           </TableCell>
                           <TableCell>
-                            <Box color={order.send_status ? "green" : "red"}>
-                              {order.send_status ? "ส่งแล้ว" : "ยังไม่จัดส่ง"}
-                            </Box>
+                            {order.send_status == 0 ? (
+                              <Box color="gray">
+                                {order.send_status ? "ส่งแล้ว" : "ยังไม่จัดส่ง"}
+                              </Box>
+                            ) : (
+                              <>
+                                {order.send_status == 1 ? (
+                                  <Box color="orangered">กำลังจัดส่ง</Box>
+                                ) : (
+                                  <Box color="green">จัดส่งแล้ว</Box>
+                                )}
+                              </>
+                            )}
                           </TableCell>
                         </TableRow>
                       )
