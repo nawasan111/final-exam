@@ -48,7 +48,11 @@ export default function Profile() {
                     </TableRow>
                     <TableRow>
                       <TableCell sx={{ maxWidth }}>ที่อยู่</TableCell>
-                      <TableCell>{user.value.address}</TableCell>
+                      <TableCell>
+                        {!!user.value.address
+                          ? user.value.address
+                          : "ยังไม่ระบุ"}
+                      </TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
