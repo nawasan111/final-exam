@@ -6,6 +6,14 @@ import ProductCard from "@/components/ProductCard";
 import { useRouter } from "next/router";
 import { CartContext, UserContext, WishlistContext } from "./_app";
 import PopupAlert from "@/components/PopupAlert";
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  MenuItem,
+  Paper,
+  Select,
+} from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,10 +24,24 @@ export default function Home() {
   const [message, setMessage] = useState({ message: "", error: false });
   const wishlist = useContext(WishlistContext);
   const cart = useContext(CartContext);
+  const [category, setCategory] = useState(-1);
+  const [categoryList, setCategoryList] = useState([]);
 
-  const productsFilter = !!router.query?.q
-    ? products.filter((prod) => String(prod.name).includes(router.query.q))
-    : products.filter((prod) => Number(prod.stock) > 0);
+  const productsFilter =
+    !!router.query?.q && router.query?.q?.length
+      ? products.filter(
+          (prod) =>
+            (category === -1 || category === prod.cateId) &&
+            String(prod.name)
+              .toLocaleLowerCase()
+              .includes(String(router.query.q).toLocaleLowerCase()) &&
+            Number(prod.stock) > 0
+        )
+      : products.filter(
+          (prod) =>
+            (category === -1 || category === prod.cateId) &&
+            Number(prod.stock) > 0
+        );
 
   async function onCart(id, isRemove = false) {
     if (!user.value?.token) {
@@ -39,7 +61,6 @@ export default function Home() {
         { id },
         { headers: { token: user.value.token } }
       );
-
     }
     cart.fetch();
   }
@@ -66,6 +87,15 @@ export default function Home() {
     FetchWishlist();
   }
 
+  const fetchCategory = async () => {
+    try {
+      let response = await axios.get("/api/category");
+      setCategoryList(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const FetchProduct = async () => {
     let response = await axios.get("/api/product");
     setProducts(response.data);
@@ -80,8 +110,16 @@ export default function Home() {
   };
 
   useEffect(() => {
+    fetchCategory();
     FetchProduct();
   }, [user]);
+  useEffect(() => {
+    if (router.query?.cat) {
+      setCategory(Number(router.query.cat));
+    } else {
+      setCategory(-1);
+    }
+  }, [router]);
   return (
     <>
       <Head>
@@ -93,38 +131,66 @@ export default function Home() {
         message={message.message}
       />
       <div>
-        <div className="mx-auto text-left grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 max-w-[1520px]">
-          {productsFilter.map((prod, idx) => (
-            <ProductCard
-              key={idx}
-              isFav={
-                !!wishlist.value.filter(
-                  (wish) => wish.product_id === Number(prod.id)
-                ).length
-              }
-              isCart={
-                !!cart.value.filter((ct) => ct.product_id === Number(prod.id))
-                  .length
-              }
-              product={prod}
-              cartHandler={() =>
-                onCart(
-                  prod.id,
-                  !!cart.value.filter((ct) => ct.product_id === Number(prod.id))
-                    .length
-                )
-              }
-              favHandler={() =>
-                onWishlist(
-                  prod.id,
+        <Box className="flex justify-start mb-3 px-10 max-w-[1520px] mx-auto">
+          <Box className="flex items-center mx-3">หมวดหมู่</Box>
+          <FormControl>
+            <Select
+              variant="standard"
+              value={category}
+              onChange={(e) => {
+                router.push({
+                  pathname: location.pathname,
+                  query: { ...router.query, cat: e.target.value },
+                });
+              }}
+            >
+              <MenuItem value="-1">ทั้งหมด</MenuItem>
+              {categoryList.map((cat, idx) => (
+                <MenuItem key={idx} value={cat.id}>
+                  {cat.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+
+        {productsFilter.length ? (
+          <div className="mx-auto text-left grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 max-w-[1520px]">
+            {productsFilter.map((prod, idx) => (
+              <ProductCard
+                key={idx}
+                isFav={
                   !!wishlist.value.filter(
                     (wish) => wish.product_id === Number(prod.id)
                   ).length
-                )
-              }
-            />
-          ))}
-        </div>
+                }
+                isCart={
+                  !!cart.value.filter((ct) => ct.product_id === Number(prod.id))
+                    .length
+                }
+                product={prod}
+                cartHandler={() =>
+                  onCart(
+                    prod.id,
+                    !!cart.value.filter(
+                      (ct) => ct.product_id === Number(prod.id)
+                    ).length
+                  )
+                }
+                favHandler={() =>
+                  onWishlist(
+                    prod.id,
+                    !!wishlist.value.filter(
+                      (wish) => wish.product_id === Number(prod.id)
+                    ).length
+                  )
+                }
+              />
+            ))}
+          </div>
+        ) : (
+          <Paper sx={{ p: 2, textAlign: "center" }}>ไม่พบรายการ</Paper>
+        )}
       </div>
     </>
   );
