@@ -24,17 +24,7 @@ export default function Chart() {
   const [month, setMonth] = React.useState("");
   const [year, setYear] = React.useState("2023");
 
-  const [data, setData] = React.useState([
-    createData("00:00", 0),
-    createData("03:00", 300),
-    createData("06:00", 600),
-    createData("09:00", 800),
-    createData("12:00", 1500),
-    createData("15:00", 2000),
-    createData("18:00", 2400),
-    createData("21:00", 2400),
-    createData("24:00", undefined),
-  ]);
+  const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
     if (!user.value?.token || adminOrder.value.length === 0) return;
@@ -60,14 +50,13 @@ export default function Chart() {
     }
     setMonth(month_now);
     setYear(year_now);
-    date_all.reverse()
-    let graph = []
-    date_all.map( dat => {
-      graph.push(createData(dat, date_price[dat]))
-    })
-    setData(graph)
-
-  }, [user]);
+    date_all.reverse();
+    let graph = [];
+    date_all.map((dat) => {
+      graph.push(createData(dat, date_price[dat]));
+    });
+    setData(graph);
+  }, [user, adminOrder]);
 
   return (
     <React.Fragment>
