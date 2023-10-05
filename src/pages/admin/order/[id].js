@@ -63,7 +63,7 @@ export default function AdminOrderDetail() {
       {orderDetailList.length ? (
         <Box>
           <Box sx={{ textAlign: "right", p: 1 }}>
-            <Link href="/order">
+            <Link href="/admin/order">
               <Button color="error">
                 <ArrowBackIos /> ย้อนกลับ
               </Button>
