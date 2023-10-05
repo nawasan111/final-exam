@@ -7,7 +7,6 @@ import { UserContext } from "../_app";
 import { AdminOrderContext } from "@/components/layout/AdminLayout";
 import {
   Paper,
-  Button,
   Box,
   Table,
   TableHead,
@@ -23,6 +22,16 @@ export default function Order() {
   const user = useContext(UserContext);
   const adminOrder = useContext(AdminOrderContext);
   const [message, setMessage] = useState({ message: "", error: false });
+  const [userAll, setUserAll] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/user")
+      .then((res) => {
+        setUserAll(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const onSendingChange = async (id, sending) => {
     try {
@@ -70,10 +79,11 @@ export default function Order() {
                   {[
                     "id",
                     "ราคาทั้งหมด",
-                    "รายละเอียด",
-                    "จำนวนสินค้า",
+                    "วันที่",
+                    "ผู้ซื้อ",
                     "ค่าส่ง",
                     "ชำระเงิน",
+                    "ที่อยู่",
                     "การจัดส่ง",
                   ].map((label, idx) => (
                     <TableCell key={idx}>{label}</TableCell>
@@ -92,12 +102,19 @@ export default function Order() {
                           </Box>
                         </TableCell>
                         <TableCell>
-                          <Link href={"/admin/order/" + order.id}>
-                            <Button>รายละเอียด</Button>
+                          <Link
+                            title="คลิกเพื่อดูรายละเอียด"
+                            href={"/admin/order/" + order.id}
+                          >
+                            {new Date(order.date).toLocaleString()}
                           </Link>
                         </TableCell>
-                        <TableCell>{order.product_count}</TableCell>
-                        <TableCell>{order.shipping_price}</TableCell>
+                        <TableCell>
+                          {userAll.filter((usr) => usr.id === order.user_id)[0].name}
+                        </TableCell>
+                        <TableCell>
+                          <Box color="black">${order.shipping_price}</Box>
+                        </TableCell>
                         <TableCell>
                           <Box color={order.pay_status ? "green" : "red"}>
                             {order.pay_status
@@ -105,6 +122,7 @@ export default function Order() {
                               : "ยังไม่ชำระเงิน"}
                           </Box>
                         </TableCell>
+                        <TableCell>{order.address}</TableCell>
                         <TableCell>
                           <FormControl variant="standard">
                             <Select

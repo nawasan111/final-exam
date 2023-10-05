@@ -60,7 +60,9 @@ export default function Chart() {
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>
+        on {month}, {year}
+      </Title>
       <ResponsiveContainer>
         <LineChart
           data={data}

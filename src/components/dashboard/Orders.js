@@ -1,96 +1,83 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
+import Link from "next/link";
+import { Box, Button, FormControl, Select, MenuItem } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
-import { Box } from "@mui/material";
-
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-  createData(
-    0,
-    "16 Mar, 2019",
-    "Elvis Presley",
-    "Tupelo, MS",
-    "VISA ⠀•••• 3719",
-    312.44
-  ),
-  createData(
-    1,
-    "16 Mar, 2019",
-    "Paul McCartney",
-    "London, UK",
-    "VISA ⠀•••• 2574",
-    866.99
-  ),
-  createData(
-    2,
-    "16 Mar, 2019",
-    "Tom Scholz",
-    "Boston, MA",
-    "MC ⠀•••• 1253",
-    100.81
-  ),
-  createData(
-    3,
-    "16 Mar, 2019",
-    "Michael Jackson",
-    "Gary, IN",
-    "AMEX ⠀•••• 2000",
-    654.39
-  ),
-  createData(
-    4,
-    "15 Mar, 2019",
-    "Bruce Springsteen",
-    "Long Branch, NJ",
-    "VISA ⠀•••• 5919",
-    212.79
-  ),
-];
+import { UserContext } from "@/pages/_app";
+import { AdminOrderContext } from "../layout/AdminLayout";
 
 function preventDefault(event) {
   event.preventDefault();
 }
 
 export default function Orders() {
+  const user = React.useContext(UserContext);
+  const adminOrder = React.useContext(AdminOrderContext);
+  const [orderRecent, setOrderRecent] = React.useState([]);
+
+  React.useEffect(() => {
+    let order_r = [];
+    for (let i = 0; i < adminOrder.value.length && order_r.length < 5; i++) {
+      order_r.push(adminOrder.value[i]);
+    }
+    setOrderRecent(order_r);
+  }, [adminOrder]);
+
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
-      <div className="overflow-x-scroll" >
+      <Title>ออเดอร์ล่าสุด</Title>
+      <div className="overflow-x-scroll">
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Ship To</TableCell>
-              <TableCell>Payment Method</TableCell>
-              <TableCell align="right">Sale Amount</TableCell>
+              {[
+                "id",
+                "ราคาทั้งหมด",
+                "วันที่",
+                "จำนวนสินค้า",
+                "ค่าส่ง",
+                "ชำระเงิน",
+              ].map((label, idx) => (
+                <TableCell key={idx}>{label}</TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.shipTo}</TableCell>
-                <TableCell>{row.paymentMethod}</TableCell>
-                <TableCell align="right">{`$${row.amount}`}</TableCell>
-              </TableRow>
-            ))}
+            {orderRecent.map(
+              (order, idx) =>
+                order && (
+                  <TableRow key={idx}>
+                    <TableCell>{order.id}</TableCell>
+                    <TableCell>
+                      <Box color="orangered">
+                        ${Number(order.total_price).toLocaleString()}
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Link href={"/admin/order/" + order.id}>
+                        {new Date(order.date).toLocaleString()}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{order.product_count}</TableCell>
+                    <TableCell>{order.shipping_price}</TableCell>
+                    <TableCell>
+                      <Box color={order.pay_status ? "green" : "red"}>
+                        {order.pay_status ? "ชำระเงินแล้ว" : "ยังไม่ชำระเงิน"}
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                )
+            )}
           </TableBody>
         </Table>
       </div>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more orders
-      </Link>
+      <Box sx={{ pt: 2 }}>
+        <Link className="text-blue-600" href="/admin/order">ดูออเดอร์ทั้งหมด</Link>
+      </Box>
     </React.Fragment>
   );
 }
