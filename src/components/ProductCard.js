@@ -44,14 +44,14 @@ export default function ProductCard({
     >
       <CardMedia
         sx={{ pt: 1 }}
-        className="rounded object-contain"
+        className="rounded-lg object-contain"
         component={"img"}
-        height={150}
+        height={250}
         image={product.image.length ? product.image : "/empty.jpg"}
       />
       <CardContent sx={{ px: 1 }}>
         <Box sx={{ px: 1 }}>
-          <h5 className="h-[40px] overflow-y-hidden">{product.name}</h5>
+          <h5 className="h-[20px] overflow-y-hidden">{product.name}</h5>
         </Box>
         <Typography
           sx={{ height: 70, overflowY: "scroll" }}
