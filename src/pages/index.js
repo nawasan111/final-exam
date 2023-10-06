@@ -21,7 +21,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const user = useContext(UserContext);
   const router = useRouter();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState({});
   const [message, setMessage] = useState({ message: "", error: false });
   const wishlist = useContext(WishlistContext);
   const cart = useContext(CartContext);
@@ -31,35 +31,38 @@ export default function Home() {
   const [algorithm, setAlgorithm] = useState([]);
 
   useEffect(() => {
-    let product_cache =
-      !!router.query?.q && router.query?.q?.length
-        ? products.filter(
-            (prod) =>
-              (category === -1 || category === prod.cateId) &&
-              String(prod.name)
-                .toLocaleLowerCase()
-                .includes(String(router.query.q).toLocaleLowerCase()) &&
-              Number(prod.stock) > 0
-          )
-        : products.filter(
-            (prod) =>
-              (category === -1 || category === prod.cateId) &&
-              Number(prod.stock) > 0
-          );
-    setProductsFilter(product_cache);
-
     if (!algorithm.length) {
-      let seed = [...Array(products.length).keys()];
+      // sort positions with keys of product
+      let seed = [...Object.keys(products)];
       let productRandom = [];
-      for (let i = 0; i < seed.length; i++) {
+      while (seed.length) {
         let point = Math.floor(Math.random() * seed.length);
         productRandom.push(seed[point]);
-        seed.slice(point, 1);
+        seed.splice(point, 1);
       }
       setAlgorithm(productRandom);
     }
+
+    // products filter for search and category
+    let product_cache =
+      !!router.query?.q && router.query?.q?.length
+        ? algorithm.filter(
+            (pid) =>
+              (category === -1 || category === products[pid].cateId) &&
+              String(products[pid].name)
+                .toLocaleLowerCase()
+                .includes(String(router.query.q).toLocaleLowerCase()) &&
+              Number(products[pid].stock) > 0
+          )
+        : algorithm.filter(
+            (pid) =>
+              (category === -1 || category === products[pid]?.cateId) &&
+              Number(products[pid].stock) > 0
+          );
+    setProductsFilter(product_cache);
   }, [products, category]);
 
+  // for user click cart button
   async function onCart(id, isRemove = false) {
     if (!user.value?.token) {
       setMessage({ message: "คุณยังไม่ได้เข้าสู่ระบบ", error: true });
@@ -82,6 +85,7 @@ export default function Home() {
     cart.fetch();
   }
 
+  // for user click wishlist button
   async function onWishlist(id, isRemove = false) {
     if (!user.value?.token) {
       setMessage({ message: "คุณยังไม่ได้เข้าสู่ระบบ", error: true });
@@ -115,7 +119,10 @@ export default function Home() {
 
   const FetchProduct = async () => {
     let response = await axios.get("/api/product");
-    setProducts(response.data);
+    let pd = {};
+    response.data.map((e) => (pd[e.id] = e));
+
+    setProducts(pd);
   };
 
   const FetchWishlist = async () => {
@@ -139,6 +146,7 @@ export default function Home() {
       setCategory(-1);
     }
   }, [router]);
+
   return (
     <>
       <Head>
@@ -195,45 +203,38 @@ export default function Home() {
 
         {productsFilter.length ? (
           <div className="mx-auto text-left grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 max-w-[1520px]">
-            {algorithm.map(
-              (algor, idx) =>
-                !!productsFilter[algor]?.id && (
-                  <ProductCard
-                    key={idx}
-                    isFav={
-                      !!wishlist.value.filter(
-                        (wish) =>
-                          wish.product_id === Number(productsFilter[algor].id)
-                      ).length
-                    }
-                    isCart={
-                      !!cart.value.filter(
-                        (ct) =>
-                          ct.product_id === Number(productsFilter[algor].id)
-                      ).length
-                    }
-                    product={productsFilter[algor]}
-                    cartHandler={() =>
-                      onCart(
-                        prod.id,
-                        !!cart.value.filter(
-                          (ct) =>
-                            ct.product_id === Number(productsFilter[algor].id)
-                        ).length
-                      )
-                    }
-                    favHandler={() =>
-                      onWishlist(
-                        productsFilter[algor].id,
-                        !!wishlist.value.filter(
-                          (wish) =>
-                            wish.product_id === Number(productsFilter[algor].id)
-                        ).length
-                      )
-                    }
-                  />
-                )
-            )}
+            {productsFilter.map((pid, idx) => (
+              <ProductCard
+                key={idx}
+                isFav={
+                  !!wishlist.value.filter(
+                    (wish) => wish.product_id === Number(products[pid].id)
+                  ).length
+                }
+                isCart={
+                  !!cart.value.filter(
+                    (ct) => ct.product_id === Number(products[pid].id)
+                  ).length
+                }
+                product={products[pid]}
+                cartHandler={() =>
+                  onCart(
+                    products[pid].id,
+                    !!cart.value.filter(
+                      (ct) => ct.product_id === Number(products[pid].id)
+                    ).length
+                  )
+                }
+                favHandler={() =>
+                  onWishlist(
+                    products[pid].id,
+                    !!wishlist.value.filter(
+                      (wish) => wish.product_id === Number(products[pid].id)
+                    ).length
+                  )
+                }
+              />
+            ))}
           </div>
         ) : (
           <Paper sx={{ p: 2, textAlign: "center" }}>ไม่พบรายการ</Paper>
