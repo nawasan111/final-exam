@@ -75,7 +75,7 @@ export default function Cart() {
           isError={message.error}
           message={message.message}
         />
-        <Paper sx={{ p: 1, overflowX: "scroll" }}>
+        <Paper className="shadow-none" sx={{ p: 2, overflowX: "scroll" }}>
           {cart.value.length > 0 ? (
             <Box>
               <Table>

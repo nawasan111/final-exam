@@ -62,21 +62,25 @@ export default function Order() {
           message={message.message}
         />
         <Box sx={{ maxWidth: 1200, mx: "auto" }}>
-          <Box sx={{pb:2}}>
+          <Box sx={{ pb: 2 }}>
             <Stack
               direction={"row"}
               alignItems={"center"}
               justifyContent={"end"}
             >
-              <Button
-                onClick={() => setPayFilter(!payFilter)}
-                variant={payFilter ? "contained" : "text"}
-              >
-                ดูรายกายที่ยังไม่ชำระเงิน
-              </Button>
+              {order.value?.length ? (
+                <Button
+                  onClick={() => setPayFilter(!payFilter)}
+                  variant={payFilter ? "contained" : "text"}
+                >
+                  ดูรายกายที่ยังไม่ชำระเงิน
+                </Button>
+              ) : (
+                ""
+              )}
             </Stack>
           </Box>
-          <Paper sx={{ p: 1, overflowX: "scroll" }}>
+          <Paper className="shadow-none" sx={{ p: 2, overflowX: "scroll" }}>
             {order.value?.length > 0 ? (
               <Box>
                 <Table>

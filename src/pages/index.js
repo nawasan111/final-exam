@@ -9,6 +9,7 @@ import PopupAlert from "@/components/PopupAlert";
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   FormLabel,
   MenuItem,
@@ -239,7 +240,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <Paper sx={{ p: 2, textAlign: "center" }}>ไม่พบรายการ</Paper>
+          <Paper className="shadow-none" sx={{ p: 2, textAlign: "center" }}><CircularProgress /></Paper>
         )}
       </div>
     </>

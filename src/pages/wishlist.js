@@ -116,7 +116,7 @@ export default function Wishlist() {
           isError={message.error}
           message={message.message}
         />
-        <Paper sx={{ p: 1, overflowX: "scroll" }}>
+        <Paper className="shadow-none" sx={{ p: 2, overflowX: "scroll" }}>
           {wishlist.value.length > 0 ? (
             <Table>
               <TableHead>
