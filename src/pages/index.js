@@ -154,7 +154,18 @@ export default function Home() {
             </Select>
           </FormControl> */}
           <Box sx={{ display: "flex", overflowX: "scroll", maxWidth: "100vw" }}>
-            <Button variant={category === -1 ? "contained": "text"} className={`${category === -1 ? "" : "bg-white"} mx-1`}>
+            <Button
+              variant={category === -1 ? "contained" : "text"}
+              className={`${category === -1 ? "" : "bg-white"} mx-1`}
+              onClick={() => {
+                let que = router.query;
+                delete que.cat;
+                router.push({
+                  pathname: location.pathname,
+                  query: { ...que },
+                });
+              }}
+            >
               ทั้งหมด
             </Button>
             {categoryList.map((cat, idx) => (
