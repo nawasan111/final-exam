@@ -42,7 +42,9 @@ export default function Home() {
       }
       setAlgorithm(productRandom);
     }
+  }, [products]);
 
+  useEffect(() => {
     // products filter for search and category
     let product_cache =
       !!router.query?.q && router.query?.q?.length
@@ -60,7 +62,7 @@ export default function Home() {
               Number(products[pid].stock) > 0
           );
     setProductsFilter(product_cache);
-  }, [products, category]);
+  }, [products, category, algorithm]);
 
   // for user click cart button
   async function onCart(id, isRemove = false) {
@@ -121,7 +123,6 @@ export default function Home() {
     let response = await axios.get("/api/product");
     let pd = {};
     response.data.map((e) => (pd[e.id] = e));
-
     setProducts(pd);
   };
 
