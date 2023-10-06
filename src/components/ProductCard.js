@@ -1,6 +1,5 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import {
-  Card,
   Box,
   CardContent,
   CardMedia,
@@ -10,11 +9,8 @@ import {
 } from "@mui/material";
 import { Favorite } from "@mui/icons-material";
 import { FavoriteBorder } from "@mui/icons-material";
-import { ProductionQuantityLimits } from "@mui/icons-material";
-import { AddShoppingCart } from "@mui/icons-material";
 import { ShoppingCart } from "@mui/icons-material";
 import { RemoveShoppingCart } from "@mui/icons-material";
-import { UserContext } from "@/pages/_app";
 
 export default function ProductCard({
   product,
@@ -33,7 +29,7 @@ export default function ProductCard({
    */
   return (
     <div
-      className="p-1 m-1 w-[300px] mx-auto inline-block bg-white rounded hover:shadow duration-300"
+      className="p-1 my-3 w-[300px] mx-auto inline-block bg-white rounded hover:shadow duration-300"
       sx={{
         m: 1,
         px: 1,
