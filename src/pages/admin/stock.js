@@ -74,7 +74,7 @@ export default function Stock() {
                 <h5 className="h-[40px] overflow-y-hidden">{product.name}</h5>
               </Box>
               <CardMedia
-                className="rounded"
+                className="rounded object-contain"
                 component={"img"}
                 height={150}
                 image={product.image.length ? product.image : "/empty.jpg"}

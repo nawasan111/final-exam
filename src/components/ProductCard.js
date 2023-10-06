@@ -44,7 +44,7 @@ export default function ProductCard({
     >
       <CardMedia
         sx={{ pt: 1 }}
-        className="rounded"
+        className="rounded object-contain"
         component={"img"}
         height={150}
         image={product.image.length ? product.image : "/empty.jpg"}
