@@ -133,27 +133,7 @@ export default function Home() {
       />
       <div>
         <Box className="flex justify-start mb-3 px-10 max-w-[1520px] mx-auto">
-          {/* <Box className="flex items-center mx-3">หมวดหมู่</Box> */}
-          {/* <FormControl>
-            <Select
-              variant="standard"
-              value={category}
-              onChange={(e) => {
-                router.push({
-                  pathname: location.pathname,
-                  query: { ...router.query, cat: e.target.value },
-                });
-              }}
-            >
-              <MenuItem value="-1">ทั้งหมด</MenuItem>
-              {categoryList.map((cat, idx) => (
-                <MenuItem key={idx} value={cat.id}>
-                  {cat.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl> */}
-          <Box sx={{ display: "flex", overflowX: "scroll", maxWidth: "100vw" }}>
+         <Box sx={{ display: "flex", overflowX: "scroll", maxWidth: "100vw" }}>
             <Button
               variant={category === -1 ? "contained" : "text"}
               className={`${category === -1 ? "" : "bg-white"} mx-1`}

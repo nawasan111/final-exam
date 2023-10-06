@@ -28,10 +28,15 @@ export default function Stock() {
   const [products, setProducts] = useState([]);
   const [updateState, setUpdateState] = useState({ open: false, data: {} });
   const [deleteState, setDeleteState] = useState({ open: false, id: -1 });
-  const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState(-1);
+  const [categoryList, setCategoryList] = useState([]);
 
   const productsFilter = !!router.query?.q
-    ? products.filter((prod) => String(prod.name).includes(router.query.q))
+    ? products.filter((prod) =>
+        String(prod.name)
+          .toLocaleLowerCase()
+          .includes(String(router.query.q).toLocaleLowerCase())
+      )
     : products;
 
   useEffect(() => {
@@ -41,9 +46,17 @@ export default function Stock() {
   }, [modal, updateState, deleteState]);
   useEffect(() => {
     axios.get("/api/category").then((res) => {
-      setCategory(res.data);
+      setCategoryList(res.data);
     });
   }, []);
+
+  useEffect(() => {
+    if (router.query?.cat) {
+      setCategory(Number(router.query.cat));
+    } else {
+      setCategory(-1);
+    }
+  }, [router]);
 
   return (
     <>
@@ -57,67 +70,125 @@ export default function Stock() {
             เพิ่มสินค้า
           </Button>
         </Box>
-        <div className="mx-auto text-left grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 max-w-[1520px]">
-          {productsFilter.map((product, idx) => (
-            <Card
-              key={idx}
-              sx={{
-                m: 1,
-                px: 1,
-                width: 300,
-                mx: "auto",
-                height: 500,
-                display: "inline-block",
+
+        <Box className="flex justify-start mb-3 px-10 max-w-[1520px] mx-auto">
+          <Box sx={{ display: "flex", overflowX: "scroll", maxWidth: "100vw" }}>
+            <Button
+              variant={category === -1 ? "contained" : "text"}
+              className={`${category === -1 ? "" : "bg-white"} mx-1`}
+              onClick={() => {
+                let que = router.query;
+                delete que.cat;
+                router.push({
+                  pathname: location.pathname,
+                  query: { ...que },
+                });
               }}
             >
-              <Box sx={{ px: 1 }}>
-                <h5 className="h-[40px] overflow-y-hidden">{product.name}</h5>
-              </Box>
-              <CardMedia
-                className="rounded object-contain"
-                component={"img"}
-                height={150}
-                image={product.image.length ? product.image : "/empty.jpg"}
-              />
-              <CardContent sx={{ px: 1 }}>
-                <Typography
-                  sx={{ height: 70, overflowY: "scroll" }}
-                  variant="body2"
-                  color={"text.secondary"}
+              ทั้งหมด
+            </Button>
+            {categoryList.map((cat, idx) => (
+              <Button
+                className={`${cat.id === category ? "" : "bg-white"} mx-1`}
+                variant={cat.id === category ? "contained" : "text"}
+                key={idx}
+                onClick={() => {
+                  if (cat.id === category) {
+                    let que = router.query;
+                    delete que.cat;
+                    router.push({
+                      pathname: location.pathname,
+                      query: { ...que },
+                    });
+                  } else {
+                    router.push({
+                      pathname: location.pathname,
+                      query: { ...router.query, cat: cat.id },
+                    });
+                  }
+                }}
+              >
+                {cat.name}
+              </Button>
+            ))}
+          </Box>
+        </Box>
+
+        <div className="mx-auto text-left grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 max-w-[1520px]">
+          {productsFilter.map(
+            (product, idx) =>
+              (category === -1 || category === product.cateId) && (
+                <Card
+                  key={idx}
+                  sx={{
+                    m: 1,
+                    px: 1,
+                    width: 300,
+                    mx: "auto",
+                    height: 500,
+                    display: "inline-block",
+                  }}
                 >
-                  {product.detail}
-                </Typography>
-                <Table sx={{ m: 0, p: 0 }}>
-                  <TableBody>
-                    <TableRow sx={{ m: 0, p: 0 }}>
-                      <TableCell sx={{ m: 0, p: 0, textAlign: "center  " }}>
-                        {Number(product.price).toLocaleString() + " บาท"}
-                      </TableCell>
-                      <TableCell> {`ส่วนลด ${product.discount}%`}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>เข้าชม {product.watch_count} ครั้ง</TableCell>
-                      <TableCell>คงเหลือ {product.stock} ชิ้น</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </CardContent>
-              <CardActions disableSpacing sx={{ justifyContent: "end" }}>
-                <Button
-                  color="warning"
-                  onClick={() => setUpdateState({ open: true, data: product })}
-                >
-                  <Edit /> แก้ไข
-                </Button>
-                <Button
-                  color="error"
-                  onClick={() => setDeleteState({ open: true, id: product.id })}
-                >
-                  <Delete /> ลบ
-                </Button>
-              </CardActions>
-            </Card>
-          ))}
+                  <Box sx={{ px: 1 }}>
+                    <h5 className="h-[40px] overflow-y-hidden">
+                      {product.name}
+                    </h5>
+                  </Box>
+                  <CardMedia
+                    className="rounded object-contain"
+                    component={"img"}
+                    height={150}
+                    image={product.image.length ? product.image : "/empty.jpg"}
+                  />
+                  <CardContent sx={{ px: 1 }}>
+                    <Typography
+                      sx={{ height: 70, overflowY: "scroll" }}
+                      variant="body2"
+                      color={"text.secondary"}
+                    >
+                      {product.detail}
+                    </Typography>
+                    <Table sx={{ m: 0, p: 0 }}>
+                      <TableBody>
+                        <TableRow sx={{ m: 0, p: 0 }}>
+                          <TableCell sx={{ m: 0, p: 0, textAlign: "center  " }}>
+                            {Number(product.price).toLocaleString() + " บาท"}
+                          </TableCell>
+                          <TableCell>
+                            {" "}
+                            {`ส่วนลด ${product.discount}%`}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>
+                            เข้าชม {product.watch_count} ครั้ง
+                          </TableCell>
+                          <TableCell>คงเหลือ {product.stock} ชิ้น</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                  <CardActions disableSpacing sx={{ justifyContent: "end" }}>
+                    <Button
+                      color="warning"
+                      onClick={() =>
+                        setUpdateState({ open: true, data: product })
+                      }
+                    >
+                      <Edit /> แก้ไข
+                    </Button>
+                    <Button
+                      color="error"
+                      onClick={() =>
+                        setDeleteState({ open: true, id: product.id })
+                      }
+                    >
+                      <Delete /> ลบ
+                    </Button>
+                  </CardActions>
+                </Card>
+              )
+          )}
         </div>
         <AddProduct open={modal} handleClose={() => setModal(false)} />
       </Box>
