@@ -8,6 +8,7 @@ import { CartContext, UserContext, WishlistContext } from "./_app";
 import PopupAlert from "@/components/PopupAlert";
 import {
   Box,
+  Button,
   FormControl,
   FormLabel,
   MenuItem,
@@ -132,8 +133,8 @@ export default function Home() {
       />
       <div>
         <Box className="flex justify-start mb-3 px-10 max-w-[1520px] mx-auto">
-          <Box className="flex items-center mx-3">หมวดหมู่</Box>
-          <FormControl>
+          {/* <Box className="flex items-center mx-3">หมวดหมู่</Box> */}
+          {/* <FormControl>
             <Select
               variant="standard"
               value={category}
@@ -151,7 +152,36 @@ export default function Home() {
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
+          <Box sx={{ display: "flex", overflowX: "scroll", maxWidth: "100vw" }}>
+            <Button variant={category === -1 ? "contained": "text"} className={`${category === -1 ? "" : "bg-white"} mx-1`}>
+              ทั้งหมด
+            </Button>
+            {categoryList.map((cat, idx) => (
+              <Button
+                className={`${cat.id === category ? "" : "bg-white"} mx-1`}
+                variant={cat.id === category ? "contained" : "text"}
+                key={idx}
+                onClick={() => {
+                  if (cat.id === category) {
+                    let que = router.query;
+                    delete que.cat;
+                    router.push({
+                      pathname: location.pathname,
+                      query: { ...que },
+                    });
+                  } else {
+                    router.push({
+                      pathname: location.pathname,
+                      query: { ...router.query, cat: cat.id },
+                    });
+                  }
+                }}
+              >
+                {cat.name}
+              </Button>
+            ))}
+          </Box>
         </Box>
 
         {productsFilter.length ? (
