@@ -173,7 +173,7 @@ export default function Home() {
                 });
               }}
             >
-              ทั้งหมด
+              ทั้งหมด{category === -1 ? `(${productsFilter.length})` : ""}
             </Button>
             {categoryList.map((cat, idx) => (
               <Button
@@ -197,6 +197,7 @@ export default function Home() {
                 }}
               >
                 {cat.name}
+                {cat.id === category ? `(${productsFilter.length})` : ""}
               </Button>
             ))}
           </Box>
