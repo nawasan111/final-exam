@@ -27,22 +27,38 @@ export default function Home() {
   const cart = useContext(CartContext);
   const [category, setCategory] = useState(-1);
   const [categoryList, setCategoryList] = useState([]);
+  const [productsFilter, setProductsFilter] = useState([]);
+  const [algorithm, setAlgorithm] = useState([]);
 
-  const productsFilter =
-    !!router.query?.q && router.query?.q?.length
-      ? products.filter(
-          (prod) =>
-            (category === -1 || category === prod.cateId) &&
-            String(prod.name)
-              .toLocaleLowerCase()
-              .includes(String(router.query.q).toLocaleLowerCase()) &&
-            Number(prod.stock) > 0
-        )
-      : products.filter(
-          (prod) =>
-            (category === -1 || category === prod.cateId) &&
-            Number(prod.stock) > 0
-        );
+  useEffect(() => {
+    let product_cache =
+      !!router.query?.q && router.query?.q?.length
+        ? products.filter(
+            (prod) =>
+              (category === -1 || category === prod.cateId) &&
+              String(prod.name)
+                .toLocaleLowerCase()
+                .includes(String(router.query.q).toLocaleLowerCase()) &&
+              Number(prod.stock) > 0
+          )
+        : products.filter(
+            (prod) =>
+              (category === -1 || category === prod.cateId) &&
+              Number(prod.stock) > 0
+          );
+    setProductsFilter(product_cache);
+
+    if (!algorithm.length) {
+      let seed = [...Array(products.length).keys()];
+      let productRandom = [];
+      for (let i = 0; i < seed.length; i++) {
+        let point = Math.floor(Math.random() * seed.length);
+        productRandom.push(seed[point]);
+        seed.slice(point, 1);
+      }
+      setAlgorithm(productRandom);
+    }
+  }, [products, category]);
 
   async function onCart(id, isRemove = false) {
     if (!user.value?.token) {
@@ -111,13 +127,15 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (!user.value?.token) return;
     fetchCategory();
     FetchProduct();
   }, [user]);
+
   useEffect(() => {
     if (router.query?.cat) {
       setCategory(Number(router.query.cat));
-    } else {
+    } else if (category !== -1) {
       setCategory(-1);
     }
   }, [router]);
@@ -133,7 +151,7 @@ export default function Home() {
       />
       <div>
         <Box className="flex justify-start mb-3 px-10 max-w-[1520px] mx-auto">
-         <Box sx={{ display: "flex", overflowX: "scroll", maxWidth: "100vw" }}>
+          <Box sx={{ display: "flex", overflowX: "scroll", maxWidth: "100vw" }}>
             <Button
               variant={category === -1 ? "contained" : "text"}
               className={`${category === -1 ? "" : "bg-white"} mx-1`}
@@ -177,37 +195,45 @@ export default function Home() {
 
         {productsFilter.length ? (
           <div className="mx-auto text-left grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 max-w-[1520px]">
-            {productsFilter.map((prod, idx) => (
-              <ProductCard
-                key={idx}
-                isFav={
-                  !!wishlist.value.filter(
-                    (wish) => wish.product_id === Number(prod.id)
-                  ).length
-                }
-                isCart={
-                  !!cart.value.filter((ct) => ct.product_id === Number(prod.id))
-                    .length
-                }
-                product={prod}
-                cartHandler={() =>
-                  onCart(
-                    prod.id,
-                    !!cart.value.filter(
-                      (ct) => ct.product_id === Number(prod.id)
-                    ).length
-                  )
-                }
-                favHandler={() =>
-                  onWishlist(
-                    prod.id,
-                    !!wishlist.value.filter(
-                      (wish) => wish.product_id === Number(prod.id)
-                    ).length
-                  )
-                }
-              />
-            ))}
+            {algorithm.map(
+              (algor, idx) =>
+                !!productsFilter[algor]?.id && (
+                  <ProductCard
+                    key={idx}
+                    isFav={
+                      !!wishlist.value.filter(
+                        (wish) =>
+                          wish.product_id === Number(productsFilter[algor].id)
+                      ).length
+                    }
+                    isCart={
+                      !!cart.value.filter(
+                        (ct) =>
+                          ct.product_id === Number(productsFilter[algor].id)
+                      ).length
+                    }
+                    product={productsFilter[algor]}
+                    cartHandler={() =>
+                      onCart(
+                        prod.id,
+                        !!cart.value.filter(
+                          (ct) =>
+                            ct.product_id === Number(productsFilter[algor].id)
+                        ).length
+                      )
+                    }
+                    favHandler={() =>
+                      onWishlist(
+                        productsFilter[algor].id,
+                        !!wishlist.value.filter(
+                          (wish) =>
+                            wish.product_id === Number(productsFilter[algor].id)
+                        ).length
+                      )
+                    }
+                  />
+                )
+            )}
           </div>
         ) : (
           <Paper sx={{ p: 2, textAlign: "center" }}>ไม่พบรายการ</Paper>
