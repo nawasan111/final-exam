@@ -228,7 +228,11 @@ function AdminNavbar(props) {
     >
       {MenuList.map((menu, idx) => (
         <span key={idx}>
-          <Link className="text-black no-underline" href={menu.link}>
+          <Link
+            onClick={handleMenuClose}
+            className="text-black no-underline"
+            href={menu.link}
+          >
             <MenuItem>
               {menu.element}
               <p>{menu.label}</p>

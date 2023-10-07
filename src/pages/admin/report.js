@@ -11,7 +11,7 @@ export default function Report() {
       <Head>
         <title>รายงาน | admin</title>
       </Head>
-      <Grid sx={{maxWidth: 1080, mx: "auto"}} container spacing={3}>
+      <Grid className="xl:mx-auto" sx={{ maxWidth: 1080 }} container spacing={3}>
         <Grid item xs={12} md={8} lg={9}>
           <Paper
             sx={{
