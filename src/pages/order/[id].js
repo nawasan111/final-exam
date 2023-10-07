@@ -72,7 +72,7 @@ export default function OrderDetail() {
               </Button>
             </Link>
           </Box>
-          <Paper sx={{ p: 1, overflowX: "scroll" }}>
+          <Paper className="shadow-none" sx={{ p: 2, overflowX: "scroll" }}>
             <Table>
               <TableHead>
                 <TableRow>
