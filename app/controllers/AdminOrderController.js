@@ -9,7 +9,7 @@ const AdminOrderController = {
    */
   async index(req, res) {
     try {
-      let order = await db.order.findMany({ orderBy: { id: "desc" } });
+      let order = await db.order.findMany({ orderBy: { date: "desc" } });
       res.json(order);
     } catch (err) {
       res.status(403).json({ status: 403, message: "error something" });
