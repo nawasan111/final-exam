@@ -1,5 +1,5 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
+import Link from "next/link";
 import Typography from "@mui/material/Typography";
 import Title from "./Title";
 import { AdminOrderContext } from "../layout/AdminLayout";
@@ -30,8 +30,8 @@ export default function Deposits() {
         total += Number(adminOrder.value[i].total_price);
       }
     }
-    setMonth(month_now)
-    setYear(year_now)
+    setMonth(month_now);
+    setYear(year_now);
     setTotalSelling(total);
   }, [user, adminOrder]);
 
@@ -42,11 +42,11 @@ export default function Deposits() {
         ${Number(totalSelling).toLocaleString()}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        on {month}, {year} 
+        on {month}, {year}
       </Typography>
       <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
+        <Link className="text-blue-600" href="/admin/order">
+          View orders
         </Link>
       </div>
     </React.Fragment>
