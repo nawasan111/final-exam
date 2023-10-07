@@ -110,7 +110,7 @@ export default function Wishlist() {
       <Head>
         <title>รายการชื่นชอบ | OpenShop</title>
       </Head>
-      <Box>
+      <Box sx={{maxWidth: 1200, mx: "auto"}}>
         <PopupAlert
           open={!!message.message.length}
           isError={message.error}
