@@ -118,7 +118,7 @@ export default function OrderDetail() {
         </Box>
       ) : (
         <Box>
-          <Paper sx={{ p: 1 }}>
+          <Paper className="shadow-none" sx={{ p: 2 }}>
             <Box sx={{ textAlign: "center" }}>ไม่พบรายการ</Box>
           </Paper>
         </Box>
