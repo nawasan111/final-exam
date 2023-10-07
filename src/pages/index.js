@@ -136,7 +136,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (!user.value?.token) return;
     fetchCategory();
     FetchProduct();
   }, [user]);
