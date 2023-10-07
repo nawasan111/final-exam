@@ -1,4 +1,4 @@
-# <p align="center">Final exam (ยังไม่เสร็จ)</p>
+# <p align="center">Final exam</p>
 
 <p align="center">
 <img alt="GitHub Top Language" src="https://img.shields.io/github/languages/top/nawasan111/final-exam" />
@@ -16,17 +16,18 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ 
 ## Get started
 
 - clone this repo
-  - ติดตั้ง dependencies ด้วยคำสั่ง `pnpm install`
-  - สร้างไฟล์ `.env` เหมือนกับ `.env.example`
-  - ใส่ข้อมูลการเชื่อมต่อที่ `.env` 
-  - migration
-    - `npx prisma migrate dev` เพื่อทำการ migrate ฐานข้อมูล
-    -  *หาก error อาจจะต้องทำการ upgrade mysql โดย
-        - รันไฟล์ชื่อ `mysql_upgrade` ที่โฟลเดอร์ `xampp/bin`
-  - กำหนดสิทธิ์ admin 
-    - หลังจากสมัครสมาชิก เข้าไปยังฐานข้อมูลและเปลี่ยน `rank` ของ user เป็น 1
-    - เมื่อเปลี่ยนเสร็จ ต้องทำการเข้าสู่ระบบใหม่อีกครั้ง
-  - `pnpm d` สำหรับการรัน dev mode
+- ติดตั้ง dependencies ด้วยคำสั่ง `pnpm install` หรือ `npm install`
+- สร้างไฟล์ `.env` เหมือนกับ `.env.example`
+- ใส่ข้อมูลการเชื่อมต่อที่ `.env`
+- migration
+  - `npx prisma migrate dev` เพื่อทำการ migrate ฐานข้อมูล
+  - หรือ import ฐานข้อมูลด้วย [openshop-database-example.sql](https://github.com/nawasan111/final-exam/releases/download/release/openshop-database-example.sql)
+  - \*หาก error อาจจะต้องทำการ upgrade mysql โดย
+    - รันไฟล์ชื่อ `mysql_upgrade` ที่โฟลเดอร์ `xampp/bin`
+- กำหนดสิทธิ์ admin
+  - หลังจากสมัครสมาชิก เข้าไปยังฐานข้อมูลและเปลี่ยน `rank` ของ user เป็น 1
+  - เมื่อเปลี่ยนเสร็จ ต้องทำการเข้าสู่ระบบใหม่อีกครั้ง
+- `pnpm d` สำหรับการรัน dev mode
 
 ## ข้อควรระวัง
 
@@ -35,9 +36,13 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ 
 เนื่องด้วยเป็นการเขียนเพื่อส่งงานอาจารย์ เพื่อประหยัดแรงและเวลาจึงไม่ได้ทำความปลอดภัยที่ดีพอ
 
 1. ไม่มีการตรวจสอบข้อมูลที่ api รับเข้ามา ทั้งความถูกต้องของข้อมูล เช่น เบอร์โทร, อีเมล
-2. ไม่มีการตรวจสอบขนาดของข้อมูลที่ api รับเข้ามา 
+2. ไม่มีการตรวจสอบขนาดของข้อมูลที่ api รับเข้ามา
 3. ระบบ auth เป็นแบบ token ไม่มีวันหมดอายุ แต่กำหนดให้ browser เก็บ token ไว้เพียงหนึ่งวัน และมีการอ้างอิงข้อมูลผู้ใช้จาก token จึงทำให้ข้อมูลอาจล้าสมัยได้ง่าย
 
 #### ด้าน back-end
 
 1. ไม่มีการจัดการ error หรือการตอบกลับฝั่ง client กรณี error ที่ชัดเจน
+
+### ฐานข้อมูล
+
+- ไม่ได้จัดการออกแบบขนาดของข้อมูลดีพอ เน้นข้อมูลขนาดใหญ่ไว้ก่อน กัน error
