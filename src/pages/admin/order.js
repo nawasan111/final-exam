@@ -130,7 +130,7 @@ export default function Order() {
                               console.log(usr);
                               if(!usr) return <>ไม่พบข้อมูล</>
                               return <Box sx={{display: "flex",alignItems: "center"}}>
-                              <img className="object-cover px-1 rounded" width={30} height={30} src={usr.photo} alt="profile image" />
+                              <img className="object-cover px-1 rounded-md" width={30} height={30} src={usr.photo} alt="profile image" />
                               {usr.name}
                               </Box>
                             })()}
