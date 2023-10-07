@@ -7,6 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import {
   Alert,
+  Box,
   FormControl,
   InputLabel,
   MenuItem,
@@ -19,7 +20,7 @@ import { CartContext, OrderContext, UserContext } from "@/pages/_app";
 export default function ConfirmOrder({ open, handleClose }) {
   const user = useContext(UserContext);
   const cart = useContext(CartContext);
-  const order = useContext(OrderContext)
+  const order = useContext(OrderContext);
   const [message, setMessage] = useState({ message: "", error: false });
 
   const [address, setAddress] = useState(user.value?.address ?? "");
@@ -97,8 +98,11 @@ export default function ConfirmOrder({ open, handleClose }) {
                   ["ธรรมดา", 40],
                   ["ช้า", 20],
                 ].map((ls, idx) => (
-                  <MenuItem key={idx} selected={ls[1] === 40} value={ls[1]}>
+                  <MenuItem sx={{display: "flex", justifyContent: "space-between"}} key={idx} selected={ls[1] === 40} value={ls[1]}>
                     {ls[0]}
+                    <Box sx={{ml: 3}} component={"span"} color={"orangered"}>
+                      ${ls[1]}
+                    </Box>
                   </MenuItem>
                 ))}
               </Select>

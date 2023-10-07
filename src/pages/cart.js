@@ -27,6 +27,7 @@ export default function Cart() {
   const [orderState, setOrderState] = useState(false);
   const router = useRouter();
   const [CartProduct, setCartProduct] = useState([]);
+  const [totalProduct, setTotalProduct] = useState(0);
 
   const removeFromCart = async (id) => {
     let response = await axios.delete(`/api/u/cart?id=${id}`, {
@@ -64,6 +65,15 @@ export default function Cart() {
     );
   }, [cart, products]);
 
+  useEffect(() => {
+    let total = 0;
+    CartProduct.map((pdt) => {
+      if (!pdt) return;
+      total += pdt.price - pdt.price * (pdt.discount / 100);
+    });
+    setTotalProduct(Math.floor(total));
+  }, [CartProduct]);
+
   return (
     <>
       <Head>
@@ -75,7 +85,7 @@ export default function Cart() {
           isError={message.error}
           message={message.message}
         />
-        <Paper className="shadow-none" sx={{ p: 2, overflowX: "scroll" }}>
+        <Paper className="shadow-none" sx={{ p: 2, overflowX: "scroll", maxWidth: 1200, mx: "auto" }}>
           {cart.value.length > 0 ? (
             <Box>
               <Table>
@@ -136,6 +146,13 @@ export default function Cart() {
                 </TableBody>
               </Table>
               <Box sx={{ textAlign: "right", p: 1 }}>
+                <Box sx={{ p: 1 }}>
+                  ทั้งหมด
+                  <Box component={"span"} color={"orangered"}>
+                    {" "}
+                    ${totalProduct.toLocaleString()}
+                  </Box>
+                </Box>
                 <Button size="large" onClick={() => setOrderState(true)}>
                   <ShoppingBag /> สั่งซื้อ
                 </Button>
