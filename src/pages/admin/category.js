@@ -45,76 +45,70 @@ export default function AdminCategory() {
       <Head>
         <title>จัดการหมวดหมู่ | admin</title>
       </Head>
-      <Box>
-        <Grid container>
-          <Grid item lg={3} md={0}></Grid>
-          <Grid item lg={6} md={12}>
-            <Box sx={{ mb: 2, textAlign: "right" }}>
-              <Button onClick={() => setModal(true)}>
-                <Add /> เพิ่มหมวดหมู่
-              </Button>
-            </Box>
-            <Paper sx={{ p: 2, overflowX: "scroll" }}>
-              <div>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>id</TableCell>
-                      <TableCell>ชื่อ</TableCell>
-                      <TableCell sx={{ maxWidth: 10, textAlign: "center" }}>
-                        แก้ไข
-                      </TableCell>
-                      <TableCell sx={{ maxWidth: 10, textAlign: "center" }}>
-                        ลบ
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {category.map(
-                      (cate, idx) =>
-                        (!router.query?.q ||
-                          cate.id === Number(router.query.q) ||
-                          String(cate.name)
-                            .toLocaleLowerCase()
-                            .includes(
-                              String(router.query.q).toLocaleLowerCase()
-                            )) && (
-                          <TableRow key={idx}>
-                            <TableCell>{cate.id}</TableCell>
-                            <TableCell>{cate.name}</TableCell>
-                            <TableCell sx={{ maxWidth: 10 }}>
-                              <Button
-                                color="warning"
-                                onClick={() =>
-                                  setUpdateState({
-                                    open: true,
-                                    data: { id: cate.id, name: cate.name },
-                                  })
-                                }
-                              >
-                                <Edit />
-                              </Button>
-                            </TableCell>
-                            <TableCell sx={{ maxWidth: 10 }}>
-                              <Button
-                                color="error"
-                                onClick={() =>
-                                  setDeleteState({ open: true, id: cate.id })
-                                }
-                              >
-                                <Delete />
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        )
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-            </Paper>
-          </Grid>
-          <Grid item lg={3} md={0}></Grid>
-        </Grid>
+      <Box sx={{maxWidth: 800, mx: "auto"}}>
+        <Box sx={{ mb: 2, textAlign: "right" }}>
+          <Button onClick={() => setModal(true)}>
+            <Add /> เพิ่มหมวดหมู่
+          </Button>
+        </Box>
+        <Paper sx={{ p: 2, overflowX: "scroll" }}>
+          <div>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>id</TableCell>
+                  <TableCell>ชื่อ</TableCell>
+                  <TableCell sx={{ maxWidth: 10, textAlign: "center" }}>
+                    แก้ไข
+                  </TableCell>
+                  <TableCell sx={{ maxWidth: 10, textAlign: "center" }}>
+                    ลบ
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {category.map(
+                  (cate, idx) =>
+                    (!router.query?.q ||
+                      cate.id === Number(router.query.q) ||
+                      String(cate.name)
+                        .toLocaleLowerCase()
+                        .includes(
+                          String(router.query.q).toLocaleLowerCase()
+                        )) && (
+                      <TableRow key={idx}>
+                        <TableCell>{cate.id}</TableCell>
+                        <TableCell>{cate.name}</TableCell>
+                        <TableCell sx={{ maxWidth: 10 }}>
+                          <Button
+                            color="warning"
+                            onClick={() =>
+                              setUpdateState({
+                                open: true,
+                                data: { id: cate.id, name: cate.name },
+                              })
+                            }
+                          >
+                            <Edit />
+                          </Button>
+                        </TableCell>
+                        <TableCell sx={{ maxWidth: 10 }}>
+                          <Button
+                            color="error"
+                            onClick={() =>
+                              setDeleteState({ open: true, id: cate.id })
+                            }
+                          >
+                            <Delete />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    )
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </Paper>
 
         {deleteState.open && (
           <DeleteCategory

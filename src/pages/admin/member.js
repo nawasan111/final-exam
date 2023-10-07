@@ -102,7 +102,7 @@ export default function Member() {
           </Select>
         </FormControl>
       </Box>
-      <Paper sx={{ p: 2 }}>
+      <Paper sx={{ p: 2, overflowX: "scroll" }}>
         <Table>
           <TableHead>
             <TableRow>

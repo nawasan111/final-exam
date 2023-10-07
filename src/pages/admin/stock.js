@@ -71,7 +71,7 @@ export default function Stock() {
           </Button>
         </Box>
 
-        <Box className="flex justify-start mb-3 px-10 max-w-[1520px] mx-auto">
+        <Box className="flex justify-start mb-3 sm:px-10 max-w-[1520px] mx-auto">
           <Box sx={{ display: "flex", overflowX: "scroll", maxWidth: "100vw" }}>
             <Button
               variant={category === -1 ? "contained" : "text"}
