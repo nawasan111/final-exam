@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../Navbar";
 import { Box } from "@mui/material";
 import { Toolbar } from "@mui/material";
+import Footer from "../Footer";
 
 export default function UserLayout({ children }) {
   return (
@@ -20,6 +21,7 @@ export default function UserLayout({ children }) {
           {children}
         </Box>
       </Box>
+      <Footer />
     </>
   );
 }
