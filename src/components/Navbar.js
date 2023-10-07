@@ -281,7 +281,11 @@ function Navbar(props) {
     >
       {MenuList.map((menu, idx) => (
         <span key={idx}>
-          <Link onClick={handleMobileMenuClose} className="text-black no-underline" href={menu.link}>
+          <Link
+            onClick={handleMobileMenuClose}
+            className="text-black no-underline"
+            href={menu.link}
+          >
             <MenuItem>
               {menu.element}
               <p>{menu.label}</p>
@@ -304,16 +308,16 @@ function Navbar(props) {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: "none", md: "block" } }}
+            sx={{ display: { md: "block" } }}
           >
             <Link
-              className="bg-black p-4 rounded-lg inline-block py-2"
+              className="bg-black rounded-lg inline-block px-2 sm:p-4 sm:py-2"
               href={"/"}
             >
               OpenShop
             </Link>
           </Typography>
-          <Search>
+          <Search sx={{ width: 150 }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

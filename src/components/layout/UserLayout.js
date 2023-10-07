@@ -7,8 +7,8 @@ import Footer from "../Footer";
 export default function UserLayout({ children }) {
   return (
     <>
-      <Box sx={{ display: "flex" }}>
-        <Navbar />
+      <Navbar />
+      <Box>
         {/* <Sidebar /> */}
         <Box
           component="main"

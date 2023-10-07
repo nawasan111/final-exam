@@ -35,8 +35,8 @@ export default function AdminLayout({ children }) {
           fetch: fetchAdminOrder,
         }}
       >
-        <Box sx={{ display: "flex" }}>
-          <AdminNavbar />
+        <AdminNavbar />
+        <Box>
           {/* <Sidebar /> */}
           <Box
             component="main"
