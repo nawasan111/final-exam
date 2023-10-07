@@ -73,7 +73,7 @@ export default function AdminOrderDetail() {
               </Button>
             </Link>
           </Box>
-          <Paper sx={{ p: 1 }}>
+          <Paper sx={{ p: 1, overflowX: "scroll" }}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -100,7 +100,7 @@ export default function AdminOrderDetail() {
                             alt="รูปสินค้า"
                           />
                         </TableCell>
-                        <TableCell>{pdt.name}</TableCell>
+                        <TableCell sx={{ minWidth: 70 }}>{pdt.name}</TableCell>
                         <TableCell>
                           <div className="max-h-10  overflow-scroll">
                             {pdt.detail}

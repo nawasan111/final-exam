@@ -120,7 +120,7 @@ export default function Order() {
                             </TableCell>
                             <TableCell>{order.product_count}</TableCell>
                             <TableCell>${order.shipping_price}</TableCell>
-                            <TableCell>
+                            <TableCell sx={{minWidth: 70}}>
                               <Box color={order.pay_status ? "green" : "red"}>
                                 {order.pay_status ? (
                                   "ชำระเงินแล้ว"
@@ -139,7 +139,7 @@ export default function Order() {
                                 )}
                               </Box>
                             </TableCell>
-                            <TableCell>
+                            <TableCell sx={{minWidth: 70}}>
                               {order.send_status == 0 ? (
                                 <Box color="gray">
                                   {order.send_status
