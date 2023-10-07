@@ -121,11 +121,20 @@ export default function Order() {
                             </Link>
                           </TableCell>
                           <TableCell>
-                            {userAll.length
-                              ? userAll?.filter(
-                                  (usr) => usr.id === order.user_id
-                                )[0].name ?? "undifined"
-                              : "undifined"}
+                            {(() => {
+                              let usr = userAll.length
+                                ? userAll?.filter(
+                                    (usr) => usr.id === order.user_id
+                                  )[0] ?? false
+                                : false;
+                              console.log(usr);
+                              if(!usr) return <>ไม่พบข้อมูล</>
+                              return <Box sx={{display: "flex",alignItems: "center"}}>
+                              <img className="object-cover px-1 rounded" width={30} height={30} src={usr.photo} alt="profile image" />
+                              {usr.name}
+                              </Box>
+                            })()}
+                            {}
                           </TableCell>
                           <TableCell>
                             <Box color="orangered">
