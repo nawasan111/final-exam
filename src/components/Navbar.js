@@ -83,6 +83,8 @@ function Navbar(props) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   function onUpdateSearch(value) {
+    setSearch(value);
+    // return
     let query = router.query;
     if (value) {
       query.q = value;
@@ -97,7 +99,6 @@ function Navbar(props) {
 
   React.useEffect(() => {
     setSearch(router.query?.q ?? "");
-    console.log(router.query);
   }, [router]);
 
   const handleMobileMenuClose = () => {

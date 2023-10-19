@@ -26,7 +26,7 @@ export default function Home() {
   const [message, setMessage] = useState({ message: "", error: false });
   const wishlist = useContext(WishlistContext);
   const cart = useContext(CartContext);
-  const [category, setCategory] = useState(-1);
+  const [category, setCategory] = useState("");
   const [categoryList, setCategoryList] = useState([]);
   const [productsFilter, setProductsFilter] = useState([]);
   const [algorithm, setAlgorithm] = useState([]);
@@ -47,11 +47,14 @@ export default function Home() {
 
   useEffect(() => {
     // products filter for search and category
+    let cat_id = category.length
+      ? categoryList.filter((c) => c.name == category)[0]?.id ?? ""
+      : "";
     let product_cache =
       !!router.query?.q && router.query?.q?.length
         ? algorithm.filter(
             (pid) =>
-              (category === -1 || category === products[pid].cateId) &&
+              (category.length === 0 || cat_id === products[pid].cateId) &&
               String(products[pid].name)
                 .toLocaleLowerCase()
                 .includes(String(router.query.q).toLocaleLowerCase()) &&
@@ -59,7 +62,7 @@ export default function Home() {
           )
         : algorithm.filter(
             (pid) =>
-              (category === -1 || category === products[pid]?.cateId) &&
+              (category.length === 0 || cat_id === products[pid]?.cateId) &&
               Number(products[pid].stock) > 0
           );
     setProductsFilter(product_cache);
@@ -144,7 +147,7 @@ export default function Home() {
     if (router.query?.cat) {
       setCategory(router.query.cat);
     } else if (category !== -1) {
-      setCategory(-1);
+      setCategory("");
     }
   }, [router]);
 
@@ -162,8 +165,8 @@ export default function Home() {
         <Box className="flex justify-start mb-3 sm:px-10 max-w-[1520px] mx-auto">
           <Box sx={{ display: "flex", overflowX: "scroll" }}>
             <Button
-              variant={category === -1 ? "contained" : "text"}
-              className={`${category === -1 ? "" : "bg-white"} mx-1`}
+              variant={category.length === 0 ? "contained" : "text"}
+              className={`${category.length === 0 ? "" : "bg-white"} mx-1`}
               onClick={() => {
                 let que = router.query;
                 delete que.cat;
@@ -173,15 +176,15 @@ export default function Home() {
                 });
               }}
             >
-              ทั้งหมด{category === -1 ? `(${productsFilter.length})` : ""}
+              ทั้งหมด{category.length === 0 ? `(${productsFilter.length})` : ""}
             </Button>
             {categoryList.map((cat, idx) => (
               <Button
-                className={`${cat.id === category ? "" : "bg-white"} mx-1`}
-                variant={cat.id === category ? "contained" : "text"}
+                className={`${cat.name === category ? "" : "bg-white"} mx-1`}
+                variant={cat.name === category ? "contained" : "text"}
                 key={idx}
                 onClick={() => {
-                  if (cat.id === category) {
+                  if (cat.name === category) {
                     let que = router.query;
                     delete que.cat;
                     router.push({
@@ -191,7 +194,7 @@ export default function Home() {
                   } else {
                     router.push({
                       pathname: location.pathname,
-                      query: { ...router.query, cat: cat.id },
+                      query: { ...router.query, cat: cat.name },
                     });
                   }
                 }}
