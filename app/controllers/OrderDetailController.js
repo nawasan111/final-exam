@@ -11,7 +11,7 @@ const OrderDetailController = {
     try {
       const { id } = req.query;
       const orderDetail = await db.order_detail.findMany({
-        where: { user_id: Number(req.user.id), order_id: Number(id) },
+        where: { user_id: req.user.id, order_id: id },
       });
       await db.$disconnect();
       res.json(orderDetail);

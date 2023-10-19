@@ -159,7 +159,7 @@ export default function Order() {
                                 value={Number(order.send_status)}
                                 onChange={(e) => {
                                   onSendingChange(
-                                    Number(order.id),
+                                    order.id,
                                     Number(e.target.value)
                                   );
                                 }}

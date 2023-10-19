@@ -27,7 +27,7 @@ export default function UpdateProduct({ open, handleClose, data }) {
   const [discount, setDiscount] = useState(data.discount);
   const [stock, setStock] = useState(data.stock);
   const [image, setImage] = useState(data.image);
-  const [category, setCategory] = useState(Number(data.cateId));
+  const [category, setCategory] = useState(data.cateId);
 
   useEffect(() => {
     axios.get("/api/category").then((res) => {
@@ -151,7 +151,7 @@ export default function UpdateProduct({ open, handleClose, data }) {
               <InputLabel>หมวดหมู่</InputLabel>
               <Select
                 value={category}
-                onChange={(e) => setCategory(Number(e.target.value))}
+                onChange={(e) => setCategory(e.target.value)}
                 required
               >
                 {categoryList.map((cat, idx) => (
@@ -166,7 +166,7 @@ export default function UpdateProduct({ open, handleClose, data }) {
             <Button color="error" onClick={handleClose}>
               ยกเลิก
             </Button>
-            <Button type="submit">เพิ่ม</Button>
+            <Button type="submit">บันทึก</Button>
           </DialogActions>
         </form>
       </Dialog>

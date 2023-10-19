@@ -21,7 +21,7 @@ const AdminUserController = {
       const { id, rank } = req.body;
       if (!id) throw 300;
       await db.user.update({
-        where: { id: Number(id) },
+        where: { id: id },
         data: { rank: !!rank },
       });
       await db.$disconnect();
@@ -39,7 +39,7 @@ const AdminUserController = {
     try {
       const { id } = req.query;
       if (!id) throw 400;
-      await db.user.delete({ where: { id: Number(id) } });
+      await db.user.delete({ where: { id: id } });
       await db.$disconnect();
       res.json({
         status: 401,

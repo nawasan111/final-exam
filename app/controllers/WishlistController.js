@@ -9,11 +9,12 @@ const WishlistController = {
   async index(req, res) {
     try {
       const wishlists = await db.wishlist.findMany({
-        where: { user_id: Number(req.user.id) },
+        where: { user_id: req.user.id },
       });
       await db.$disconnect();
       res.json({ status: 101, wishlists });
     } catch (err) {
+      console.log(err);
       res.json({ status: 100, message: "found some error" });
     }
   },
@@ -28,14 +29,14 @@ const WishlistController = {
       if (!id) throw 200;
       const check = await db.wishlist.findFirst({
         where: {
-          AND: { user_id: Number(req.user.id), product_id: Number(id) },
+          AND: { user_id: req.user.id, product_id: id },
         },
       });
       if (check) throw 200;
       await db.wishlist.create({
         data: {
-          user_id: Number(req.user.id),
-          product_id: Number(id),
+          user_id: req.user.id,
+          product_id: id,
         },
       });
       res.json({ status: 201, message: "add wishlist success" });
@@ -54,8 +55,8 @@ const WishlistController = {
       if (!id) throw 400;
       const wishlist_find = await db.wishlist.findFirst({
         where: {
-          product_id: Number(id),
-          user_id: Number(req.user.id),
+          product_id: id,
+          user_id: req.user.id,
         },
       });
       if (!wishlist_find) throw 400;

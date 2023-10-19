@@ -47,6 +47,7 @@ export default function App({ Component, pageProps }) {
     let response = await axios.get("/api/u/wishlist", {
       headers: { token: user.token },
     });
+    console.log(response.data);
     setWishlist(response.data.wishlists);
   };
   useEffect(() => {

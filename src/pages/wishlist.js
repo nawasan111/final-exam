@@ -28,7 +28,7 @@ export default function Wishlist() {
   const [wishlistProduct, setWishlistProduct] = useState([]);
 
   const isInCart = (id) => {
-    return !!cart.value.filter((ct) => ct.product_id === Number(id)).length;
+    return !!cart.value.filter((ct) => ct.product_id === id).length;
   };
 
   async function onCart(id, isRemove = false) {

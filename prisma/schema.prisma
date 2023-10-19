@@ -6,17 +6,17 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model user {
-  id            Int            @id @default(autoincrement())
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   email         String
   phone         String
-  address       String         @db.LongText @default("")
-  photo         String         @db.LongText
+  address       String         @default("")
+  photo         String
   google_token  String
   username      String         @unique
   password      String
@@ -29,16 +29,16 @@ model user {
 }
 
 model product {
-  id           Int            @id @default(autoincrement())
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
   name         String
-  detail       String         @db.LongText
+  detail       String
   price        Int
   discount     Int
   cate         category       @relation(fields: [cateId], references: [id])
-  cateId       Int
+  cateId       String         @db.ObjectId
   watch_count  Int
   buy_count    Int
-  image        String         @db.LongText
+  image        String
   stock        Int
   wishlist     wishlist[]
   cart         cart[]
@@ -46,35 +46,35 @@ model product {
 }
 
 model category {
-  id      Int       @id @default(autoincrement())
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
   name    String    @unique
   product product[]
 }
 
 model wishlist {
-  id         Int      @id @default(autoincrement())
-  product_id Int
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  product_id String   @db.ObjectId
   product    product  @relation(fields: [product_id], references: [id])
-  user_id    Int
+  user_id    String   @db.ObjectId
   user       user     @relation(fields: [user_id], references: [id])
   date       DateTime @default(now())
 }
 
 model cart {
-  id         Int     @id @default(autoincrement())
-  user_id    Int
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  user_id    String  @db.ObjectId
   user       user    @relation(fields: [user_id], references: [id])
-  product_id Int
+  product_id String  @db.ObjectId
   product    product @relation(fields: [product_id], references: [id])
 }
 
 model order {
-  id             Int            @id @default(autoincrement())
-  user_id        Int
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  user_id        String         @db.ObjectId
   user           user           @relation(fields: [user_id], references: [id])
   total_price    Int
   product_count  Int
-  address        String         @db.LongText @default("")
+  address        String         @default("")
   date           DateTime       @default(now())
   shipping_price Int
   pay_status     Int
@@ -83,12 +83,12 @@ model order {
 }
 
 model order_detail {
-  id               Int     @id @default(autoincrement())
-  order_id         Int
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  order_id         String  @db.ObjectId
   order            order   @relation(fields: [order_id], references: [id])
-  user_id          Int
+  user_id          String  @db.ObjectId
   user             user    @relation(fields: [user_id], references: [id])
-  product_id       Int
+  product_id       String  @db.ObjectId
   product          product @relation(fields: [product_id], references: [id])
   product_price    Int
   product_discount Int

@@ -28,7 +28,7 @@ export default function Stock() {
   const [products, setProducts] = useState([]);
   const [updateState, setUpdateState] = useState({ open: false, data: {} });
   const [deleteState, setDeleteState] = useState({ open: false, id: -1 });
-  const [category, setCategory] = useState(-1);
+  const [category, setCategory] = useState("");
   const [categoryList, setCategoryList] = useState([]);
 
   const productsFilter = !!router.query?.q
@@ -52,9 +52,9 @@ export default function Stock() {
 
   useEffect(() => {
     if (router.query?.cat) {
-      setCategory(Number(router.query.cat));
+      setCategory(router.query.cat);
     } else {
-      setCategory(-1);
+      setCategory('');
     }
   }, [router]);
 
@@ -74,8 +74,8 @@ export default function Stock() {
         <Box className="flex justify-start mb-3 sm:px-10 max-w-[1520px] mx-auto">
           <Box sx={{ display: "flex", overflowX: "scroll", maxWidth: "100vw" }}>
             <Button
-              variant={category === -1 ? "contained" : "text"}
-              className={`${category === -1 ? "" : "bg-white"} mx-1`}
+              variant={category.length === 0 ? "contained" : "text"}
+              className={`${category.length === 0 ? "" : "bg-white"} mx-1`}
               onClick={() => {
                 let que = router.query;
                 delete que.cat;
@@ -117,7 +117,7 @@ export default function Stock() {
         <div className="mx-auto text-left grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 max-w-[1520px]">
           {productsFilter.map(
             (product, idx) =>
-              (category === -1 || category === product.cateId) && (
+              (category.length === 0 || category === product.cateId) && (
                 <Card
                   key={idx}
                   sx={{

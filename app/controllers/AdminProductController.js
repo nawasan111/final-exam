@@ -17,7 +17,7 @@ const AdminProductController = {
           discount: Number(discount),
           stock: Number(stock),
           image: image ?? "",
-          cateId: Number(category),
+          cateId: category,
           buy_count: 0,
           watch_count: 0,
         },
@@ -43,7 +43,7 @@ const AdminProductController = {
       const { id, name, price, detail, discount, stock, image, category } =
         req.body;
       await db.product.update({
-        where: { id: Number(id) },
+        where: { id: id },
         data: {
           name,
           price,
@@ -51,7 +51,7 @@ const AdminProductController = {
           discount: Number(discount),
           stock,
           image,
-          cateId: Number(category),
+          cateId: category,
         },
       });
       await db.$disconnect();
@@ -73,7 +73,7 @@ const AdminProductController = {
     try {
       const { id } = req.query;
       if (!id) throw 400;
-      await db.product.delete({ where: { id: Number(id) } });
+      await db.product.delete({ where: { id: id } });
       res.json({ status: 401, message: "delete success" });
     } catch (err) {
       console.log(err);

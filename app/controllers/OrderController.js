@@ -10,7 +10,7 @@ const OrderController = {
   async index(req, res) {
     try {
       const order = await db.order.findMany({
-        where: { user_id: Number(req.user.id) },
+        where: { user_id: req.user.id },
         orderBy: {id: "desc"}
       });
       res.json(order);
@@ -27,7 +27,7 @@ const OrderController = {
     try {
       const { address, sending } = req.body;
       let cart = await db.cart.findMany({
-        where: { user_id: Number(req.user.id) },
+        where: { user_id: req.user.id },
       });
       if (!cart.length || !address || !sending) throw 200;
 
@@ -35,7 +35,7 @@ const OrderController = {
       const cartProduct = [];
       for (let i = 0; i < cart.length; i++) {
         let getpd = await db.product.findFirst({
-          where: { id: Number(cart[i].product_id) },
+          where: { id: cart[i].product_id },
         });
         getpd.real_price = getpd.price - getpd.price * (getpd.discount / 100);
         total_price += getpd.real_price;
@@ -45,7 +45,7 @@ const OrderController = {
       //   return res.json({ cartProduct, total_price });
       const order = await db.order.create({
         data: {
-          user_id: Number(req.user.id),
+          user_id: req.user.id,
           total_price: Number(total_price),
           product_count: cart.length,
           //   ****
@@ -65,16 +65,16 @@ const OrderController = {
           product_discount: cartProduct[i].discount,
           product_id: cartProduct[i].id,
           product_price: cartProduct[i].price,
-          user_id: Number(req.user.id),
+          user_id: req.user.id,
         });
       }
       await db.order_detail.createMany({
         data: orderDetail,
       });
-      await db.cart.deleteMany({ where: { user_id: Number(req.user.id) } });
+      await db.cart.deleteMany({ where: { user_id: req.user.id } });
       await db.user.update({
         data: { address },
-        where: { id: Number(req.user.id) },
+        where: { id: req.user.id },
       });
       await db.$disconnect();
       res.json({ status: 201, message: "create order success" });
@@ -92,7 +92,7 @@ const OrderController = {
     try {
       const { id } = req.query;
       if (!id) throw 300;
-      await db.order.update({ where: { id: Number(id) }, data: { pay_status: 1 } });
+      await db.order.update({ where: { id: id }, data: { pay_status: 1 } });
       res.json({
         status: 301, message: "check order success"
       })

@@ -60,7 +60,7 @@ const CategoryController = {
     try {
       const { id } = req.query;
       if (!id) throw 400;
-      await db.category.delete({ where: { id: Number(id) } });
+      await db.category.delete({ where: { id: id } });
       await db.$disconnect();
       res.json({
         status: 401, 

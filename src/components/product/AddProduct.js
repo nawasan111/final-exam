@@ -26,7 +26,7 @@ export default function AddProduct({ open, handleClose }) {
   const [discount, setDiscount] = useState();
   const [stock, setStock] = useState();
   const [image, setImage] = useState("");
-  const [category, setCategory] = useState(0);
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
     axios.get("/api/category").then((res) => {
@@ -61,7 +61,7 @@ export default function AddProduct({ open, handleClose }) {
       setDiscount("");
       setStock("");
       setImage("");
-      setCategory(0);
+      setCategory("");
       setMessage({ message: "เพิ่มสินค้าสำเร็จ", error: false });
       handleClose();
       setTimeout(() => {
@@ -151,7 +151,7 @@ export default function AddProduct({ open, handleClose }) {
               <InputLabel>หมวดหมู่</InputLabel>
               <Select
                 value={category}
-                onChange={(e) => setCategory(Number(e.target.value))}
+                onChange={(e) => setCategory(e.target.value)}
                 required
               >
                 {categoryList.map((cat, idx) => (

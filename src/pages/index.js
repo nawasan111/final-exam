@@ -142,7 +142,7 @@ export default function Home() {
 
   useEffect(() => {
     if (router.query?.cat) {
-      setCategory(Number(router.query.cat));
+      setCategory(router.query.cat);
     } else if (category !== -1) {
       setCategory(-1);
     }
@@ -210,12 +210,12 @@ export default function Home() {
                 key={idx}
                 isFav={
                   !!wishlist.value.filter(
-                    (wish) => wish.product_id === Number(products[pid].id)
+                    (wish) => wish.product_id === products[pid].id
                   ).length
                 }
                 isCart={
                   !!cart.value.filter(
-                    (ct) => ct.product_id === Number(products[pid].id)
+                    (ct) => ct.product_id === products[pid].id
                   ).length
                 }
                 product={products[pid]}
@@ -223,7 +223,7 @@ export default function Home() {
                   onCart(
                     products[pid].id,
                     !!cart.value.filter(
-                      (ct) => ct.product_id === Number(products[pid].id)
+                      (ct) => ct.product_id === products[pid].id
                     ).length
                   )
                 }
@@ -231,7 +231,7 @@ export default function Home() {
                   onWishlist(
                     products[pid].id,
                     !!wishlist.value.filter(
-                      (wish) => wish.product_id === Number(products[pid].id)
+                      (wish) => wish.product_id === products[pid].id
                     ).length
                   )
                 }

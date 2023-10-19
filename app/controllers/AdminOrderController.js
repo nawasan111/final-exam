@@ -25,8 +25,8 @@ const AdminOrderController = {
       const { id, sending } = req.body;
       if (!id) throw 300;
       await db.order.update({
-        where: { id: Number(id) },
-        data: { send_status: Number(sending) },
+        where: { id: id },
+        data: { send_status: sending },
       });
       await db.$disconnect();
       res.json({ status: 301, message: "update sending success" });
@@ -44,7 +44,7 @@ const AdminOrderController = {
     try {
       const { id } = req.query;
       let orderdetail = await db.order_detail.findMany({
-        where: { order_id: Number(id) },
+        where: { order_id: id },
       });
       res.json(orderdetail);
     } catch (err) {
