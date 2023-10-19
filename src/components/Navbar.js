@@ -91,6 +91,7 @@ function Navbar(props) {
 
   React.useEffect(() => {
     setSearch(router.query?.q ?? "");
+    console.log(router.query);
   }, [router]);
 
   const handleMobileMenuClose = () => {
@@ -325,6 +326,7 @@ function Navbar(props) {
               className="hover:border border-gray-300 hover:border-solid rounded duration-200"
               placeholder="ค้นหา…"
               inputProps={{ "aria-label": "search" }}
+              value={search}
               onChange={(e) => {
                 return onUpdateSearch(e.target.value);
               }}
