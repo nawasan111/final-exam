@@ -200,7 +200,7 @@ export default function Home() {
                 }}
               >
                 {cat.name}
-                {cat.id === category ? `(${productsFilter.length})` : ""}
+                {cat.name === category ? `(${productsFilter.length})` : ""}
               </Button>
             ))}
           </Box>
