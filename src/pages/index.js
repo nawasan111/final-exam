@@ -160,7 +160,7 @@ export default function Home() {
       />
       <div>
         <Box className="flex justify-start mb-3 sm:px-10 max-w-[1520px] mx-auto">
-          <Box sx={{ display: "flex", overflowX: "scroll"  }}>
+          <Box sx={{ display: "flex", overflowX: "scroll" }}>
             <Button
               variant={category === -1 ? "contained" : "text"}
               className={`${category === -1 ? "" : "bg-white"} mx-1`}
@@ -240,7 +240,7 @@ export default function Home() {
           </div>
         ) : (
           <Paper className="shadow-none" sx={{ p: 2, textAlign: "center" }}>
-            <CircularProgress />
+            {algorithm.length ? "ไม่พบรายการ" : <CircularProgress />}
           </Paper>
         )}
       </div>
