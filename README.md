@@ -1,3 +1,12 @@
+<p align="center">
+    <img width="40" height="30" alt="nextjs" src="https://github.com/Arikato111/Arikato111/raw/main/icons/nextjs-original.svg">
+    <img width="40" height="30" alt="tailwindcss" src="https://github.com/Arikato111/Arikato111/raw/main/icons/tailwindcss-plain.svg">
+    <img width="40" height="30" alt="express.js" src="https://github.com/tandpfun/skill-icons/raw/main/icons/ExpressJS-Dark.svg">
+    <img height="30" width="40" src="https://github.com/tandpfun/skill-icons/raw/main/icons/Prisma.svg" alt="prisma">
+    <img width="40" height="30" alt="Mongodb" src="https://github.com/Arikato111/Arikato111/raw/main/icons/mongodb-plain.svg">
+
+</p>
+
 # <p align="center">Final exam</p>
 
 <p align="center">
@@ -13,19 +22,22 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ 
 
 ... and MVC
 
+## Updates!
+
+เปลี่ยนมาใช้ฐานข้อมูล Mongodb จากเดิมที่ใช้ MySQL เพราะว่า Mongodb ไม่เสียเงิน แต่อาจทำให้ต้องใช้เวลาโหลดมากขึ้นเพราะมันช้า
+
 ## Get started
 
 - clone this repo
 - ติดตั้ง dependencies ด้วยคำสั่ง `pnpm install` หรือ `npm install`
 - สร้างไฟล์ `.env` เหมือนกับ `.env.example`
 - ใส่ข้อมูลการเชื่อมต่อที่ `.env`
+  - ฐานข้อมูล Mongodb
+  - jwt-token (ใส่ข้อความหรืออะไรสักอย่าง)
 - migration
-  - `npx prisma migrate dev` เพื่อทำการ migrate ฐานข้อมูล
-  - หรือ import ฐานข้อมูลด้วย [openshop-database-example.sql](https://github.com/nawasan111/final-exam/releases/download/release/openshop-database-example.sql)
-  - \*หาก error อาจจะต้องทำการ upgrade mysql โดย
-    - รันไฟล์ชื่อ `mysql_upgrade` ที่โฟลเดอร์ `xampp/bin`
+  - `npx prisma generate` เพื่อทำการ generate ฐานข้อมูล (ไม่แน่ใจ ไปหาอ่าน [document](https://www.prisma.io/docs/concepts/database-connectors/mongodb) เพิ่มเติมนะ)
 - กำหนดสิทธิ์ admin
-  - หลังจากสมัครสมาชิก เข้าไปยังฐานข้อมูลและเปลี่ยน `rank` ของ user เป็น 1
+  - หลังจากสมัครสมาชิก เข้าไปยังฐานข้อมูลและเปลี่ยน `rank` ของ user เป็น `true`
   - เมื่อเปลี่ยนเสร็จ ต้องทำการเข้าสู่ระบบใหม่อีกครั้ง
 - `pnpm d` สำหรับการรัน dev mode
 
@@ -43,6 +55,6 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ 
 
 1. ไม่มีการจัดการ error หรือการตอบกลับฝั่ง client กรณี error ที่ชัดเจน
 
-### ฐานข้อมูล
+#### ฐานข้อมูล
 
-- ไม่ได้จัดการออกแบบขนาดของข้อมูลดีพอ เน้นข้อมูลขนาดใหญ่ไว้ก่อน กัน error
+- ได้มีการย้ายฐานข้อมูลจาก MySQL มาเป็น Mongodb จึงอาจจะทำให้เกิดข้อผิดพลาดได้
