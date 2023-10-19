@@ -83,9 +83,15 @@ function Navbar(props) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   function onUpdateSearch(value) {
+    let query = router.query;
+    if (value) {
+      query.q = value;
+    } else {
+      delete query.q;
+    }
     router.push({
       pathname: location.pathname,
-      query: { ...router.query, q: value },
+      query: { ...query },
     });
   }
 
