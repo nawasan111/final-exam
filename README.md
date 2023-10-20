@@ -36,6 +36,7 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ 
   - jwt-token (ใส่ข้อความหรืออะไรสักอย่าง)
 - migration
   - `npx prisma generate` เพื่อทำการ generate ฐานข้อมูล (ไม่แน่ใจ ไปหาอ่าน [document](https://www.prisma.io/docs/concepts/database-connectors/mongodb) เพิ่มเติมนะ)
+  - ตัวอย่างฐานข้อมูลสำหรับ import เข้า mongodb : [ดาวน์โหลดที่นี่](https://github.com/nawasan111/final-exam/releases/download/mongodb_database/final-exam.tar.gz)
 - กำหนดสิทธิ์ admin
   - หลังจากสมัครสมาชิก เข้าไปยังฐานข้อมูลและเปลี่ยน `rank` ของ user เป็น `true`
   - เมื่อเปลี่ยนเสร็จ ต้องทำการเข้าสู่ระบบใหม่อีกครั้ง
