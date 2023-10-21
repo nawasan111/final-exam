@@ -26,6 +26,8 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ 
 
 เปลี่ยนมาใช้ฐานข้อมูล Mongodb จากเดิมที่ใช้ MySQL เพราะว่า Mongodb ไม่เสียเงิน แต่อาจทำให้ต้องใช้เวลาโหลดมากขึ้นเพราะมันช้า
 
+[ไปที่ branch สำหรับ MySQL](https://github.com/nawasan111/final-exam/tree/mysql)
+
 ## Get started
 
 - clone this repo
