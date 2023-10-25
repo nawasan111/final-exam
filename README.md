@@ -61,3 +61,11 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ 
 #### ฐานข้อมูล
 
 - ได้มีการย้ายฐานข้อมูลจาก MySQL มาเป็น Mongodb จึงอาจจะทำให้เกิดข้อผิดพลาดได้
+
+
+## Branch
+
+#### production
+
+เว็บไซต์จะถูก deploy ด้วย branch [production](https://github.com/nawasan111/final-exam/tree/production) เมื่อ main คงที่แล้วจึงจะ merge ไปที่ production
+
