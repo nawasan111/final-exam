@@ -54,7 +54,7 @@ export default function Stock() {
     if (router.query?.cat) {
       setCategory(router.query.cat);
     } else {
-      setCategory('');
+      setCategory("");
     }
   }, [router]);
 
@@ -64,7 +64,7 @@ export default function Stock() {
         <title>รายการสินค้า | admin</title>
       </Head>
       <Box>
-        <Box sx={{ mb: 2, textAlign: "right" }}>
+        <Box sx={{ maxWidth: 1520, mx: "auto", mb: 2, textAlign: "right" }}>
           <Button onClick={() => setModal(!modal)}>
             <AddShoppingCart />
             เพิ่มสินค้า

@@ -29,11 +29,10 @@ export default function ProductCard({
    */
   return (
     <div
-      className="p-1 my-3 w-[300px] mx-auto inline-block bg-white rounded hover:shadow duration-300"
+      className="p-1 my-3 w-[300px] sm:w-[270px] xl:w-[320px] mx-auto inline-block bg-white rounded hover:shadow duration-300"
       sx={{
         m: 1,
         px: 1,
-        width: 300,
         // height: 500,
         display: "inline-block",
       }}

@@ -5,7 +5,7 @@ import React from "react";
 export default function Footer() {
   return (
     <Box
-      className="md:flex text-center justify-end items-center"
+      className="md:flex text-center justify-end items-center max-w-[1520px] mx-auto"
       sx={{
         p: 3,
       }}

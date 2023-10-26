@@ -307,11 +307,11 @@ function Navbar(props) {
   return (
     <>
       <AppBar
-        className="shadow-sm bg-white/90"
+        className="shadow-sm bg-white/90  px-0"
         color="inherit"
         position="fixed"
       >
-        <Toolbar>
+        <Toolbar className="max-w-[1520px] 2xl:mx-auto 2xl:w-full box-border">
           <Typography
             variant="h6"
             noWrap

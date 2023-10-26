@@ -7,8 +7,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormLabel,
-  InputLabel,
   MenuItem,
   Paper,
   Select,
@@ -89,75 +87,79 @@ export default function Member() {
           {message.message}
         </Alert>
       </Snackbar>
-      <Box sx={{ m: 1, textAlign: "right" }}>
-        <FormControl>
-          <Select
-            variant="standard"
-            value={filterAdmin}
-            onChange={(e) => setFilterAdmin(Number(e.target.value))}
-          >
-            <MenuItem value={-1}>ทั้งหมด</MenuItem>
-            <MenuItem value={0}>admin</MenuItem>
-            <MenuItem value={1}>ผู้ใช้</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-      <Paper sx={{ p: 2, overflowX: "scroll" }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {[
-                "id",
-                "รูป",
-                "ชื่อ",
-                "username",
-                "เบอร์โทร",
-                "อีเมล",
-                "rank",
-                "ลบ",
-              ].map((label, idx) => (
-                <TableCell sx={{ textAlign: "center" }} key={idx}>
-                  {label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {userAllFilter.map((user, idx) => (
-              <TableRow key={idx}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>
-                  <img
-                  className="rounded-lg object-cover"
-                    width={70}
-                    height={70}
-                    src={user?.photo?.length ? user.photo : "/empty.jpg"}
-                    alt="profile"
-                  />
-                </TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>@{user.username}</TableCell>
-                <TableCell>{user.phone}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  <Switch
-                    checked={!!user.rank}
-                    onChange={() => changeRank(user.id, !user.rank)}
-                  />
-                </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  <Button
-                    onClick={() => setDeleteState({ open: true, id: user.id })}
-                    color="error"
-                  >
-                    ลบ
-                  </Button>
-                </TableCell>
+      <Box sx={{ maxWidth: 1520, mx: "auto" }}>
+        <Box sx={{ m: 1, textAlign: "right" }}>
+          <FormControl>
+            <Select
+              variant="standard"
+              value={filterAdmin}
+              onChange={(e) => setFilterAdmin(Number(e.target.value))}
+            >
+              <MenuItem value={-1}>ทั้งหมด</MenuItem>
+              <MenuItem value={0}>admin</MenuItem>
+              <MenuItem value={1}>ผู้ใช้</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <Paper sx={{ p: 2, overflowX: "scroll" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {[
+                  "id",
+                  "รูป",
+                  "ชื่อ",
+                  "username",
+                  "เบอร์โทร",
+                  "อีเมล",
+                  "rank",
+                  "ลบ",
+                ].map((label, idx) => (
+                  <TableCell sx={{ textAlign: "center" }} key={idx}>
+                    {label}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
+            </TableHead>
+            <TableBody>
+              {userAllFilter.map((user, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>
+                    <img
+                      className="rounded-lg object-cover"
+                      width={70}
+                      height={70}
+                      src={user?.photo?.length ? user.photo : "/empty.jpg"}
+                      alt="profile"
+                    />
+                  </TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>@{user.username}</TableCell>
+                  <TableCell>{user.phone}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    <Switch
+                      checked={!!user.rank}
+                      onChange={() => changeRank(user.id, !user.rank)}
+                    />
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    <Button
+                      onClick={() =>
+                        setDeleteState({ open: true, id: user.id })
+                      }
+                      color="error"
+                    >
+                      ลบ
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      </Box>
       {deleteState.open && (
         <DeleteMember
           open={deleteState.open}

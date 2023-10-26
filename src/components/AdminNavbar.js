@@ -246,7 +246,7 @@ function AdminNavbar(props) {
   return (
     <>
       <AppBar position="fixed" style={{ backgroundColor: "black" }}>
-        <Toolbar>
+        <Toolbar className="max-w-[1520px] 2xl:mx-auto 2xl:w-full box-border">
           <Typography
             variant="h6"
             noWrap

@@ -242,7 +242,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <Paper className="shadow-none" sx={{ p: 2, textAlign: "center" }}>
+          <Paper className="max-w-[1520px] mx-auto shadow-none" sx={{ p: 2, textAlign: "center" }}>
             {algorithm.length ? "ไม่พบรายการ" : <CircularProgress />}
           </Paper>
         )}
