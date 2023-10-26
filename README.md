@@ -24,7 +24,7 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ 
 
 ## Updates!
 
-เปลี่ยนมาใช้ฐานข้อมูล Mongodb จากเดิมที่ใช้ MySQL เพราะว่า Mongodb ไม่เสียเงิน แต่อาจทำให้ต้องใช้เวลาโหลดมากขึ้นเพราะมันช้า
+เปลี่ยนมาใช้ฐานข้อมูล Mongodb จากเดิมที่ใช้ MySQL เพราะว่า Mongodb ไม่เสียเงิน แต่อาจทำให้ต้องใช้เวลาโหลดมากขึ้นเพราะมันช้า (แต่เท่าที่ดูก็ไม่ได้ช้าอะไร คงเพราะไม่ได้ใช้ gerServerSideProps)
 
 [ไปที่ branch สำหรับ MySQL](https://github.com/nawasan111/final-exam/tree/mysql)
 
@@ -62,13 +62,12 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ 
 
 - ได้มีการย้ายฐานข้อมูลจาก MySQL มาเป็น Mongodb จึงอาจจะทำให้เกิดข้อผิดพลาดได้
 
-
 ## Branch
 
 #### production
 
 - เว็บไซต์จะถูก deploy ด้วย branch [production](https://github.com/nawasan111/final-exam/tree/production) เมื่อ main คงที่แล้วจึงจะ merge ไปที่ production
 
-#### mysql 
+#### mysql
 
 - สำหรับฐานข้อมูล mysql แต่ไม่มีการอัพเดท
