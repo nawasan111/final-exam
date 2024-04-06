@@ -1,0 +1,9 @@
+build-job:
+  state: build
+  image: node:20-alpine
+  script:
+    - npm  install
+    - npm run build
+  artifacts:
+    paths:
+      - "build/"
