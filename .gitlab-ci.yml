@@ -1,5 +1,5 @@
 build-job:
-  state: build
+  stage: build
   image: node:20-alpine
   script:
     - npm  install
