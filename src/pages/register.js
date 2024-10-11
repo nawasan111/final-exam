@@ -11,7 +11,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import PopupAlert from "@/components/PopupAlert";
 
-export default function Login() {
+export default function Register() {
   const router = useRouter();
   const [message, setMessage] = useState({ message: "", error: false });
   const user = useContext(UserContext);
