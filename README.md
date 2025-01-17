@@ -24,11 +24,20 @@ final exam of web programming with ~~PHP~~ **JavaScript** and using ~~Laravel~~ 
 
 ## Updates!
 
+เว็บไซต์ https://n-openshop.vercel.app จะไม่สามารถใช้งานได้เต็มรูปแบบเนื่องจากมีการจำกัดสิทธิ์การเขียนฐานข้อมูลเพื่อความปลอดภัย หากต้องการใช้งานครบทุกระบบควรรันผ่าน `Docker compose`
+
 เปลี่ยนมาใช้ฐานข้อมูล Mongodb จากเดิมที่ใช้ MySQL เพราะว่า Mongodb ไม่เสียเงิน แต่อาจทำให้ต้องใช้เวลาโหลดมากขึ้นเพราะมันช้า (แต่เท่าที่ดูก็ไม่ได้ช้าอะไร คงเพราะไม่ได้ใช้ gerServerSideProps)
 
 [ไปที่ branch สำหรับ MySQL](https://github.com/nawasan111/final-exam/tree/mysql)
 
 ## Get started
+
+### รันผ่าน Docker
+
+- clone this repo
+- `make up`
+
+### รันผ่านเครื่องหลัก
 
 - clone this repo
 - ติดตั้ง dependencies ด้วยคำสั่ง `pnpm install` หรือ `npm install`
