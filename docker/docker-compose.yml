@@ -1,0 +1,50 @@
+services:
+  web:
+    container_name: web
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+
+  mongo:
+    container_name: mongo
+    image: mongo:8
+    command: [--replSet, rs0, --bind_ip_all, --port, "27017"]
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: final-exam
+    volumes:
+      - db_final_exam:/data/db
+    healthcheck:
+      test: test $$(mongosh --port 27017 --quiet --eval "try {rs.initiate({_id:'rs0',members:[{_id:0,host:\"localhost:27017\"}]})} catch(e) {rs.status().ok}") -eq 1
+      start_period: 30s
+      interval: 2s
+      retries: 5
+
+  mongo-init:
+    image: mongo:8
+    restart: "no"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    command: >
+      bash -c 'mkdir /db-setup && 
+       cp /docker-entrypoint-initdb.d/init_db/db.tar /db-setup && 
+       tar xf /db-setup/db.tar -C /db-setup &&
+       mongorestore -h mongo --port 27017 -d final-exam /db-setup/final-exam' &&
+      mongo --host mongo:27017 --eval
+      '
+      rs.initiate( {
+        _id : "rs0",
+        members: [
+          { _id: 0, host: "localhost:27017" }
+        ]
+      })
+      '
+    volumes:
+      - ./init_db:/docker-entrypoint-initdb.d/init_db:ro
+
+volumes:
+  db_final_exam:
